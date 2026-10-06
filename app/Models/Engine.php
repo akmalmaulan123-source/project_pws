@@ -10,7 +10,7 @@ class Engine extends Model
     public const FIELDS = [
         'generation_id', 'label', 'fuel_type', 'cylinders', 'displacement_cc', 'power_hp', 'torque_nm',
         'transmission', 'drivetrain', 'zero_to_100_s', 'top_speed_kmh', 'fuel_economy_combined_l100',
-        'length_mm', 'width_mm', 'height_mm', 'wheelbase_mm', 'curb_weight_kg',
+        'length_mm', 'width_mm', 'height_mm', 'wheelbase_mm', 'curb_weight_kg', 'price_usd',
     ];
 
     protected $fillable = self::FIELDS;
@@ -46,11 +46,33 @@ class Engine extends Model
             'height_mm' => ['nullable', 'integer', 'between:0,5000'],
             'wheelbase_mm' => ['nullable', 'integer', 'between:0,10000'],
             'curb_weight_kg' => ['nullable', 'integer', 'between:0,20000'],
+            'price_usd' => ['nullable', 'integer', 'between:0,100000000'],
         ];
     }
 
     public function generation(): BelongsTo
     {
         return $this->belongsTo(Generation::class);
+    }
+
+    /** "$32,500" atau null bila harga belum diisi. */
+    public function getPriceLabelAttribute(): ?string
+    {
+        return $this->price_usd ? '$'.number_format($this->price_usd) : null;
+    }
+
+    /** Estimasi Rupiah dari kurs tetap di config/parcferme.php, mis. "Rp 520 million". */
+    public function getPriceIdrLabelAttribute(): ?string
+    {
+        return $this->price_usd ? self::idrLabel($this->price_usd) : null;
+    }
+
+    public static function idrLabel(int|float $usd): string
+    {
+        $idr = $usd * config('parcferme.usd_to_idr');
+
+        return $idr >= 1_000_000_000
+            ? 'Rp '.rtrim(rtrim(number_format($idr / 1_000_000_000, 2), '0'), '.').' billion'
+            : 'Rp '.number_format(round($idr / 1_000_000)).' million';
     }
 }

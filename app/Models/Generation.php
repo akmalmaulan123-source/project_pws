@@ -37,6 +37,6 @@ class Generation extends Model
             return '-';
         }
 
-        return $this->year_start.' – '.($this->year_end ?: 'sekarang');
+        return $this->year_start.' – '.($this->year_end ?: 'present');
     }
 }

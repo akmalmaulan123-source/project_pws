@@ -38,4 +38,39 @@ class Brand extends Model
     {
         return $term ? $query->where('name', 'like', '%'.$term.'%') : $query;
     }
+
+    /**
+     * Sumber gambar logo: file lokal public/images/brands/{slug}.(svg|png|webp|jpg) diutamakan
+     * (tidak hilang saat impor ulang), lalu logo_url hasil `php artisan brands:fetch-logos`.
+     */
+    public function getLogoSrcAttribute(): ?string
+    {
+        static $local = [];
+
+        $local[$this->slug] ??= (function () {
+            foreach (['svg', 'png', 'webp', 'jpg'] as $ext) {
+                if (is_file(public_path("images/brands/{$this->slug}.{$ext}"))) {
+                    return asset("images/brands/{$this->slug}.{$ext}");
+                }
+            }
+
+            return '';
+        })();
+
+        return $local[$this->slug] ?: ($this->logo_url ?: null);
+    }
+
+    /** Kode 3 huruf untuk penanda visual, mis. TOY, MER. */
+    public function getCodeAttribute(): string
+    {
+        $clean = preg_replace('/[^A-Za-z0-9]/', '', Str::ascii($this->name));
+
+        return strtoupper(substr($clean, 0, 3));
+    }
+
+    /** Sudut warna (0-359) yang stabil per merek, untuk garis warna penanda merek. */
+    public function getHueAttribute(): int
+    {
+        return crc32($this->name) % 360;
+    }
 }

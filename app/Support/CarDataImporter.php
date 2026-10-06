@@ -123,8 +123,8 @@ class CarDataImporter
                     'generation_id' => $genIds[$genKey], 'label' => $r['engine_label'], 'fuel_type' => $this->s($r['fuel_type']),
                     'cylinders' => $this->num('cylinders', $r['cylinders'], true),
                     'displacement_cc' => $this->num('displacement_cc', $r['displacement_cc'], true),
-                    'power_hp' => $this->powerHp($r['power_hp'], $r['engine_label']),
-                    'torque_nm' => $this->num('torque_nm', $r['torque_nm']),
+                    'power_hp' => $power = $this->powerHp($r['power_hp'], $r['engine_label']),
+                    'torque_nm' => $this->torque($r['torque_nm'], $power),
                     'transmission' => $this->s($r['transmission']), 'drivetrain' => $this->s($r['drivetrain']),
                     'zero_to_100_s' => $this->num('zero_to_100_s', $r['zero_to_100_s']),
                     'top_speed_kmh' => $this->num('top_speed_kmh', $r['top_speed_kmh']),
@@ -246,6 +246,22 @@ class CarDataImporter
 
         if ($fromLabel !== null && ($n > 3 * $fromLabel || $n < $fromLabel / 3)) {
             return $fromLabel;
+        }
+
+        return $n;
+    }
+
+    /**
+     * Torsi (Nm). Di luar rentang wajar dikosongkan. Selain itu rasio torsi/tenaga mobil penumpang
+     * hampir selalu antara 0,6 dan 7 (median data ini 1,5), jadi nilai di luar itu dianggap salah scrape.
+     */
+    private function torque(?string $v, ?float $power): ?float
+    {
+        $n = $this->num('torque_nm', $v);
+        if ($n !== null && $power && ($n / $power < 0.6 || $n / $power > 7)) {
+            $this->cleaned['torque_nm'] = ($this->cleaned['torque_nm'] ?? 0) + 1;
+
+            return null;
         }
 
         return $n;
