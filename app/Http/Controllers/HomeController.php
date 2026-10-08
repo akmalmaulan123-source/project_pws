@@ -15,7 +15,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $ttl = 60;
+        $ttl = 5; // pendek: live update menyegarkan beranda tiap data berubah
 
         $stats = Cache::remember('home.stats', $ttl, fn () => [
             'brands' => Brand::count(),
@@ -25,7 +25,7 @@ class HomeController extends Controller
 
         // Mobil unggulan di hero: sebuah Porsche. Urutan pilihan = yang pertama punya foto;
         // kalau belum ada yang berfotokan, tetap pakai 911 GT3 RS (hero tampil tanpa foto).
-        $feature = Cache::remember('home.feature.v2', 300, function () {
+        $feature = Cache::remember('home.feature.v2', 15, function () {
             $models = CarModel::query()
                 ->with('brand')
                 ->whereHas('brand', fn ($q) => $q->where('name', 'Porsche'))
@@ -99,7 +99,7 @@ class HomeController extends Controller
             ->withMin('engines', 'price_usd')
             ->whereNotNull('year_start')
             ->orderByDesc('year_start')->orderBy('id')
-            ->limit(8)->get();
+            ->limit(4)->get();
 
         return view('home', compact('stats', 'feature', 'fuels', 'brands', 'newest'));
     }

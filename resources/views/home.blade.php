@@ -14,18 +14,28 @@
         $hp = $feature['power'];
         $kw = round($hp * 0.7457);
         $name = trim($feature['brand'].' '.$feature['model']);
-        $specLine = collect([$feature['engine'], $feature['transmission'], $feature['drivetrain']])->filter()->implode(', ');
+        $chips = collect([$feature['engine'], $feature['transmission'], $feature['drivetrain']])->filter()->values();
 
-        // Lingkaran kiri: top speed; kalau datanya kosong, pakai 0 to 100 atau torsi.
+        // Speedometer HUD: top speed; kalau datanya kosong, pakai 0 to 100 atau torsi.
+        // $hudRaw/$hudDec dipakai hero.js untuk hitung naik; gigi dan LED rpm mengikuti kecepatan itu.
+        $hudRaw = 0;
+        $hudDec = 0;
         if ($feature['top_speed']) {
-            $left = ['Top speed', number_format($feature['top_speed']), 'km/h', number_format(round($feature['top_speed'] * 0.621371)).' mph'];
+            $hud = ['Top speed', number_format($feature['top_speed']), 'km/h'];
+            $hudRaw = $feature['top_speed'];
         } elseif ($feature['zero_to_100']) {
-            $left = ['0 to 100', number_format($feature['zero_to_100'], 1), 's', 'km/h'];
+            $hud = ['0 to 100', number_format($feature['zero_to_100'], 1), 's'];
+            $hudRaw = $feature['zero_to_100'];
+            $hudDec = 1;
         } elseif ($feature['torque']) {
-            $left = ['Torque', number_format($feature['torque']), 'Nm', number_format(round($feature['torque'] * 0.737562)).' lb-ft'];
+            $hud = ['Torque', number_format($feature['torque']), 'Nm'];
+            $hudRaw = $feature['torque'];
         } else {
-            $left = null;
+            $hud = null;
         }
+        $powerFill = round(max(12, min(100, $hp / 1200 * 100)), 1);
+        $ledTotal = 26;
+        $ledOn = (int) round(0.72 * $ledTotal); // keadaan akhir tanpa animasi
     }
 @endphp
 
@@ -43,32 +53,51 @@
         </div>
 
         <div class="wrap show-foot">
-            @if ($left)
-                <div class="show-ring">
-                    <span class="ring-label">{{ $left[0] }}</span>
-                    <strong>{{ $left[1] }}<small>{{ $left[2] }}</small></strong>
-                    <span class="ring-sub">{{ $left[3] }}</span>
-                </div>
-            @else
-                <span></span>
-            @endif
-
             <div class="show-info">
-                <h1 id="show-title">{{ $name }}</h1>
-                <p>{{ $specLine }}</p>
-                <a class="show-cta" href="{{ route('cars.show', $feature['car_id']) }}">See full specs</a>
+                <h1 id="show-title"><em>{{ $feature['brand'] }}</em> {{ $feature['model'] }}</h1>
+                @if ($chips->isNotEmpty())
+                    <ul class="hud-chips">
+                        @foreach ($chips as $chip)
+                            <li style="--i: {{ $loop->index }}"><span>{{ $chip }}</span></li>
+                        @endforeach
+                    </ul>
+                @endif
+                <a class="show-cta" href="{{ route('cars.show', $feature['car_id']) }}"><span>See full specs</span></a>
             </div>
 
-            <div class="show-ring show-ring--r">
-                <span class="ring-label">Power</span>
-                <strong>{{ number_format($hp) }}<small>hp</small></strong>
-                <span class="ring-sub">{{ number_format($kw) }} kW</span>
+            {{-- HUD balapan: gigi, speedometer digital, LED rpm, bar tenaga (animasinya di hero.js) --}}
+            <div class="hud">
+                @if ($hud)
+                    <div class="hud-gear" data-hud-gear aria-hidden="true">
+                        <div><b data-hud-gear-num>7</b><span class="hud-lb">Gear</span></div>
+                    </div>
+                @endif
+                <div class="hud-speed">
+                    <div>
+                        @if ($hud)
+                            <span class="hud-lb">{{ $hud[0] }}</span>
+                            <strong class="hud-big"><span data-hud-speed="{{ $hudRaw }}" data-decimals="{{ $hudDec }}">{{ $hud[1] }}</span><small>{{ $hud[2] }}</small></strong>
+                            <div class="hud-led" aria-hidden="true">
+                                @for ($i = 0; $i < $ledTotal; $i++)<i @class(['on' => $i < $ledOn])></i>@endfor
+                            </div>
+                        @endif
+                        <div class="hud-power">
+                            <span class="hud-lb">Power</span>
+                            <span class="hud-track" aria-hidden="true"><i style="--f: {{ $powerFill }}"></i></span>
+                            <b><span data-hero-num="{{ $hp }}" data-decimals="0" data-delay="800">{{ number_format($hp) }}</span><small> hp</small></b>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     @else
         <h1 id="show-title" class="sr-only">Every car on the grid</h1>
     @endif
 </section>
+@if ($feature)
+    {{-- Tanpa defer: harus jalan sebelum HUD tampil (animasi CSS menunda HUD 0,5 dtk) --}}
+    <script src="{{ asset('js/hero.js') }}?v={{ filemtime(public_path('js/hero.js')) }}"></script>
+@endif
 
 <div class="wrap">
     <div class="stats-strip" data-reveal>
@@ -88,22 +117,19 @@
 </div>
 
 <div class="wrap page home-page">
-    <section class="block" aria-labelledby="new-title" data-reveal>
-        <div class="block-head">
+    {{-- data-reveal hanya di judul; kartu-kartu punya animasi muncul sendiri (home.js + .showcase.is-in) --}}
+    <section class="block" aria-labelledby="new-title">
+        <div class="block-head" data-reveal>
             <h2 id="new-title">Newest models</h2>
-            <a href="{{ route('cars.index', ['sort' => 'newest']) }}">See all newest</a>
+            <a href="{{ route('cars.index', ['sort' => 'newest']) }}"><span>See all newest</span></a>
         </div>
-        <div class="carousel carousel--showcase" data-carousel>
-            <button class="car-nav car-nav-prev" type="button" data-dir="-1" aria-label="Previous models">&lsaquo;</button>
-            @include('partials.car-showcase', ['cars' => $newest])
-            <button class="car-nav car-nav-next" type="button" data-dir="1" aria-label="Next models">&rsaquo;</button>
-        </div>
+        @include('partials.car-showcase', ['cars' => $newest])
     </section>
 
     <section class="block" aria-labelledby="makes-title">
         <div class="block-head" data-reveal>
             <h2 id="makes-title">Browse by brand</h2>
-            <a href="{{ route('brands.index') }}">See all {{ number_format($stats['brands']) }} brands</a>
+            <a href="{{ route('brands.index') }}"><span>See all {{ number_format($stats['brands']) }} brands</span></a>
         </div>
         <ul class="make-grid">
     @foreach ($brands as $b)
@@ -118,9 +144,9 @@
 </ul>
     </section>
 
-    <section class="block" aria-labelledby="fuel-title" data-reveal>
-        <div class="block-head"><h2 id="fuel-title">Browse by fuel</h2></div>
-        <ul class="fuel-list">
+    <section class="block" aria-labelledby="fuel-title">
+        <div class="block-head" data-reveal><h2 id="fuel-title">Browse by fuel</h2></div>
+        <ul class="fuel-list" data-reveal>
             @foreach ($fuels as $f)
                 <li>
                     <a href="{{ route('cars.index', ['fuel_type' => $f['fuel']]) }}">

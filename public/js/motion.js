@@ -30,10 +30,14 @@
         });
     }, { threshold: 0, rootMargin: '0px 0px 140px 0px' }) : null;
 
+    // Elemen yang sudah dianimasikan oleh CSS (animasi masuk halaman) tidak perlu .mo lagi
+    var CSS_ANIM = '.page > :nth-child(-n+7), .rows > .row:nth-child(-n+12), .make-grid > li:nth-child(-n+12), .car-cards > li:nth-child(-n+12)';
+
     function prepare(scope) {
         if (!main) { return; }
         var quiet = root.classList.contains('live-quiet');
         var list = [].slice.call((scope || main).querySelectorAll(SELECTOR)).filter(function (el) {
+            if (!quiet && el.matches(CSS_ANIM)) { return false; }
             return !el.hasAttribute('data-mo') &&
                 !el.closest('[data-reveal]') && !el.closest('.stage') &&
                 !el.closest('.home-page') && !el.closest('.suggest');

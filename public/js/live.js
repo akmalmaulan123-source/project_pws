@@ -20,7 +20,9 @@
     var toastEl = null;
     var lastToken = null;
     var enabled = true;
-    try { enabled = window.localStorage.getItem(STORE_ON) !== 'off'; } catch (e) { /* abaikan */ }
+    // Tombol Live disembunyikan dari tampilan (fungsinya tetap jalan), jadi live update selalu aktif;
+    // pilihan "dijeda" lama yang mungkin tersimpan di browser dibuang supaya tidak mematikannya tanpa jalan kembali.
+    try { window.localStorage.removeItem(STORE_ON); } catch (e) { /* abaikan */ }
 
     function current() { return location.pathname + location.search; }
 
@@ -208,7 +210,7 @@
 
     function poll() {
         if (!enabled) { return; }
-        if (document.hidden) { schedule(); return; }
+        if (document.hidden || window.__pfNavigating) { schedule(); return; }
 
         fetch(pill.getAttribute('data-url'), { cache: 'no-store', credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
             .then(function (res) {
@@ -241,5 +243,6 @@
 
     history.replaceState({ live: 1 }, '', current());
     setState(enabled ? 'on' : 'paused');
-    if (enabled) { poll(); }
+    // Pengecekan pertama ditunda: jangan berebut dengan pemuatan halaman atau klik pertama
+    if (enabled) { pollTimer = setTimeout(poll, 2500); }
 })();

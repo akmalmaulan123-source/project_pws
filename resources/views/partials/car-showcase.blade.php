@@ -1,9 +1,11 @@
 {{--
-    Kartu "showroom" untuk beranda (Newest models). Semua kartu kecil; kartu yang di-hover melebar (lihat app.css).
-    Butuh: $cars (CarModel dengan brand + agregat engines: max power, max top speed, min 0-100, min harga)
-    Track memakai class "car-cards" supaya carousel di home.js tetap bekerja.
+    Kartu koleksi untuk beranda (Newest models): panel gambar dengan lencana tahun, logo merek + nama model,
+    lalu tiga angka ringkas (tenaga, 0-100, kecepatan maks).
+    Tanpa foto mobil, logo merek mengisi panel gambar. Foto akan otomatis menggantikannya begitu ada ($m->card_image).
+    Butuh: $cars (CarModel dengan brand + agregat engines: max power, max top speed, min 0-100)
+    Class "car-cards showcase" dipertahankan: home.js memakainya untuk animasi muncul saat di-scroll.
 --}}
-<ul class="car-cards showcase">
+<ul class="car-cards showcase nc-grid">
     @foreach ($cars as $m)
         @php
             $card = $m->card_image;
@@ -11,14 +13,16 @@
             $acc = $m->engines_min_zero_to_100_s;
             $top = $m->engines_max_top_speed_kmh;
         @endphp
-        <li >
-            <a class="sc" href="{{ route('cars.show', $m) }}">
-                <span class="sc-stage">
-                    <span class="sc-no" aria-hidden="true">{{ sprintf('%02d', $loop->iteration) }}</span>
+        <li style="--i: {{ $loop->index }}">
+            <a class="nc" href="{{ route('cars.show', $m) }}">
+                <span class="nc-media">
+                    @if ($m->year_start)
+                        <span class="nc-year">{{ $m->year_start }}</span>
+                    @endif
                     @if ($card)
-                        <img class="sc-img {{ $card['cutout'] ? '' : 'sc-img--photo' }}" src="{{ $card['url'] }}" alt="{{ $m->full_name }}" loading="lazy" decoding="async">
+                        <img class="nc-img {{ $card['cutout'] ? '' : 'nc-img--photo' }}" src="{{ $card['url'] }}" alt="{{ $m->full_name }}" loading="lazy" decoding="async">
                     @else
-                        <span class="sc-mark" aria-hidden="true">
+                        <span class="nc-mark" aria-hidden="true">
                             @if ($m->brand->logo_src)
                                 @include('partials.brand-logo', ['brand' => $m->brand, 'size' => 'lg'])
                             @else
@@ -28,30 +32,24 @@
                     @endif
                 </span>
 
-                <span class="sc-info">
-                    <span class="sc-top">
-                        <span>{{ $m->brand->name }}</span>
-                        <span>{{ $m->years }}</span>
-                    </span>
-                    <span class="sc-name">{{ $m->name }}</span>
-
-                    <span class="sc-specs">
-                        <span><b>{{ $hp ? number_format($hp) : '–' }}</b><i>hp</i></span>
-                        <span><b>{{ $acc ? number_format($acc, 1) : '–' }}</b><i>0–100 s</i></span>
-                        <span><b>{{ $top ? number_format($top) : '–' }}</b><i>km/h</i></span>
-                    </span>
-
-                    <span class="sc-foot">
-                        @if ($m->engines_min_price_usd)
-                            <span class="sc-price">
-                                <em>From</em>${{ number_format($m->engines_min_price_usd) }}
-                                <small>{{ \App\Models\Engine::idrLabel($m->engines_min_price_usd) }}</small>
-                            </span>
+                <span class="nc-head">
+                    <span class="nc-badge" aria-hidden="true">
+                        @if ($m->brand->logo_src)
+                            @include('partials.brand-logo', ['brand' => $m->brand, 'size' => 'sm'])
                         @else
-                            <span class="sc-price sc-price--na"><em>Price</em>Not listed</span>
+                            {{ $m->brand->code }}
                         @endif
-                        <span class="sc-go">See full specs <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
                     </span>
+                    <span class="nc-title">
+                        <strong>{{ $m->name }}</strong>
+                        <small>{{ $m->brand->name }} · {{ $m->engines_count }} {{ \Illuminate\Support\Str::plural('engine', $m->engines_count) }}</small>
+                    </span>
+                </span>
+
+                <span class="nc-stats">
+                    <span><b>{{ $hp ? number_format($hp).' hp' : '–' }}</b><i>Power</i></span>
+                    <span><b>{{ $acc ? number_format($acc, 1).'s' : '–' }}</b><i>0–100</i></span>
+                    <span><b>{{ $top ? number_format($top).' km/h' : '–' }}</b><i>Top</i></span>
                 </span>
             </a>
         </li>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 64" role="img" aria-label="Parc Fermé">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f7f7"/><stop offset="1" stop-color="#a8a8a8"/></linearGradient></defs>
+  <g transform="translate(6 6) skewX(-14)" fill="none" stroke="url(#g)" stroke-width="9" stroke-linejoin="miter">
+    <path d="M12 52V6h20a14 14 0 0 1 0 28H12"/>
+  </g>
+  <g transform="translate(6 6) skewX(-14)" fill="url(#g)"><rect x="42" y="42" width="8" height="10"/><rect x="54" y="42" width="8" height="10" opacity=".55"/></g>
+  <text x="84" y="31" textLength="110" lengthAdjust="spacingAndGlyphs" fill="#f5f5f5" font-family="Saira Condensed, Arial Narrow, sans-serif" font-style="italic" font-weight="700" font-size="30" letter-spacing="3">PARC</text>
+  <text x="84" y="55" textLength="110" lengthAdjust="spacingAndGlyphs" fill="#9c9ca0" font-family="Saira Condensed, Arial Narrow, sans-serif" font-style="italic" font-weight="600" font-size="22" letter-spacing="6.5">FERMÉ</text>
+</svg>

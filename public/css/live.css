@@ -25,6 +25,9 @@ main > .wrap > :not(form.filters) { transition: opacity 0.2s; }
 
 /* Setelah isi diganti lewat live update, jangan putar ulang animasi masuk */
 .live-quiet .hero-copy > *, .live-quiet .tower-list li, .live-quiet .tw-bar { animation: none !important; }
+/* Hero beranda (HUD): tampil langsung dalam keadaan akhir, tanpa kilatan dan sapuan masuk */
+.live-quiet .show *, .live-quiet .show *::before, .live-quiet .show *::after { animation: none !important; }
+.live-quiet .show-stage::before { display: none; }
 
 .live-toast {
     position: fixed; left: 20px; bottom: 20px; z-index: 60; max-width: calc(100vw - 40px);
@@ -36,3 +39,6 @@ main > .wrap > :not(form.filters) { transition: opacity 0.2s; }
 body.has-tray .live-toast { bottom: 96px; }
 
 @media (max-width: 900px) { .live-pill { order: 2; } }
+
+/* Tombol Live tidak ditampilkan di front end; elemennya tetap ada karena live.js memakainya untuk mengatur polling. */
+.live-pill { display: none !important; }
