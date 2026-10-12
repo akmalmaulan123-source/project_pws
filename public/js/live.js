@@ -11,7 +11,6 @@
     var POLL_MS = parseInt(pill.getAttribute('data-interval'), 10) || 8000;
     var DEBOUNCE_MS = 350;
     var STORE_ON = 'pf-live';
-    var STORE_COMPARE = 'pf-compare';
 
     var controller = null;   // permintaan halaman yang sedang berjalan
     var typingTimer = null;  // jeda ketikan di kolom filter
@@ -26,8 +25,8 @@
 
     function current() { return location.pathname + location.search; }
 
-    // Halaman statis (About) dan Compare (URL + localStorage jadi sumbernya) tidak perlu disegarkan otomatis.
-    function isStatic() { return !!document.querySelector('.prose-page, [data-compare-col]'); }
+    // Halaman statis (About) tidak perlu disegarkan otomatis.
+    function isStatic() { return !!document.querySelector('.prose-page'); }
 
     function buildUrl(form) {
         var params = new URLSearchParams();
@@ -42,16 +41,6 @@
         [].forEach.call(toForm.elements, function (el) {
             var src = el.name ? fromForm.elements[el.name] : null;
             if (src && 'value' in src) { el.value = src.value; }
-        });
-    }
-
-    function restoreCompare() {
-        var ids = [];
-        try {
-            ids = (JSON.parse(window.localStorage.getItem(STORE_COMPARE) || '[]') || []).map(function (x) { return String(x.id); });
-        } catch (e) { /* abaikan */ }
-        [].forEach.call(main.querySelectorAll('.js-compare'), function (cb) {
-            cb.checked = ids.indexOf(cb.getAttribute('data-id')) !== -1;
         });
     }
 
@@ -108,7 +97,6 @@
 
         if (doc.title) { document.title = doc.title; }
         document.documentElement.classList.add('live-quiet'); // animasi masuk hanya untuk pemuatan pertama
-        restoreCompare();
         document.dispatchEvent(new CustomEvent('live:swapped'));
     }
 

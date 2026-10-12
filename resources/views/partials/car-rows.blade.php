@@ -4,7 +4,7 @@
         <span></span><span>Model</span><span class="r row-engines">Engines</span><span class="r row-power">Max power</span><span class="r row-price">From</span>
     </div>
     @foreach ($cars as $m)
-        <a class="row" role="listitem" href="{{ route('cars.show', $m) }}">
+        <a class="row" role="listitem" href="{{ route('brands.show', ['brand' => $m->brand, 'car' => $m->id]) }}">
             @include('partials.brand-logo', ['brand' => $m->brand, 'size' => 'sm'])
             <span class="row-main">
                 <span class="row-model">{{ $m->name }}</span>

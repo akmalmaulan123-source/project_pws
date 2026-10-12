@@ -1,0 +1,362 @@
+/* Halaman Insights (gaya panel instrumen). Memakai variabel warna dari app.css. */
+.ins {
+    --ins-track: #222225;
+    --ins-bar: #3a3a3f;
+}
+
+.ins-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 24px 32px;
+    padding-block: 8px 12px;
+}
+
+.ins-eb {
+    margin: 0;
+    color: var(--purple);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+}
+
+.ins-head h1 {
+    margin: 14px 0 0;
+    font: 700 clamp(2.6rem, 6vw, 4.5rem)/1 var(--display);
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.ins-lead {
+    max-width: 340px;
+    margin: 0;
+    color: var(--ash);
+    line-height: 1.7;
+}
+
+/* Dial */
+.ins-cluster {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1fr;
+    align-items: center;
+    justify-items: center;
+    padding-block: 24px 40px;
+    border-bottom: 1px solid var(--line);
+    background: radial-gradient(520px 260px at 50% 45%, rgba(201, 139, 255, .09), transparent 70%);
+}
+
+.ins-dial {
+    text-align: center;
+}
+
+.ins-dial svg {
+    height: auto;
+}
+
+.ins-dial .tm { stroke: #8d8d92; stroke-width: 1.6; }
+.ins-dial .tn { stroke: #3a3a3f; stroke-width: 1; }
+.ins-dial .trk { stroke: var(--ins-track); }
+.ins-dial .val { stroke: var(--chalk); }
+.ins-dial.is-big .val { stroke: var(--purple); }
+
+.ins-dn {
+    fill: var(--chalk);
+    font-family: var(--display);
+    font-weight: 500;
+}
+
+.ins-du {
+    fill: var(--ash);
+    font-size: 10px;
+}
+
+.ins-dcap {
+    margin-top: 4px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+}
+
+.ins-dsub {
+    margin-top: 6px;
+    color: var(--ash);
+    font-size: .85rem;
+}
+
+/* Total katalog */
+.ins-totals {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--line);
+}
+
+.ins-totals div {
+    padding: 28px 0 28px 28px;
+    border-left: 1px solid var(--line);
+}
+
+.ins-totals div:first-child {
+    padding-left: 0;
+    border-left: 0;
+}
+
+.ins-totals b {
+    display: block;
+    font: 500 clamp(2.2rem, 4vw, 3.4rem)/1 var(--display);
+}
+
+.ins-totals span {
+    display: block;
+    margin-top: 10px;
+    color: var(--ash);
+    font-size: .72rem;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+}
+
+/* Komposisi bahan bakar */
+.ins-mix {
+    padding-block: 36px;
+    border-bottom: 1px solid var(--line);
+}
+
+.ins-mh {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    color: var(--ash);
+    font-size: .72rem;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+}
+
+.ins-strip {
+    display: flex;
+    gap: 3px;
+    height: 10px;
+}
+
+.ins-strip i {
+    display: block;
+    border-radius: 2px;
+}
+
+.ins-ml {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 40px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: .9rem;
+}
+
+.ins-ml li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ins-ml i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.ins-ml em {
+    color: var(--ash);
+    font-style: normal;
+}
+
+.ins .f1 { background: #f5f5f5; }
+.ins .f2 { background: #9c9ca0; }
+.ins .f3 { background: var(--purple); }
+.ins .f4 { background: #7a3fd0; }
+.ins .f5 { background: #3a3a3f; }
+
+/* Tiga panel */
+.ins-panels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 56px;
+    padding-top: 48px;
+}
+
+.ins-panels h2 {
+    margin: 0 0 6px;
+    font: 500 1.5rem/1.1 var(--display);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.ins-cp {
+    margin: 0 0 28px;
+    color: var(--ash);
+    font-size: .9rem;
+}
+
+.ins-nt {
+    margin: 20px 0 0;
+    color: var(--ash);
+    font-size: .8rem;
+}
+
+.ins-br {
+    display: grid;
+    grid-template-columns: minmax(70px, 104px) 1fr auto;
+    gap: 18px 16px;
+    align-items: center;
+    font-size: .9rem;
+}
+
+.ins-br b {
+    text-align: right;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.ins-t {
+    display: block;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--ins-track);
+}
+
+.ins-t i {
+    display: block;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--silver);
+}
+
+.ins-t i.hi {
+    background: var(--purple);
+}
+
+.ins-cols {
+    width: 100%;
+    height: auto;
+}
+
+.ins-cols rect { fill: var(--ins-bar); }
+.ins-cols rect.last { fill: var(--purple); }
+.ins-cols .gl { stroke: var(--line); }
+.ins-cols .tx { fill: var(--ash); font-size: 11px; }
+.ins-cols .tx.last { fill: var(--chalk); }
+
+@media (max-width: 1000px) {
+    .ins-panels { grid-template-columns: 1fr; gap: 48px; }
+}
+
+@media (max-width: 760px) {
+    .ins-cluster { grid-template-columns: 1fr; gap: 32px; }
+    .ins-totals div { padding-left: 16px; }
+}
+
+/* ================= Animasi masuk =================
+   Keadaan awal hanya berlaku saat insights.js memasang class "ins-armed" di <html>.
+   Tiap bagian mendapat "ins-go" ketika masuk layar. Easing sama dengan animasi halaman lain (--ease-out). */
+:root {
+    --ins-ease: var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Animasi bawaan "page > anak" dimatikan di sini: isi tiap bagian dianimasikan sendiri, supaya tidak dobel. */
+html:not(.live-quiet) .page.ins > :nth-child(-n+7):not(.page-head):not(.rows):not(.make-grid):not(.car-cards) {
+    animation: none;
+}
+
+.ins-w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: .12em;
+    margin-bottom: -.12em;
+}
+
+.ins-w > span {
+    display: inline-block;
+}
+
+.ins-panels > div:nth-child(1) { --c: 0ms; }
+.ins-panels > div:nth-child(2) { --c: 160ms; }
+.ins-panels > div:nth-child(3) { --c: 320ms; }
+.ins-dial { --dd: 300; }
+.ins-dial.is-big { --dd: 0; }
+.ins-cols rect { transform-box: fill-box; transform-origin: 50% 100%; }
+.ins-strip i { transform-origin: left center; }
+.ins-t i { transform-origin: left center; }
+
+@keyframes ins-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes ins-word { from { transform: translateY(110%); } to { transform: none; } }
+@keyframes ins-grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes ins-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes ins-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ins-arc {
+    from { stroke-dasharray: 0 414.7; opacity: 0; }
+    8% { opacity: 1; }
+    to { stroke-dasharray: var(--len) 414.7; opacity: 1; }
+}
+@keyframes ins-last { from { fill: var(--ins-bar); } to { fill: var(--purple); } }
+
+@media (prefers-reduced-motion: no-preference) {
+    /* ---- keadaan awal ---- */
+    html.ins-armed:not(.live-quiet) .ins-eb,
+    html.ins-armed:not(.live-quiet) .ins-lead,
+    html.ins-armed:not(.live-quiet) .ins-dial,
+    html.ins-armed:not(.live-quiet) .ins-totals > div,
+    html.ins-armed:not(.live-quiet) .ins-mh,
+    html.ins-armed:not(.live-quiet) .ins-ml li,
+    html.ins-armed:not(.live-quiet) .ins-panels h2,
+    html.ins-armed:not(.live-quiet) .ins-cp,
+    html.ins-armed:not(.live-quiet) .ins-nt,
+    html.ins-armed:not(.live-quiet) .ins-br > span:not(.ins-t),
+    html.ins-armed:not(.live-quiet) .ins-br > b {
+        opacity: 0;
+    }
+
+    html.ins-armed:not(.live-quiet) .ins-w > span { transform: translateY(110%); }
+    html.ins-armed:not(.live-quiet) .ins-dial line,
+    html.ins-armed:not(.live-quiet) .ins-dial .val,
+    html.ins-armed:not(.live-quiet) .ins-cols .tx { opacity: 0; }
+    html.ins-armed:not(.live-quiet) .ins-strip i,
+    html.ins-armed:not(.live-quiet) .ins-t i { transform: scaleX(0); }
+    html.ins-armed:not(.live-quiet) .ins-cols rect { transform: scaleY(0); }
+
+    /* ---- judul ---- */
+    .ins-go .ins-eb { animation: ins-rise .9s var(--ins-ease) both; }
+    .ins-go .ins-w > span { animation: ins-word 1.1s var(--ins-ease) calc(120ms + var(--i) * 80ms) both; }
+    .ins-go .ins-lead { animation: ins-rise 1s var(--ins-ease) 520ms both; }
+
+    /* ---- dial: kartu naik, garis skala menyapu, busur terisi ---- */
+    .ins-go .ins-dial { animation: ins-rise 1s var(--ins-ease) calc(var(--dd) * 1ms) both; }
+    .ins-go .ins-dial line { animation: ins-fade .45s ease-out calc(var(--dd) * 1ms + 150ms + var(--k) * 24ms) both; }
+    .ins-go .ins-dial .val { animation: ins-arc 1.7s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--dd) * 1ms + 450ms) both; }
+
+    /* ---- total katalog ---- */
+    .ins-go.ins-totals > div { animation: ins-rise .9s var(--ins-ease) calc(var(--i) * 110ms) both; }
+
+    /* ---- komposisi bahan bakar: segmen tumbuh berurutan dari kiri ---- */
+    .ins-go .ins-mh { animation: ins-fade .8s ease-out both; }
+    .ins-go .ins-strip i { animation: ins-grow-x 1.1s var(--ins-ease) calc(150ms + var(--i) * 130ms) both; }
+    .ins-go .ins-ml li { animation: ins-rise .8s var(--ins-ease) calc(500ms + var(--i) * 80ms) both; }
+
+    /* ---- tiga panel ---- */
+    .ins-go .ins-panels h2 { animation: ins-rise .9s var(--ins-ease) var(--c) both; }
+    .ins-go .ins-cp { animation: ins-rise .9s var(--ins-ease) calc(var(--c) + 80ms) both; }
+    .ins-go .ins-nt { animation: ins-fade 1s ease-out calc(var(--c) + 900ms) both; }
+    .ins-go .ins-br > span:not(.ins-t),
+    .ins-go .ins-br > b { animation: ins-rise .7s var(--ins-ease) calc(var(--c) + 250ms + var(--i) * 70ms) both; }
+    .ins-go .ins-t i { animation: ins-grow-x 1.2s var(--ins-ease) calc(var(--c) + 300ms + var(--i) * 70ms) both; }
+
+    /* ---- grafik kolom: tumbuh dari garis dasar, batang terakhir berubah jadi ungu ---- */
+    .ins-go .ins-cols rect { animation: ins-grow-y 1s var(--ins-ease) calc(var(--c) + 300ms + var(--i) * 90ms) both; }
+    .ins-go .ins-cols rect.last {
+        animation:
+            ins-grow-y 1s var(--ins-ease) calc(var(--c) + 300ms + var(--i) * 90ms) both,
+            ins-last .9s ease calc(var(--c) + 1100ms + var(--i) * 90ms) both;
+    }
+    .ins-go .ins-cols .tx { animation: ins-fade .8s ease-out calc(var(--c) + 600ms + var(--i) * 90ms) both; }
+}

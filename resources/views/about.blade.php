@@ -15,7 +15,7 @@
     <ul>
         <li>Search and filter cars by brand, country, fuel, and power.</li>
         <li>Open a car to see its generations and every engine variant.</li>
-        <li>Pick up to four engines and compare them side by side.</li>
+        <li>Read the catalogue in Insights: models per brand, fuel mix, power by country and by decade.</li>
     </ul>
 
     <h2>Where the data comes from</h2>

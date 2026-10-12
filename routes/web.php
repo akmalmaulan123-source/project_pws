@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarController;
-use App\Http\Controllers\CompareController;
 use App\Http\Controllers\DevReloadController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\LiveController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +21,9 @@ Route::get('/cars/{carModel}', [CarController::class, 'show'])->name('cars.show'
 Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
 Route::get('/brands/{brand:slug}', [BrandController::class, 'show'])->name('brands.show');
 
-Route::get('/compare', CompareController::class)->name('compare');
+Route::get('/insights', InsightsController::class)->name('insights');
+// Alamat lama halaman Compare diarahkan ke Insights.
+Route::redirect('/compare', '/insights');
 
 Route::get('/search/suggest', SearchController::class)->middleware('throttle:120,1')->name('search.suggest');
 

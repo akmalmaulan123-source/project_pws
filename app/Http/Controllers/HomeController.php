@@ -25,7 +25,7 @@ class HomeController extends Controller
 
         // Mobil unggulan di hero: sebuah Porsche. Urutan pilihan = yang pertama punya foto;
         // kalau belum ada yang berfotokan, tetap pakai 911 GT3 RS (hero tampil tanpa foto).
-        $feature = Cache::remember('home.feature.v2', 15, function () {
+        $feature = Cache::remember('home.feature.v3', 15, function () {
             $models = CarModel::query()
                 ->with('brand')
                 ->whereHas('brand', fn ($q) => $q->where('name', 'Porsche'))
@@ -66,6 +66,7 @@ class HomeController extends Controller
 
             return [
                 'car_id' => $pick->id,
+                'url' => route('brands.show', ['brand' => $pick->brand, 'car' => $pick->id]),
                 'brand' => $pick->brand->name,
                 'model' => $pick->name,
                 'image' => $showImages ? ($cutout ?? $pick->image_url) : null,

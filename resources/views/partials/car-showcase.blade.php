@@ -14,7 +14,7 @@
             $top = $m->engines_max_top_speed_kmh;
         @endphp
         <li style="--i: {{ $loop->index }}">
-            <a class="nc" href="{{ route('cars.show', $m) }}">
+            <a class="nc" href="{{ route('brands.show', ['brand' => $m->brand, 'car' => $m->id]) }}">
                 <span class="nc-media">
                     @if ($m->year_start)
                         <span class="nc-year">{{ $m->year_start }}</span>

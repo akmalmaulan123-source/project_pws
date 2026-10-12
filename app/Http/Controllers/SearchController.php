@@ -60,7 +60,7 @@ class SearchController extends Controller
                 ])->filter()->implode(' · '),
                 'years' => $m->year_start ? $m->years : null,
                 'hp' => $m->engines_max_power_hp ? (int) $m->engines_max_power_hp : null,
-                'url' => route('cars.show', $m),
+                'url' => route('brands.show', ['brand' => $m->brand, 'car' => $m->id]),
                 'logo' => $m->brand->logo_src,
                 'code' => $m->brand->code,
                 'hue' => $m->brand->hue,

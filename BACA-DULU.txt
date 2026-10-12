@@ -1,0 +1,17 @@
+CARA PASANG (Insights menggantikan Compare)
+
+1. Ekstrak zip ini ke root project (folder project_pws), pilih "replace" untuk file yang sama.
+
+2. HAPUS 2 item lama ini secara manual:
+   - app/Http/Controllers/CompareController.php
+   - resources/views/compare/            (seluruh folder)
+
+3. Jalankan di terminal (WAJIB, karena project kamu punya cache route/config):
+   php artisan route:clear
+   php artisan config:clear
+   php artisan view:clear
+
+4. Buka http://localhost:8000/insights  (alamat lama /compare otomatis diarahkan ke sini)
+
+Opsional: di public/css/app.css ada gaya lama .cmp-* dan .tray-* (bagian Compare). Tidak lagi dipakai,
+aman dihapus kalau mau dibersihkan.

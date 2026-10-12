@@ -856,12 +856,28 @@ small {
 }
 
 .pg {
-    padding: 7px 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
     border: 1px solid var(--line);
     text-decoration: none;
     font-variant-numeric: tabular-nums;
-    min-width: 40px;
-    text-align: center;
+    line-height: 1;
+}
+
+/* Previous / Next: tombol panah seukuran nomor halaman */
+.pg-nav {
+    width: 40px;
+    padding: 0;
+}
+
+.pg-nav.is-off {
+    border-color: var(--line);
+    opacity: 0.35;
 }
 
 a.pg:hover {
@@ -5230,5 +5246,1297 @@ html:not(.live-quiet) .page-head::after {
     .page-head p,
     .page-head::after {
         animation: none !important;
+    }
+}
+
+/* ---------- Garage (halaman merek) ----------
+   Satu mobil tampil lengkap di panggung; model lain dari merek yang sama ada di deretan bawah.
+   Pintu garasi naik saat halaman pertama dimuat (hanya CSS, tanpa JS). Semua kelas berawalan gr-. */
+.gr {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #131314 0, #0f0f10 62%, #19191a 62%, #101011 100%);
+}
+
+.gr::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 38% 0;
+    background: repeating-linear-gradient(90deg, transparent 0 79px, #1b1b1c 79px 80px);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.gr-spot {
+    position: absolute;
+    left: 58%;
+    top: -10%;
+    width: 60%;
+    height: 90%;
+    background: radial-gradient(ellipse at 50% 0, rgba(255, 255, 255, 0.13), transparent 65%);
+    pointer-events: none;
+}
+
+.gr-bay {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+    min-height: 430px;
+}
+
+.gr-info {
+    position: relative;
+    z-index: 2;
+    padding: 30px 28px;
+    background: linear-gradient(90deg, rgba(13, 13, 14, 0.92) 70%, transparent);
+}
+
+.gr-make {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: var(--ash);
+    font-size: 0.88rem;
+}
+
+.gr-model {
+    margin: 14px 0 6px;
+    font: italic 700 clamp(2.4rem, 5vw, 3.6rem) / 0.95 var(--display);
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+.gr-yrs {
+    margin: 0 0 20px;
+    color: var(--ash);
+    font-size: 0.92rem;
+}
+
+.gr-yrs span::before {
+    content: "·";
+    margin: 0 6px;
+}
+
+.gr-stat {
+    margin-bottom: 13px;
+}
+
+.gr-stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--ash);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.gr-stat-top b {
+    color: var(--chalk);
+    font: 700 1.35rem var(--display);
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
+.gr-stat-top small {
+    margin-left: 3px;
+    color: var(--ash);
+    font-size: 0.75rem;
+}
+
+.gr-stat.is-best .gr-stat-top b {
+    color: var(--purple);
+}
+
+.gr-bar {
+    height: 4px;
+    margin-top: 3px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--kerb);
+}
+
+.gr-bar i {
+    display: block;
+    width: var(--w, 0%);
+    height: 100%;
+    background: var(--silver);
+    animation: gr-grow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
+}
+
+.gr-stat.is-best .gr-bar i {
+    background: var(--purple-bar);
+}
+
+@keyframes gr-grow {
+    from { width: 0; }
+}
+
+.gr-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+    margin: 16px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+
+.gr-specs > div {
+    min-width: 0;
+}
+
+.gr-specs dt {
+    color: var(--ash);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.gr-specs dd {
+    margin: 0;
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+}
+
+.gr-specs .idr {
+    display: block;
+    color: var(--ash);
+}
+
+.gr-eng {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    color: var(--ash);
+    font-size: 0.8rem;
+}
+
+/* Panggung */
+.gr-stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 20px 20px 50px;
+}
+
+.gr-floor {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    width: min(520px, 80%);
+    height: 46px;
+    transform: translateX(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03) 55%, transparent 70%);
+}
+
+.gr-logo {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 22px 22px rgba(0, 0, 0, 0.6));
+    animation: gr-drive 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Pemuatan pertama: logo masuk setelah pintu terbuka */
+html:not(.live-quiet) .gr-logo {
+    animation-delay: 0.9s;
+}
+
+.brand-logo--xl {
+    width: clamp(150px, 22vw, 260px);
+    height: clamp(150px, 22vw, 260px);
+    padding: clamp(18px, 3vw, 34px);
+    border-left-width: 9px;
+    border-radius: 6px;
+}
+
+.brand-logo--xl .logo-fallback {
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+}
+
+@keyframes gr-drive {
+    from { transform: translateX(70px); opacity: 0; }
+}
+
+/* Pintu garasi */
+.gr-door {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: grid;
+    place-items: end center;
+    background: repeating-linear-gradient(180deg, #2a2a2c 0 46px, #161617 46px 50px);
+    pointer-events: none;
+    animation: gr-door-up 1.3s cubic-bezier(0.65, 0, 0.25, 1) 0.25s both;
+}
+
+.gr-door span {
+    margin-bottom: 18px;
+    color: rgba(255, 255, 255, 0.33);
+    font: italic 700 1.2rem var(--display);
+    letter-spacing: 0.3em;
+}
+
+@keyframes gr-door-up {
+    to { transform: translateY(-101%); visibility: hidden; }
+}
+
+/* Pindah mobil (tanpa memuat ulang halaman): pintu tidak diulang */
+html.live-quiet .gr-door {
+    display: none;
+}
+
+/* Deretan model lain */
+.gr-strip {
+    position: relative;
+    z-index: 2;
+    padding: 14px 20px 18px;
+    border-top: 1px solid var(--line);
+    background: rgba(11, 11, 12, 0.94);
+}
+
+.gr-strip h2 {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 10px;
+    color: var(--ash);
+    font: 700 0.8rem var(--body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.gr-strip h2 em {
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.gr-rail {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    padding-bottom: 8px;
+    overflow-x: auto;
+}
+
+.gr-card {
+    position: relative;
+    flex: 0 0 176px;
+    padding: 10px 12px 11px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--tarmac);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.25s, background-color 0.25s, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gr-card:hover {
+    transform: translateY(-2px);
+}
+
+.gr-card:hover {
+    border-color: #555;
+}
+
+.gr-card.is-on {
+    border-color: var(--chalk);
+    background: var(--kerb);
+}
+
+.gr-card::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: -1px;
+    height: 2px;
+    background: var(--chalk);
+    transform: scaleX(0);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gr-card.is-on::before {
+    transform: scaleX(1);
+}
+
+.gr-card-n {
+    display: block;
+    min-height: 2.2em;
+    font: 700 1.1rem / 1.1 var(--display);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.gr-card-m {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    color: var(--ash);
+    font-size: 0.72rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gr-door {
+        display: none;
+    }
+}
+
+/* ---------- Garage layar penuh (tanpa navbar dan footer) ----------
+   Tiga kolom: info + statistik | logo brand | generasi dan mesin. Deretan model ada di bawah. */
+html.gr-html,
+.gr-body {
+    margin: 0;
+    padding: 0;
+    background: var(--asphalt);
+}
+
+.gr-full {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);   /* kunci lebar kolom: deretan model yang panjang tidak boleh melebarkan halaman */
+    grid-template-rows: minmax(0, 1fr) auto;
+    height: 100vh;
+    height: 100dvh;
+}
+
+/* Garis aktivitas tipis di atas deretan model bila server lambat menjawab */
+.gr-strip::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--chalk), transparent);
+    opacity: 0;
+    transform: translateX(-100%);
+    pointer-events: none;
+}
+
+.gr-busy .gr-strip::after {
+    opacity: 1;
+    animation: gr-busy 1s linear infinite;
+}
+
+@keyframes gr-busy {
+    to { transform: translateX(100%); }
+}
+
+/* Setelah pemuatan pertama, batang statistik bergeser dari nilai lama ke nilai baru */
+html.live-quiet .gr-bar i {
+    animation: none;
+    transition: width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s;
+}
+
+.gr-full .gr-bay {
+    min-height: 0;
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr) minmax(300px, 440px);
+}
+
+.gr-full .gr-info,
+.gr-full .gr-side {
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #444 transparent;
+}
+
+.gr-full .gr-info {
+    padding: 62px 24px 24px;
+}
+
+.gr-full .gr-model {
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.gr-full .gr-yrs {
+    margin-bottom: 14px;
+}
+
+.gr-full .gr-stat {
+    margin-bottom: 9px;
+}
+
+.gr-full .gr-specs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px 12px;
+    margin-top: 12px;
+    padding-top: 12px;
+}
+
+.gr-full .gr-specs dd {
+    font-size: 0.84rem;
+}
+
+.gr-side {
+    position: relative;
+    z-index: 2;
+    padding: 62px 22px 24px 18px;
+    background: linear-gradient(270deg, rgba(13, 13, 14, 0.92) 75%, transparent);
+}
+
+.gr-side .gr-eng {
+    margin: 0 0 12px;
+    padding: 0;
+    border: 0;
+}
+
+.gr-full .gr-stage {
+    padding: 20px 10px 56px;
+}
+
+.gr-full .gr-strip {
+    min-width: 0;
+}
+
+.gr-rail {
+    cursor: grab;
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+}
+
+.gr-rail.is-drag {
+    cursor: grabbing;
+    user-select: none;
+}
+
+.gr-rail.is-drag .gr-card {
+    pointer-events: none;
+}
+
+.brand-logo--xl {
+    width: clamp(120px, min(20vw, 36vh), 260px);
+    height: clamp(120px, min(20vw, 36vh), 260px);
+}
+
+.gr-back {
+    position: absolute;
+    left: 16px;
+    top: calc(14px + env(safe-area-inset-top, 0px));
+    z-index: 6;
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    background: rgba(13, 13, 14, 0.8);
+    color: var(--chalk);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.gr-back:hover {
+    border-color: var(--silver);
+}
+
+.gr-h {
+    margin: 0 0 10px;
+    color: var(--ash);
+    font: 700 0.8rem var(--body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.gr-gen {
+    margin-bottom: 8px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--tarmac);
+}
+
+.gr-gen summary {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 14px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.gr-gen summary::-webkit-details-marker {
+    display: none;
+}
+
+.gr-gen-n {
+    font: 700 1.05rem var(--display);
+    text-transform: uppercase;
+}
+
+.gr-gen-y,
+.gr-gen-c {
+    color: var(--ash);
+    font-size: 0.8rem;
+}
+
+.gr-gen-c {
+    margin-left: auto;
+}
+
+.gr-gen summary {
+    transition: background 0.2s;
+    border-radius: 10px;
+}
+
+.gr-gen summary:hover {
+    background: var(--kerb);
+}
+
+/* Panah kecil: berputar saat generasi dibuka */
+.gr-gen summary::after {
+    content: "";
+    flex: none;
+    width: 7px;
+    height: 7px;
+    margin: 0 4px 3px 2px;
+    border-right: 2px solid var(--ash);
+    border-bottom: 2px solid var(--ash);
+    transform: rotate(45deg);
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gr-gen.is-open summary::after {
+    transform: rotate(225deg) translate(-2px, -2px);
+}
+
+.gr-engs {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 14px 6px;
+    list-style: none;
+}
+
+.gr-engs li {
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+}
+
+.gr-engs b {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.gr-eng-m {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+    margin-top: 3px;
+    font: 600 0.95rem var(--display);
+    letter-spacing: 0.02em;
+}
+
+.gr-eng-s {
+    display: block;
+    margin-top: 2px;
+    color: var(--ash);
+    font-size: 0.78rem;
+}
+
+.gr-empty {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.gr-empty p {
+    margin: 0;
+    color: var(--ash);
+}
+
+/* Layar sempit: halaman menggulir biasa. Urutan: logo, deretan model, info, generasi dan mesin */
+@media (max-width: 1100px) {
+    .gr-full {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: 100dvh;
+    }
+
+    .gr-full .gr-bay {
+        display: contents;
+    }
+
+    .gr-full .gr-stage {
+        order: 1;
+        padding: 70px 10px 56px;
+    }
+
+    .gr-full .gr-strip {
+        order: 2;
+    }
+
+    .gr-full .gr-info {
+        order: 3;
+        overflow: visible;
+        padding: 20px 18px 8px;
+        background: none;
+    }
+
+    .gr-full .gr-side {
+        order: 4;
+        overflow: visible;
+        padding: 8px 18px 28px;
+        background: none;
+    }
+
+    .gr-full .gr-specs {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .gr-spot {
+        left: 10%;
+        width: 90%;
+    }
+
+    .gr-card {
+        flex-basis: 148px;
+    }
+}
+
+/* ---------- Halaman Cars: showroom ----------
+   Panel sorotan (speedometer tenaga) + rak mobil + strip brand. Semua kelas berawalan sr- (kecuali .sr-only milik situs). */
+.brand-logo--xs {
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+    border-left-width: 3px;
+}
+
+.sr-head {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px 20px;
+    flex-wrap: wrap;
+}
+
+.sr-head h1 {
+    margin: 0;
+    font: italic 700 clamp(2.6rem, 6vw, 4.2rem) / 0.9 var(--display);
+    text-transform: uppercase;
+}
+
+.sr-head h1 span {
+    color: transparent;
+    -webkit-text-stroke: 1px #666;
+}
+
+.sr-head .sr-cnt {
+    margin: 0 0 6px;
+    color: var(--ash);
+    font-size: 0.9rem;
+}
+
+/* Form: menetralkan gaya .filters lama (kotak grid) */
+.filters.sr-form {
+    display: block;
+    margin: 0 0 18px;
+    padding: 0;
+    border: 0;
+    background: none;
+}
+
+.sr-search {
+    position: relative;
+    max-width: 420px;
+    margin-bottom: 12px;
+}
+
+.sr-search input {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    background: var(--tarmac);
+    color: var(--chalk);
+    font: inherit;
+}
+
+.sr-search input:focus {
+    outline: none;
+    border-color: var(--silver);
+}
+
+.sr-search::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--ash);
+    border-radius: 50%;
+}
+
+.sr-search::after {
+    content: "";
+    position: absolute;
+    left: 28px;
+    top: 26px;
+    width: 6px;
+    height: 2px;
+    background: var(--ash);
+    transform: rotate(45deg);
+}
+
+/* Strip brand */
+.sr-brands {
+    display: flex;
+    gap: 8px;
+    padding: 2px 0 10px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #444 transparent;
+    -webkit-mask-image: linear-gradient(90deg, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, #000 94%, transparent);
+}
+
+.sr-bb {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    background: var(--tarmac);
+    color: var(--chalk);
+    font: inherit;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.sr-bb:has(.brand-logo) {
+    padding-left: 6px;
+}
+
+.sr-bb:hover {
+    border-color: #777;
+}
+
+.sr-bb.is-on {
+    border-color: var(--chalk);
+    background: var(--chalk);
+    color: #111;
+}
+
+.sr-bb em {
+    color: var(--ash);
+    font-size: 0.74rem;
+    font-style: normal;
+}
+
+.sr-bb.is-on em {
+    color: #555;
+}
+
+/* Bar kontrol */
+.sr-ctl {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 26px;
+    padding: 12px 16px;
+    isolation: isolate;
+}
+
+/* Latar bersudut miring dibuat lewat ::before supaya menu dropdown tidak ikut terpotong */
+.sr-ctl::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 1px solid var(--line);
+    background: var(--tarmac);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+.sr-grp {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sr-cl {
+    color: var(--ash);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.sr-seg {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.sr-seg button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--asphalt);
+    color: var(--chalk);
+    font: inherit;
+    font-size: 0.84rem;
+    cursor: pointer;
+}
+
+.sr-seg button:hover {
+    border-color: #777;
+}
+
+.sr-seg button.is-on {
+    border-color: var(--silver);
+    background: var(--kerb);
+}
+
+.sr-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c, var(--ash));
+}
+
+.sr-seg button:not([data-g]) .sr-dot {
+    display: none;
+}
+
+[data-g="Gasoline"] { --c: var(--ash); }
+[data-g="Diesel"] { --c: var(--tyre-medium); }
+[data-g="Electric"] { --c: var(--tyre-wet); }
+[data-g="Hybrid"] { --c: var(--tyre-inter); }
+
+.sr-pw .sr-range {
+    width: 190px;
+    accent-color: #fff;
+}
+
+.sr-pw b {
+    min-width: 104px;
+    font: 700 1.2rem var(--display);
+}
+
+/* Dropdown Country / Sort: komponen yang sama dengan halaman Brands (.sort-menu.dd), disejajarkan dengan label di bar kontrol */
+.sr-ctl .field {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.sr-ctl .field > .field-label {
+    color: var(--ash);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.sr-ctl .dd {
+    width: auto;
+    min-width: 160px;
+}
+
+.sr-ctl .dd summary {
+    min-height: 36px;
+    padding: 7px 12px;
+    font-size: 0.88rem;
+}
+
+.sr-ctl .dd .sort-list {
+    right: auto;
+    min-width: max(100%, 210px);
+}
+
+.sr-act {
+    margin-left: auto;
+}
+
+.js .sr-apply {
+    display: none;
+}
+
+.sr-line {
+    margin: 18px 0 12px;
+    color: var(--ash);
+    font-size: 0.9rem;
+}
+
+/* Tata letak */
+.sr-lay {
+    display: grid;
+    grid-template-columns: minmax(340px, 460px) minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.sr-main {
+    min-width: 0;
+}
+
+/* Panel sorotan */
+.sr-spot {
+    position: sticky;
+    top: calc(var(--top-h, 72px) + 14px);
+    overflow: hidden;
+    padding: 22px 22px 20px;
+    border: 1px solid var(--line);
+    background:
+        linear-gradient(115deg, transparent 62%, rgba(255, 255, 255, 0.035) 62% 64%, transparent 64% 70%, rgba(255, 255, 255, 0.025) 70% 71%, transparent 71%),
+        radial-gradient(ellipse at 70% -10%, #34343a, transparent 60%),
+        repeating-linear-gradient(45deg, #131314 0 2px, #0f0f10 2px 4px);
+    clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 26px 100%, 0 calc(100% - 26px));
+}
+
+.sr-spot::before,
+.sr-spot::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--silver);
+    opacity: 0.7;
+}
+
+.sr-spot::before {
+    left: 8px;
+    top: 8px;
+    border-right: 0;
+    border-bottom: 0;
+}
+
+.sr-spot::after {
+    right: 8px;
+    bottom: 8px;
+    border-left: 0;
+    border-top: 0;
+}
+
+.sr-sp1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--ash);
+    font-size: 0.86rem;
+}
+
+.sr-rank {
+    margin-left: auto;
+    color: var(--silver);
+    font: italic 600 0.95rem var(--display);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.sr-sn {
+    min-height: 2em;
+    margin: 14px 0 2px;
+    font: italic 700 clamp(2.2rem, 4.4vw, 3.4rem) / 0.95 var(--display);
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+.sr-sn.is-pop {
+    animation: sr-pop 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes sr-pop {
+    from { opacity: 0; transform: translateX(-18px); }
+}
+
+.sr-sy {
+    margin: 0 0 6px;
+    color: var(--ash);
+    font-size: 0.9rem;
+}
+
+.sr-gw {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 14px;
+    align-items: center;
+}
+
+.sr-gauge {
+    display: block;
+    width: 100%;
+}
+
+.sr-gt,
+.sr-gv {
+    fill: none;
+    stroke-width: 11;
+}
+
+.sr-gt {
+    stroke: #26262a;
+}
+
+.sr-gv {
+    stroke: url(#sr-gg);
+    transition: stroke-dasharray 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sr-tk {
+    stroke: #555;
+    stroke-width: 1.5;
+}
+
+.sr-tk.m {
+    stroke: #999;
+    stroke-width: 2.5;
+}
+
+.sr-gn {
+    fill: var(--chalk);
+    font: italic 700 46px var(--display);
+    text-anchor: middle;
+}
+
+.sr-gu {
+    fill: var(--ash);
+    font: 600 12px var(--body);
+    letter-spacing: 0.2em;
+    text-anchor: middle;
+}
+
+.sr-gl {
+    fill: #777;
+    font: 10px var(--body);
+    text-anchor: middle;
+}
+
+.sr-st {
+    margin-bottom: 11px;
+}
+
+.sr-stt {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--ash);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.sr-stt b {
+    color: var(--chalk);
+    font: 700 1.5rem var(--display);
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
+.sr-stt small {
+    margin-left: 3px;
+    color: var(--ash);
+    font-size: 0.75rem;
+}
+
+.sr-br {
+    height: 4px;
+    margin-top: 3px;
+    background: #26262a;
+    transform: skewX(-20deg);
+}
+
+.sr-br i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--silver);
+    transition: width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sr-fu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 22px;
+    margin: 4px 0 14px;
+}
+
+.sr-fl {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ash);
+    font-size: 0.78rem;
+}
+
+.sr-fl::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c, var(--ash));
+}
+
+.sr-go {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px;
+    background: var(--chalk);
+    color: #111;
+    font: 700 1.1rem var(--display);
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 100%, 14px 100%);
+    transition: background-color 0.2s, letter-spacing 0.2s;
+}
+
+.sr-go:hover {
+    background: var(--purple);
+    letter-spacing: 0.18em;
+}
+
+/* Rak kartu */
+.sr-rack {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.sr-tile {
+    display: block;
+    padding: 1px;
+    background: var(--line);
+    color: inherit;
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+    transition: background-color 0.15s, transform 0.2s;
+    animation: sr-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 18ms);
+}
+
+html.live-quiet .sr-tile {
+    animation-delay: 0ms;
+}
+
+@keyframes sr-in {
+    from { opacity: 0; transform: translateY(8px); }
+}
+
+.sr-tin {
+    display: block;
+    height: 100%;
+    padding: 10px 12px 11px;
+    background: var(--tarmac);
+    clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 0 100%);
+}
+
+.sr-tile:hover {
+    transform: translateY(-2px);
+}
+
+.sr-tile.is-on {
+    background: var(--chalk);
+}
+
+.sr-tile.is-on .sr-tin {
+    background: #1d1d1f;
+}
+
+.sr-t1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ash);
+    font-size: 0.74rem;
+}
+
+.sr-t1 .brand-logo {
+    width: 24px;
+    height: 24px;
+    padding: 3px;
+}
+
+.sr-tn {
+    display: block;
+    min-height: 2.2em;
+    margin: 8px 0 7px;
+    font: 700 1.1rem / 1.1 var(--display);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.sr-th {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--ash);
+    font-size: 0.72rem;
+}
+
+.sr-th b {
+    color: var(--chalk);
+    font: italic 700 1.35rem var(--display);
+}
+
+.sr-th b small {
+    margin-left: 2px;
+    color: var(--ash);
+    font: 400 0.7rem var(--body);
+}
+
+.sr-pb {
+    display: block;
+    height: 3px;
+    margin-top: 5px;
+    background: #26262a;
+}
+
+.sr-pb i {
+    display: block;
+    height: 100%;
+    background: #8a8a8f;
+}
+
+.sr-pb i.hi {
+    background: var(--purple-bar);
+}
+
+.sr-main .pager {
+    justify-content: center;
+}
+
+@media (max-width: 1000px) {
+    .sr-lay {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sr-spot {
+        position: static;
+    }
+
+    .sr-act {
+        margin-left: 0;
+    }
+
+    .sr-pw .sr-range {
+        width: 140px;
+    }
+
+    .sr-rack {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .sr-gw {
+        grid-template-columns: 150px 1fr;
     }
 }

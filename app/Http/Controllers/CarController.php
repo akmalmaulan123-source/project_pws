@@ -15,10 +15,14 @@ class CarController extends Controller
         'newest' => 'Newest first',
         'oldest' => 'Oldest first',
         'power' => 'Most powerful',
+        'fast' => 'Quickest 0 to 100',
+        'top' => 'Highest top speed',
         'price_asc' => 'Price, low to high',
         'price_desc' => 'Price, high to low',
         'variants' => 'Most engines',
     ];
+
+    private const PER_PAGE = 48;
 
     public function index(Request $request)
     {
@@ -40,12 +44,16 @@ class CarController extends Controller
             ->withCount('engines')
             ->withMax('engines', 'power_hp')
             ->withMin('engines', 'price_usd')
+            ->withMin('engines', 'zero_to_100_s')
+            ->withMax('engines', 'top_speed_kmh')
             ->filter($filters);
 
         match ($sort) {
             'newest' => $query->orderByRaw('car_models.year_start IS NULL')->orderByDesc('car_models.year_start'),
             'oldest' => $query->orderByRaw('car_models.year_start IS NULL')->orderBy('car_models.year_start'),
             'power' => $query->orderByRaw('engines_max_power_hp IS NULL')->orderByDesc('engines_max_power_hp'),
+            'fast' => $query->orderByRaw('engines_min_zero_to_100_s IS NULL')->orderBy('engines_min_zero_to_100_s'),
+            'top' => $query->orderByRaw('engines_max_top_speed_kmh IS NULL')->orderByDesc('engines_max_top_speed_kmh'),
             'price_asc' => $query->orderByRaw('engines_min_price_usd IS NULL')->orderBy('engines_min_price_usd'),
             'price_desc' => $query->orderByRaw('engines_min_price_usd IS NULL')->orderByDesc('engines_min_price_usd'),
             'variants' => $query->orderByDesc('engines_count'),
@@ -53,18 +61,64 @@ class CarController extends Controller
         };
         $query->orderBy('brands.name')->orderBy('car_models.name');
 
-        $cars = $query->paginate(30)->withQueryString();
+        $cars = $query->paginate(self::PER_PAGE)->withQueryString();
+
+        // Bahan bakar tiap mobil di halaman ini (satu query), dikelompokkan jadi Gasoline / Diesel / Electric / Hybrid.
+        $fuels = Engine::query()
+            ->join('generations', 'generations.id', '=', 'engines.generation_id')
+            ->whereIn('generations.car_model_id', $cars->pluck('id'))
+            ->whereNotNull('engines.fuel_type')
+            ->distinct()
+            ->get(['generations.car_model_id as mid', 'engines.fuel_type'])
+            ->groupBy('mid')
+            ->map(fn ($g) => $g->pluck('fuel_type')->map(fn ($f) => self::fuelGroup($f))->filter()->unique()->values()->all());
+
+        // Peringkat tenaga dari seluruh katalog (daftar tenaga per model disimpan sebentar supaya tidak dihitung tiap kunjungan).
+        $powers = Cache::remember('cars.powers', 600, fn () => Engine::query()
+            ->join('generations', 'generations.id', '=', 'engines.generation_id')
+            ->groupBy('generations.car_model_id')
+            ->selectRaw('MAX(engines.power_hp) AS p')
+            ->pluck('p')->map(fn ($v) => (float) $v)->filter()->values()->all());
+
+        $cars->getCollection()->each(function (CarModel $m) use ($fuels, $powers) {
+            $hp = $m->engines_max_power_hp ? (float) $m->engines_max_power_hp : null;
+            $m->setAttribute('sr', [
+                'hp' => $hp ? (int) round($hp) : null,
+                'zero' => $m->engines_min_zero_to_100_s ? (float) $m->engines_min_zero_to_100_s : null,
+                'top' => $m->engines_max_top_speed_kmh ? (int) $m->engines_max_top_speed_kmh : null,
+                'fuels' => $fuels[$m->id] ?? [],
+                'rank' => $hp ? 1 + count(array_filter($powers, fn ($p) => $p > $hp)) : null,
+                'url' => route('brands.show', ['brand' => $m->brand, 'car' => $m->id]),
+            ]);
+        });
 
         return view('cars.index', [
             'cars' => $cars,
             'filters' => $filters,
             'sort' => $sort,
-            'sorts' => self::SORTS,
-           'brandOptions' => Brand::orderBy('name')->get(['id', 'name']),
-            'countryOptions' => Cache::remember('opt.countries', 3600, fn() => Brand::whereNotNull('country')->distinct()->orderBy('country')->pluck('country')->all()),
-            'fuelOptions' => Cache::remember('opt.fuels', 3600, fn() => Engine::whereNotNull('fuel_type')->distinct()->orderBy('fuel_type')->pluck('fuel_type')->all()),
+            'sorts' => collect(self::SORTS)
+                ->reject(fn ($label, $key) => str_starts_with($key, 'price') && ! Cache::remember('opt.has_prices', 600, fn () => Engine::whereNotNull('price_usd')->exists()))
+                ->all(),
+            'brandStrip' => Brand::withCount('carModels')->orderBy('name')->get(),
+            'powerMax' => Cache::remember('opt.power_max', 600, fn () => (int) Engine::max('power_hp')),
+            'totalModels' => Cache::remember('opt.total_models', 600, fn () => CarModel::count()),
+            'countryOptions' => Cache::remember('opt.countries', 3600, fn () => Brand::whereNotNull('country')->distinct()->orderBy('country')->pluck('country')->all()),
             'activeCount' => collect($filters)->filter()->count(),
         ]);
+    }
+
+    private static function fuelGroup(?string $fuel): ?string
+    {
+        $f = strtolower((string) $fuel);
+
+        return match (true) {
+            $f === '' => null,
+            str_contains($f, 'hybrid') => 'Hybrid',
+            str_contains($f, 'electric') => 'Electric',
+            str_contains($f, 'diesel') => 'Diesel',
+            str_contains($f, 'gasoline') => 'Gasoline',
+            default => 'Other',
+        };
     }
 
     public function show(CarModel $carModel)

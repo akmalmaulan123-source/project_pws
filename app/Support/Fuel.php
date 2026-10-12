@@ -18,4 +18,19 @@ class Fuel
             default => 'fuel-alt',
         };
     }
+
+    /** Kelompok bahan bakar untuk statistik: Gasoline, Diesel, Hybrid, Electric, atau Other (null bila kosong). */
+    public static function group(?string $fuel): ?string
+    {
+        $f = strtolower((string) $fuel);
+
+        return match (true) {
+            $f === '' => null,
+            str_contains($f, 'hybrid') => 'Hybrid',
+            str_contains($f, 'electric') => 'Electric',
+            str_contains($f, 'diesel') => 'Diesel',
+            str_contains($f, 'gasoline') => 'Gasoline',
+            default => 'Other',
+        };
+    }
 }

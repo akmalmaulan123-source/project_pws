@@ -62,7 +62,7 @@
                         @endforeach
                     </ul>
                 @endif
-                <a class="show-cta" href="{{ route('cars.show', $feature['car_id']) }}"><span>See full specs</span></a>
+                <a class="show-cta" href="{{ $feature['url'] }}"><span>See full specs</span></a>
             </div>
 
             {{-- HUD balapan: gigi, speedometer digital, LED rpm, bar tenaga (animasinya di hero.js) --}}

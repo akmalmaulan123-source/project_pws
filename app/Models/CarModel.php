@@ -162,7 +162,10 @@ class CarModel extends Model
             })
             ->when($f['brand_id'] ?? null, fn ($q, $v) => $q->where('car_models.brand_id', $v))
             ->when($f['country'] ?? null, fn ($q, $v) => $q->whereHas('brand', fn ($b) => $b->where('country', $v)))
-            ->when($f['fuel_type'] ?? null, fn ($q, $v) => $q->whereHas('engines', fn ($e) => $e->where('engines.fuel_type', $v)))
+            // "Hybrid" = semua jenis hybrid (Hybrid Gasoline, Mild Hybrid, Plug-in Hybrid, ...); nilai lain dicocokkan persis.
+            ->when($f['fuel_type'] ?? null, fn ($q, $v) => $q->whereHas('engines', fn ($e) => $v === 'Hybrid'
+                ? $e->where('engines.fuel_type', 'like', '%Hybrid%')
+                : $e->where('engines.fuel_type', $v)))
             ->when($f['min_power'] ?? null, fn ($q, $v) => $q->whereHas('engines', fn ($e) => $e->where('engines.power_hp', '>=', $v)));
     }
 

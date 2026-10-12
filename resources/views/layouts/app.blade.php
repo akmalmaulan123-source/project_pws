@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@hasSection('title'){{ config('app.name') }} - @yield('title')@else{{ config('app.name') }}@endif</title>
-    <meta name="description" content="@yield('description', 'Specs for thousands of car models and engines from brands around the world. Search, filter and compare.')">
+    <meta name="description" content="@yield('description', 'Specs for thousands of car models and engines from brands around the world. Search, filter and explore the numbers.')">
     <meta name="theme-color" content="#0d0d0e">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
@@ -18,6 +18,7 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=Orbitron:wght@900&family=Saira+Condensed:ital,wght@0,500;0,700;1,600;1,700&display=swap"></noscript>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/live.css') }}?v={{ filemtime(public_path('css/live.css')) }}">
+    @stack('styles')
     <script>document.documentElement.classList.add('js');</script>
 <script type="speculationrules">
 {
@@ -48,7 +49,7 @@
         <nav class="nav nav--segment" aria-label="Main">
             <a href="{{ route('cars.index') }}" @class(['is-on' => request()->routeIs('cars.*')])>Cars</a>
             <a href="{{ route('brands.index') }}" @class(['is-on' => request()->routeIs('brands.*')])>Brands</a>
-            <a href="{{ route('compare') }}" @class(['is-on' => request()->routeIs('compare')])>Compare</a>
+            <a href="{{ route('insights') }}" @class(['is-on' => request()->routeIs('insights')])>Insights</a>
             <a href="{{ route('about') }}" @class(['is-on' => request()->routeIs('about')])>About</a>
         </nav>
         <form class="top-search search--line" action="{{ route('cars.index') }}" method="get" role="search">
@@ -74,12 +75,12 @@
         <nav class="foot-links rv" style="--i: 1" aria-label="Footer">
             <a href="{{ route('cars.index') }}" @class(['is-on' => request()->routeIs('cars.*')])><span>Cars</span></a>
             <a href="{{ route('brands.index') }}" @class(['is-on' => request()->routeIs('brands.*')])><span>Brands</span></a>
-            <a href="{{ route('compare') }}" @class(['is-on' => request()->routeIs('compare')])><span>Compare</span></a>
+            <a href="{{ route('insights') }}" @class(['is-on' => request()->routeIs('insights')])><span>Insights</span></a>
             <a href="{{ route('about') }}" @class(['is-on' => request()->routeIs('about')])><span>About</span></a>
         </nav>
 
         <div class="foot-notes rv" style="--i: 2">
-            <p class="foot-lead">Specs for thousands of car models and engines from brands around the world, laid out clearly in one place. Search, filter and compare, race-timing style.</p>
+            <p class="foot-lead">Specs for thousands of car models and engines from brands around the world, laid out clearly in one place. Search, filter and explore the numbers, race-timing style.</p>
             <p>In motorsport, <em>parc ferm&eacute;</em> is the closed area where cars are held and inspected after a session. This site borrows the name for a simple idea: one place to look over every car, with its numbers on show.</p>
         </div>
 
@@ -90,13 +91,12 @@
     </div>
 </footer>
 
-<aside id="compare-tray" class="tray" data-url="{{ route('compare') }}" data-max="4" hidden aria-label="Engines selected for comparison"></aside>
-
 <script src="{{ asset('js/app.js') }}?v={{ filemtime(public_path('js/app.js')) }}" defer></script>
 <script src="{{ asset('js/search.js') }}?v={{ filemtime(public_path('js/search.js')) }}" defer></script>
 <script src="{{ asset('js/motion.js') }}?v={{ filemtime(public_path('js/motion.js')) }}" defer></script>
 <script src="{{ asset('js/fast.js') }}?v={{ filemtime(public_path('js/fast.js')) }}" defer></script>
 <script src="{{ asset('js/live.js') }}?v={{ filemtime(public_path('js/live.js')) }}" defer></script>
+@stack('scripts')
 <script>
 /* Footer: animasi masuk dimulai saat footer terlihat (tanpa animasi bila reduce motion) */
 (function () {

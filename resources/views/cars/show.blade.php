@@ -132,7 +132,6 @@
     <section aria-labelledby="gens-title">
         <div class="block-head">
             <h2 id="gens-title">Generations and engines</h2>
-            <p class="muted">Tick engines to compare them. Your selection stays as you browse.</p>
         </div>
 
         @forelse ($carModel->generations as $gen)
@@ -150,7 +149,6 @@
                     <table class="spec">
                         <thead>
                             <tr>
-                                <th scope="col"><span class="sr-only">Compare</span></th>
                                 <th scope="col">Engine</th>
                                 <th scope="col">Fuel</th>
                                 <th scope="col" class="num">Power</th>
@@ -167,14 +165,8 @@
                             @foreach ($gen->engines as $e)
                                 @php $isTopPower = $count > 1 && $top > 0 && (float) $e->power_hp === $top; @endphp
                                 <tr @if ($isTopPower) class="is-top-row" @endif>
-                                    <td class="pick">
-                                        <input type="checkbox" class="js-compare" id="cmp-{{ $e->id }}"
-                                               data-id="{{ $e->id }}"
-                                               data-name="{{ $carModel->full_name }}, {{ $e->label }}"
-                                               aria-label="Compare {{ $e->label }}">
-                                    </td>
                                     <th scope="row" class="eng">
-                                        <label for="cmp-{{ $e->id }}">{{ $e->label }}</label>
+                                        {{ $e->label }}
                                         @if ($isTopPower)<span class="sr-only">Most powerful in this generation</span>@endif
                                     </th>
                                     <td>@include('partials.fuel-tag', ['fuel' => $e->fuel_type])</td>

@@ -2,7 +2,7 @@
 <ul class="car-cards">
     @foreach ($cars as $m)
         <li>
-            <a class="car-card" href="{{ route('cars.show', $m) }}">
+            <a class="car-card" href="{{ route('brands.show', ['brand' => $m->brand, 'car' => $m->id]) }}">
                 <span class="car-photo">
                     @php $card = $m->card_image; @endphp
                     @if ($card)
