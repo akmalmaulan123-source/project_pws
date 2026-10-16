@@ -1,58 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Parc Fermé
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Katalog spesifikasi mobil bertema layar timing balap. Cari dan saring ribuan model mobil, lihat mesin dan generasinya, jelajahi per merek, dan baca ringkasan statistik di halaman Insights. Dibuat dengan Laravel.
 
-## About Laravel
+> *Parc fermé* adalah area tertutup tempat mobil balap ditahan dan diperiksa setelah sesi. Situs ini meminjam namanya: satu tempat untuk memeriksa setiap mobil beserta angka-angkanya.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fitur
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Beranda** dengan mobil unggulan, statistik katalog, dan model terbaru
+- **Cars**: pencarian, filter (merek, negara, bahan bakar, tenaga minimum), 9 pilihan urutan, dan pagination
+- **Detail mobil**: generasi, mesin, dan spesifikasi terkuat, plus model lain dari merek yang sama
+- **Brands** dan halaman *garage* per merek
+- **Insights**: ringkasan statistik katalog
+- Saran pencarian saat mengetik (autocomplete) dan pembaruan data otomatis (*live*)
+- Halaman error bertema (404, 419, 429, 500, 503)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Teknologi
 
-## Learning Laravel
+PHP 8.3+, Laravel 13, MySQL, Blade, CSS dan JavaScript biasa (tanpa framework frontend).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Menjalankan di komputer sendiri
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+cp .env.example .env          # Windows: copy .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+1. Nyalakan MySQL (misalnya lewat XAMPP) dan buat database kosong bernama `parc_ferme`.
+2. Cek bagian `DB_*` di `.env`, sesuaikan username dan password bila perlu.
+3. Siapkan tabel dan isi data:
 
-## Contributing
+```bash
+php artisan migrate
+php artisan cars:import
+php artisan cars:import-prices      # opsional: harga dari database/data/prices.csv
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Buka `http://127.0.0.1:8000`.
 
-## Code of Conduct
+> **Catatan Windows:** `php artisan serve` hanya memproses satu request sekali. Kalau MySQL macet, semua halaman ikut menggantung. Itu sebabnya `.env.example` memakai `SESSION_DRIVER=file` dan `CACHE_STORE=file`, supaya sesi dan cache tidak bergantung pada database.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Perintah artisan
 
-## Security Vulnerabilities
+| Perintah | Fungsi |
+| --- | --- |
+| `cars:import [--fresh]` | Impor katalog dari CSV di `database/data` (`--fresh` mengosongkan tabel dulu) |
+| `cars:import-prices` | Isi harga mesin (USD) dari CSV |
+| `brands:fetch-logos` | Ambil logo merek dari Wikimedia |
+| `cars:fetch-images` | Ambil foto mobil dari Wikipedia |
+| `cars:link-images` | Hubungkan foto yang sudah diunduh ke model |
+| `cars:cutout` | Buat PNG transparan untuk mobil di hero |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Perintah yang mengambil data dari Wikipedia/Wikimedia mengirim kontak di User-Agent. Isi `SCRAPER_CONTACT` di `.env` dengan email kamu.
 
-## License
+## Pengaturan penting di `.env`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Variabel | Arti |
+| --- | --- |
+| `SHOW_CAR_IMAGES` | `false` menampilkan logo merek saja, `true` menampilkan foto mobil |
+| `SCRAPER_CONTACT` | Email kontak untuk User-Agent saat mengambil data |
+| `USD_TO_IDR` | Kurs tetap untuk estimasi harga |
+| `APP_DEBUG` | Matikan (`false`) sebelum situs dipublikasikan |
+
+## Tes
+
+```bash
+php artisan test
+```
+
+## Struktur singkat
+
+```
+app/Http/Controllers   Home, Car, Brand, Insights, Search, Live
+app/Models             Brand, CarModel, Generation, Engine
+app/Support            CarDataImporter, Fuel
+app/Console/Commands   Perintah impor dan pengambilan gambar
+resources/views        Blade: layouts, partials, errors, halaman
+public/css, public/js  Gaya dan skrip (app.css, polish.css, live.css, ...)
+database/data          Sumber data CSV (lihat LICENSE-DATA.txt)
+```
+
+## Pengembang
+
+Dwi Akmal Maulana (NIM 282102719)
+
+Data katalog berasal dari dataset pihak ketiga, lisensinya ada di `database/data/LICENSE-DATA.txt`. Kerangka aplikasi: Laravel, berlisensi MIT.

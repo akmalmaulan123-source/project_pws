@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\DevReloadController;
@@ -11,9 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+Route::get('/about', AboutController::class)->name('about');
 
 Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
 Route::get('/cars/{carModel}', [CarController::class, 'show'])->name('cars.show');

@@ -1,0 +1,16 @@
+PERUBAHAN TAHAP 3: PERFORMA, KEAMANAN, SIAP DEPLOY
+
+PENTING: pasang berurutan. Tahap 1 (perubahan_desain.zip) dan tahap 2 (perubahan_kode.zip) harus sudah
+terpasang. Beberapa file di zip ini (layout, FetchCarImages, PageTest, errors/minimal) memuat perubahan
+dari tahap sebelumnya.
+
+1. BACKUP project dulu.
+2. Ekstrak zip ini ke root project, pilih "replace" untuk file yang sama.
+3. Jalankan:
+   php artisan migrate          (menambah index updated_at, aman dijalankan ulang)
+   php artisan optimize:clear
+   php artisan test
+4. Refresh browser dengan Ctrl+F5.
+5. Untuk memasang di server, ikuti DEPLOY.md.
+
+Catatan: .htaccess, kompresi, dan cache browser hanya berlaku di Apache. `php artisan serve` mengabaikannya.

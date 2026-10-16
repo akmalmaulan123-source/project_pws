@@ -22,6 +22,32 @@
     --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
     --body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     --gutter: 20px;
+
+    /* Skala jarak, sudut, bayangan, dan gerak: pakai ini untuk komponen baru supaya antarhalaman konsisten */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+
+    --radius-s: 2px;
+    --radius-m: 6px;
+    --radius-l: 10px;
+    --radius-pill: 999px;
+
+    --shadow-1: 0 1px 2px rgb(0 0 0 / .4);
+    --shadow-2: 0 8px 24px rgb(0 0 0 / .45);
+
+    --text-s: 0.875rem;
+    --text-m: 1rem;
+    --text-l: 1.25rem;
+
+    --ease: cubic-bezier(.2, .7, .2, 1);
+    --dur-fast: .15s;
+    --dur: .25s;
 }
 
 *,
@@ -40,12 +66,6 @@ body {
     color: var(--chalk);
     font: 400 1rem/1.55 var(--body);
 }
-
-body.has-tray {
-    padding-bottom: 76px;
-}
-
-/* JS menyesuaikan dengan tinggi tray yang sebenarnya */
 
 img,
 svg {
@@ -1130,74 +1150,6 @@ a.pg:hover {
     font-weight: 400;
 }
 
-/* ---------- Bandingkan ---------- */
-.cmp {
-    min-width: 640px;
-}
-
-.cmp-label {
-    width: 150px;
-    color: var(--ash);
-    font-weight: 500;
-}
-
-.cmp thead .cmp-col {
-    vertical-align: top;
-    padding: 16px 14px;
-    white-space: normal;
-    min-width: 190px;
-    border-left: 1px solid var(--line);
-}
-
-.cmp-col>* {
-    display: block;
-}
-
-.cmp-col .code {
-    display: inline-block;
-    margin-bottom: 10px;
-}
-
-.cmp-car {
-    font: italic 700 1.3rem/1.1 var(--display);
-    color: var(--chalk);
-    text-decoration: none;
-}
-
-.cmp-car:hover {
-    text-decoration: underline;
-    text-decoration-color: var(--silver);
-}
-
-.cmp-eng {
-    color: #d0d0d3;
-    margin-top: 6px;
-    font-size: 0.9rem;
-}
-
-.cmp-gen {
-    color: var(--ash);
-    font-size: 0.82rem;
-    margin-top: 2px;
-}
-
-.cmp-remove {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: var(--ash);
-}
-
-.cmp tbody td {
-    border-left: 1px solid var(--line);
-}
-
-.cmp-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
 .brand-head {
     display: flex;
     align-items: center;
@@ -1229,91 +1181,6 @@ a.pg:hover {
 
 .prose-page a {
     color: var(--chalk);
-}
-
-/* ---------- Tray (pilihan bandingkan) ---------- */
-.tray {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 30;
-    background: var(--tarmac);
-    border-top: 3px solid var(--silver);
-}
-
-.tray[hidden] {
-    display: none;
-}
-
-.tray-in {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-block: 12px;
-    flex-wrap: wrap;
-}
-
-.tray-title {
-    font: italic 700 1.25rem var(--display);
-}
-
-.tray-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    flex: 1 1 320px;
-    min-width: 0;
-}
-
-.tray-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--kerb);
-    border: 1px solid var(--line);
-    padding: 4px 4px 4px 10px;
-    font-size: 0.85rem;
-    max-width: min(280px, 100%);
-    min-width: 0;
-}
-
-.tray-chip span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.tray-chip button {
-    background: transparent;
-    border: 0;
-    color: var(--ash);
-    cursor: pointer;
-    font-size: 1.1rem;
-    line-height: 1;
-    padding: 4px 8px;
-}
-
-.tray-chip button:hover {
-    color: var(--chalk);
-}
-
-.tray-msg {
-    color: var(--ash);
-    font-size: 0.9rem;
-}
-
-.tray-clear {
-    background: transparent;
-    border: 0;
-    color: var(--ash);
-    cursor: pointer;
-    font: inherit;
-    text-decoration: underline;
-    text-underline-offset: 3px;
 }
 
 /* Foto mobil */
@@ -2096,23 +1963,6 @@ a.is-best .tw-bar {
         grid-template-columns: 22px 64px minmax(0, 1fr) auto;
         gap: 10px;
         padding-inline: 14px;
-    }
-
-    .tray-in {
-        gap: 8px 12px;
-        padding-block: 10px;
-    }
-
-    .tray-list {
-        flex: 1 1 100%;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        order: 3;
-        padding-bottom: 2px;
-    }
-
-    .tray-chip {
-        flex: none;
     }
 
     .gen summary {
@@ -3303,7 +3153,6 @@ a.is-best .tw-bar {
     }
 }
 
-
 /* ================= Gerak: transisi halaman & animasi muncul ================= */
 
 /* Pindah halaman (Chrome/Edge/Safari baru): header tetap diam, isi halaman fade + naik halus */
@@ -3313,10 +3162,6 @@ a.is-best .tw-bar {
 
 .top {
     view-transition-name: site-header;
-}
-
-.tray {
-    view-transition-name: compare-tray;
 }
 
 ::view-transition-group(root) {
@@ -3485,7 +3330,6 @@ details.gen > summary {
     filter: drop-shadow(0 24px 28px rgba(0, 0, 0, 0.55));
 }
 
-
 /* ---- Logo merek transparan: tanpa kotak putih di belakang ---- */
 .brand-logo {
     background: transparent;
@@ -3495,7 +3339,6 @@ details.gen > summary {
 .brand-logo .logo-fallback {
     color: var(--bone, #dddddd);
 }
-
 
 /* ---- Detail mobil: animasi tampil untuk gambar transparan ----
    Filter akhir dan filter awal harus punya daftar fungsi yang sama (blur, brightness, drop-shadow),
@@ -3513,7 +3356,6 @@ details.gen > summary {
         filter: blur(0) brightness(1) drop-shadow(0 24px 28px rgba(0, 0, 0, 0.55));
     }
 }
-
 
 /* ---------- Beranda: Newest models (kartu koleksi) ----------
    Panel gambar di atas (lencana tahun di pojok), logo merek + nama model, lalu tiga angka ringkas.
@@ -3733,7 +3575,6 @@ details.gen > summary {
     }
 }
 
-
 /* ================= Beranda: animasi masuk hero ================= 
    Berjalan setiap halaman dibuka / di-refresh. Urutan: cahaya latar -> nama model (tersapu)
    -> mobil meluncur masuk + kilatan cahaya -> bayangan lantai -> HUD (gigi, speedometer, LED rpm,
@@ -3912,7 +3753,6 @@ details.gen > summary {
     }
 }
 
-
 /* ================= Beranda: judul bagian (Newest models, Browse by brand, Browse by fuel) =================
    Gaya layar balapan: judul "diketik" huruf demi huruf dengan kursor blok miring yang mengikuti ketikan
    (huruf dipecah oleh home.js), garis bawah berupa strip miring, tombol "See all" berbentuk
@@ -4035,7 +3875,6 @@ details.gen > summary {
     }
 }
 
-
 /* Efek ketik digital pada judul. home.js memecah judul jadi huruf (.tw-c, indeks --i) hanya saat animasi boleh jalan.
    Tiap huruf muncul tanpa transisi pada gilirannya; kursor miring "meminjam" ujung kanan huruf yang sedang
    diketik, jadi ikut bergerak tanpa JS tambahan. Begitu huruf terakhir selesai diketik, kursor langsung hilang. */
@@ -4086,7 +3925,6 @@ details.gen > summary {
 @keyframes tw-cursor {
     from, to { opacity: 1; }
 }
-
 
 /* ================= Beranda: strip statistik (chassis plate) =================
    Tiga pelat logam perak bergaris sikat dengan keling di sudut, seperti pelat nomor sasis mobil sport.
@@ -4557,7 +4395,6 @@ details.gen > summary {
     100% { filter: none; }
 }
 
-
 /* ================= Navbar transparan premium =================
    Di puncak halaman: bening, tanpa garis, hanya scrim gelap tipis supaya menu tetap terbaca.
    Setelah di-scroll (.is-scrolled): kaca buram gelap dengan garis krom. Di beranda, header
@@ -4715,7 +4552,6 @@ body.has-hero .show {
     }
 }
 
-
 /* ================= Menu di tengah + pilihan gaya =================
    Desktop: logo kiri, menu tepat di tengah, pencarian kanan.
    Ganti gaya dengan menambah class di <nav class="nav nav--...">:
@@ -4837,7 +4673,6 @@ body.has-hero .show {
 .nav--display a.is-on::after {
     transform: scaleX(1);
 }
-
 
 /* ================= Gaya menu ala aplikasi profesional =================
    nav--clean: teks biasa rapi, garis tipis | nav--segment: kontrol kapsul kaca | nav--dot: titik kecil di bawah */
@@ -4968,7 +4803,6 @@ body.has-hero .show {
     transform: scale(1);
 }
 
-
 /* ================= Gaya kolom pencarian =================
    Tambahkan class di <form class="top-search search--...">:
    search--pill kapsul kaca (senada dengan menu segment) | search--line garis bawah minimalis | search--icon tombol bulat yang melebar saat diklik */
@@ -5078,7 +4912,6 @@ body.has-hero .show {
         width: 170px;
     }
 }
-
 
 /* ================= Animasi masuk halaman dalam (Cars, Brands, Compare, About, dst.) =================
    Murni CSS: jalan sejak gambar pertama, tanpa menunggu JS, jadi tidak ada kedipan.

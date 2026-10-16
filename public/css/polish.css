@@ -1,0 +1,86 @@
+/* Polesan lintas halaman. Dimuat setelah app.css dan live.css, jadi hanya menyempurnakan, tidak menggantikan.
+   Memakai token di :root (app.css): --space-*, --radius-*, --shadow-*, --ease, --dur-*. */
+
+/* Kontrol bawaan browser (scrollbar, input, dropdown) ikut tema gelap */
+html { color-scheme: dark; }
+
+::selection { background: var(--purple-bar); color: #fff; }
+
+/* Tombol: respons sentuhan yang halus dan status nonaktif yang jelas */
+.btn,
+.btn-quiet {
+    transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.btn:active,
+.btn-quiet:active { transform: translateY(1px); }
+.btn:disabled,
+.btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+
+/* Keadaan kosong (hasil filter nol, generasi kosong, 404): lebih lega dan punya penanda visual */
+.empty {
+    background: var(--tarmac);
+    border-radius: var(--radius-m);
+    padding: var(--space-7) var(--space-5);
+}
+.empty::before {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 4px;
+    margin-bottom: var(--space-4);
+    background: var(--silver);
+}
+.empty h1,
+.empty h2 { margin: 0; }
+
+/* ---------- Halaman error (404, 500, 503, 419, 429) ---------- */
+.err {
+    --tone: var(--silver);
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--gutter);
+}
+.err--red    { --tone: var(--tyre-soft); }
+.err--yellow { --tone: var(--tyre-medium); }
+.err--blue   { --tone: var(--tyre-wet); }
+
+/* Bendera finis kotak-kotak sebagai penanda motorsport */
+.err-flag {
+    width: 96px;
+    height: 12px;
+    margin-bottom: var(--space-5);
+    border-top: 3px solid var(--tone);
+    background: repeating-conic-gradient(var(--chalk) 0 25%, var(--asphalt) 0 50%) 0 0 / 12px 12px;
+    box-sizing: content-box;
+}
+.err-code {
+    margin: 0;
+    color: var(--tone);
+    font: italic 700 clamp(5rem, 18vw, 9rem)/.9 var(--display);
+    letter-spacing: -.02em;
+}
+.err h1 { margin: var(--space-3) 0 0; }
+.err-text {
+    max-width: 34em;
+    margin: var(--space-3) 0 0;
+    color: var(--ash);
+}
+.err-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-5) 0 0;
+}
+
+/* Halaman error mandiri (tanpa navbar/footer, aman walau database mati) */
+.err-body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn, .btn-quiet { transition: none; }
+    .btn:active, .btn-quiet:active { transform: none; }
+}

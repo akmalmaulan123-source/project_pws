@@ -1,0 +1,205 @@
+/* Halaman About. Memakai token di :root (app.css): --space-*, --radius-*, --ease, --dur-*. */
+
+.about { max-width: 62rem; }
+
+.about p,
+.about li,
+.about dd { color: #d0d0d3; }
+
+.about a { color: var(--chalk); }
+
+.ab-head { max-width: 46rem; }
+
+.ab-eyebrow {
+    margin: 0 0 var(--space-3);
+    color: var(--ash);
+    font: 600 0.7rem/1 var(--body);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+
+.ab-head h1 { margin: 0; }
+
+/* Bagian */
+.ab-sec { margin-top: var(--space-8); }
+.ab-sec h2 { margin: 0 0 var(--space-4); }
+.ab-sec p { max-width: 46rem; }
+.ab-note { margin: var(--space-4) 0 0; color: var(--ash); }
+
+/* Angka katalog */
+.ab-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+}
+
+.ab-stats > div {
+    padding: var(--space-4);
+    background: var(--tarmac);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--silver);
+    border-radius: var(--radius-m);
+}
+
+.ab-stats dt {
+    color: var(--ash);
+    font: 600 0.66rem/1 var(--body);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+
+.ab-stats dd {
+    margin: var(--space-3) 0 0;
+    color: var(--chalk);
+    font: 700 clamp(1.7rem, 4vw, 2.5rem)/1 "Orbitron", var(--display);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Kartu tautan */
+.ab-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+
+.ab-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--tarmac);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    text-decoration: none;
+    transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
+}
+
+.ab-card:hover,
+.ab-card:focus-visible {
+    border-color: var(--silver);
+    background: var(--kerb);
+    transform: translateY(-2px);
+}
+
+.ab-card h3 { margin: 0; }
+.ab-card p { margin: 0; color: var(--ash); }
+
+.ab-card span {
+    margin-top: auto;
+    padding-top: var(--space-3);
+    color: var(--chalk);
+    font-weight: 700;
+    font-size: var(--text-s);
+}
+
+/* Cara membaca angka */
+.ab-gloss {
+    display: grid;
+    grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr);
+    margin: 0;
+    max-width: 46rem;
+}
+
+.ab-gloss dt,
+.ab-gloss dd {
+    margin: 0;
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--line);
+}
+
+.ab-gloss dt {
+    color: var(--chalk);
+    font-weight: 700;
+}
+
+.ab-gloss dt small {
+    margin-left: var(--space-1);
+    color: var(--ash);
+    font-weight: 400;
+}
+
+.ab-gloss dt:last-of-type,
+.ab-gloss dd:last-of-type { border-bottom: 1px solid var(--line); }
+
+.ab-fuels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ab-best {
+    color: var(--purple);
+    font-weight: 700;
+}
+
+/* Tanya jawab */
+.ab-faq { max-width: 46rem; }
+
+.ab-faq details {
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--line);
+}
+
+.ab-faq details:last-child { border-bottom: 1px solid var(--line); }
+
+.ab-faq summary {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+}
+
+.ab-faq summary::-webkit-details-marker { display: none; }
+
+.ab-faq summary::after {
+    content: "+";
+    color: var(--ash);
+    font-weight: 400;
+}
+
+.ab-faq details[open] summary::after { content: "\2013"; }
+
+.ab-faq p {
+    margin: var(--space-2) 0 0;
+    color: var(--ash);
+}
+
+/* Teknologi */
+.ab-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    list-style: none;
+}
+
+.ab-chips li {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    color: var(--chalk);
+    font-size: var(--text-s);
+}
+
+@media (max-width: 760px) {
+    .ab-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ab-cards { grid-template-columns: minmax(0, 1fr); }
+    .ab-gloss { grid-template-columns: minmax(0, 1fr); }
+    .ab-gloss dt { border-bottom: 0; padding-bottom: 0; }
+    .ab-gloss dd { border-top: 0; padding-top: var(--space-1); }
+    .ab-gloss dt:last-of-type { border-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ab-card { transition: none; }
+    .ab-card:hover,
+    .ab-card:focus-visible { transform: none; }
+}

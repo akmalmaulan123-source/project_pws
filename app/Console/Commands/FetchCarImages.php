@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Support\CatalogCache;
 use App\Models\CarModel;
 use App\Models\Engine;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -67,7 +67,7 @@ class FetchCarImages extends Command
                 $this->newLine(2);
                 $this->error($e->getMessage());
                 $this->line("Tersimpan sebelum berhenti: {$found} foto dari {$done} model yang diproses.");
-                Cache::forget('home.feature.v2');
+                CatalogCache::forgetFeature();
 
                 return self::FAILURE;
             }
@@ -89,7 +89,7 @@ class FetchCarImages extends Command
         $this->info("Selesai: {$found} dari {$models->count()} model mendapat foto.");
 
         // Halaman utama menyimpan data di cache; buang supaya foto baru langsung tampil.
-        Cache::forget('home.feature.v2');
+        CatalogCache::forgetFeature();
         $this->line('Cache menara halaman utama dibersihkan.');
 
         return self::SUCCESS;
@@ -118,7 +118,7 @@ class FetchCarImages extends Command
         $response = null;
 
         for ($try = 0; $try < 3; $try++) {
-            $response = Http::withUserAgent('ParcFerme/1.0 (akmalmaulan123@gmail.com) laravel-http-client')
+            $response = Http::withUserAgent('ParcFerme/1.0 ('.config('cars.contact').') laravel-http-client')
                 ->timeout(15)
                 ->get('https://en.wikipedia.org/w/api.php', [
                     'action' => 'query',

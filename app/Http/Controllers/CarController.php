@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\CarModel;
 use App\Models\Engine;
+use App\Support\Fuel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -71,7 +72,7 @@ class CarController extends Controller
             ->distinct()
             ->get(['generations.car_model_id as mid', 'engines.fuel_type'])
             ->groupBy('mid')
-            ->map(fn ($g) => $g->pluck('fuel_type')->map(fn ($f) => self::fuelGroup($f))->filter()->unique()->values()->all());
+            ->map(fn ($g) => $g->pluck('fuel_type')->map(fn ($f) => Fuel::group($f))->filter()->unique()->values()->all());
 
         // Peringkat tenaga dari seluruh katalog (daftar tenaga per model disimpan sebentar supaya tidak dihitung tiap kunjungan).
         $powers = Cache::remember('cars.powers', 600, fn () => Engine::query()
@@ -105,20 +106,6 @@ class CarController extends Controller
             'countryOptions' => Cache::remember('opt.countries', 3600, fn () => Brand::whereNotNull('country')->distinct()->orderBy('country')->pluck('country')->all()),
             'activeCount' => collect($filters)->filter()->count(),
         ]);
-    }
-
-    private static function fuelGroup(?string $fuel): ?string
-    {
-        $f = strtolower((string) $fuel);
-
-        return match (true) {
-            $f === '' => null,
-            str_contains($f, 'hybrid') => 'Hybrid',
-            str_contains($f, 'electric') => 'Electric',
-            str_contains($f, 'diesel') => 'Diesel',
-            str_contains($f, 'gasoline') => 'Gasoline',
-            default => 'Other',
-        };
     }
 
     public function show(CarModel $carModel)

@@ -1,0 +1,19 @@
+PERUBAHAN TAHAP 2: KERAPIAN KODE
+
+PENTING: pasang dulu perubahan_desain.zip (tahap 1). File layout di zip ini memakai
+polish.css dan partial font dari tahap 1; tanpa itu halaman akan error.
+
+1. BACKUP project dulu.
+2. Ekstrak zip ini ke root project, pilih "replace" untuk file yang sama.
+3. HAPUS manual dua file contoh lama yang sudah diganti:
+   tests/Feature/ExampleTest.php
+   tests/Unit/ExampleTest.php
+4. Buka .env kamu dan tambahkan dua baris ini (isi email kamu):
+   SHOW_CAR_IMAGES=false
+   SCRAPER_CONTACT=emailkamu@example.com
+   (file .env sendiri TIDAK ada di zip ini)
+5. Jalankan:
+   php artisan config:clear
+   php artisan view:clear
+   php artisan test
+6. Refresh browser dengan Ctrl+F5.

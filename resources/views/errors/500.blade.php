@@ -1,0 +1,6 @@
+@extends('errors.minimal')
+@section('title', 'Something went wrong')
+@section('tone', 'red')
+@section('code', '500')
+@section('heading', 'Something went wrong')
+@section('message', 'An unexpected error stopped this page. It is not your fault. Try again in a moment, and if it keeps happening, check that the database is running.')

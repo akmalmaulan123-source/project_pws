@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\CarModel;
 use App\Models\Engine;
+use App\Support\CatalogCache;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +26,7 @@ class HomeController extends Controller
 
         // Mobil unggulan di hero: sebuah Porsche. Urutan pilihan = yang pertama punya foto;
         // kalau belum ada yang berfotokan, tetap pakai 911 GT3 RS (hero tampil tanpa foto).
-        $feature = Cache::remember('home.feature.v3', 15, function () {
+        $feature = Cache::remember(CatalogCache::HOME_FEATURE, 15, function () {
             $models = CarModel::query()
                 ->with('brand')
                 ->whereHas('brand', fn ($q) => $q->where('name', 'Porsche'))

@@ -1,0 +1,6 @@
+@extends('errors.minimal')
+@section('title', 'Back in the pits')
+@section('tone', 'yellow')
+@section('code', '503')
+@section('heading', 'Back in the pits')
+@section('message', 'The site is being updated and will be back shortly. Please try again in a few minutes.')

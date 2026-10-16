@@ -1,0 +1,14 @@
+PERUBAHAN DESAIN (tahap 1)
+
+1. BACKUP dulu project kamu (terutama public/css/app.css).
+2. Ekstrak zip ini ke root project (folder project_pws), pilih "replace" untuk file yang sama.
+3. HAPUS manual file bawaan Laravel yang tidak terpakai:
+   resources/views/welcome.blade.php
+4. Jalankan:
+   php artisan view:clear
+5. Refresh browser dengan Ctrl+F5.
+
+Cek halaman error:
+ - 404: buka http://127.0.0.1:8000/halaman-ngawur
+ - 503: php artisan down  (lalu buka situs)  ->  php artisan up
+ - 500/419/429: set APP_DEBUG=false di .env dulu, kalau tidak yang tampil halaman debug Laravel.

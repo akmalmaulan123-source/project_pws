@@ -130,7 +130,7 @@ class FetchBrandLogos extends Command
         $response = null;
 
         for ($try = 0; $try < 3; $try++) {
-            $response = Http::withUserAgent('ParcFerme/1.0 (EMAIL_KAMU@example.com) laravel-http-client')
+            $response = Http::withUserAgent('ParcFerme/1.0 ('.config('cars.contact').') laravel-http-client')
                 ->timeout(15)
                 ->get($endpoint, $params);
 

@@ -1,9 +1,31 @@
+# Kompresi teks: CSS 130 KB jadi sekitar seperenam saat dikirim
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# Cache browser untuk file statis. CSS/JS dipanggil dengan ?v=<waktu ubah>, jadi otomatis segar saat file berubah.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 month"
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
+
+    # Blokir akses langsung ke berkas tersembunyi di dalam public/ (kecuali .well-known)
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

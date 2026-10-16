@@ -6,18 +6,14 @@
     <title>@hasSection('title'){{ config('app.name') }} - @yield('title')@else{{ config('app.name') }}@endif</title>
     <meta name="description" content="@yield('description', 'Specs for thousands of car models and engines from brands around the world. Search, filter and explore the numbers.')">
     <meta name="theme-color" content="#0d0d0e">
+    @include('partials.seo')
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    {{-- Font dimuat tanpa memblokir: halaman tampil langsung dengan font cadangan, lalu berganti saat font siap.
-         (Stylesheet font eksternal yang biasa memblokir tampilan; kalau koneksi ke Google Fonts lambat, pindah halaman ikut tertahan.) --}}
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=Orbitron:wght@900&family=Saira+Condensed:ital,wght@0,500;0,700;1,600;1,700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=Orbitron:wght@900&family=Saira+Condensed:ital,wght@0,500;0,700;1,600;1,700&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=Orbitron:wght@900&family=Saira+Condensed:ital,wght@0,500;0,700;1,600;1,700&display=swap"></noscript>
+    @include('partials.fonts')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/live.css') }}?v={{ filemtime(public_path('css/live.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/polish.css') }}?v={{ filemtime(public_path('css/polish.css')) }}">
     @stack('styles')
     <script>document.documentElement.classList.add('js');</script>
 <script type="speculationrules">
@@ -96,33 +92,8 @@
 <script src="{{ asset('js/motion.js') }}?v={{ filemtime(public_path('js/motion.js')) }}" defer></script>
 <script src="{{ asset('js/fast.js') }}?v={{ filemtime(public_path('js/fast.js')) }}" defer></script>
 <script src="{{ asset('js/live.js') }}?v={{ filemtime(public_path('js/live.js')) }}" defer></script>
+<script src="{{ asset('js/chrome.js') }}?v={{ filemtime(public_path('js/chrome.js')) }}" defer></script>
 @stack('scripts')
-<script>
-/* Footer: animasi masuk dimulai saat footer terlihat (tanpa animasi bila reduce motion) */
-(function () {
-    var f = document.querySelector('.foot');
-    if (!f) { return; }
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce || !('IntersectionObserver' in window)) { f.classList.add('is-in'); return; }
-    var io = new IntersectionObserver(function (es) {
-        if (es[0].isIntersecting) { f.classList.add('is-in'); io.disconnect(); }
-    }, { threshold: 0.2 });
-    io.observe(f);
-})();
-</script>
-<script>
-(function () {
-    var h = document.getElementById('site-top');
-    if (!h) { return; }
-    var on = false;
-    function check() {
-        var s = (window.pageYOffset || document.documentElement.scrollTop) > 12;
-        if (s !== on) { on = s; h.classList.toggle('is-scrolled', s); }
-    }
-    check();
-    window.addEventListener('scroll', check, { passive: true });
-})();
-</script>
 @if (app()->environment('local'))
 <script src="{{ asset('js/devreload.js') }}" data-url="{{ route('dev.reload') }}" data-interval="2500" defer></script>
 @endif

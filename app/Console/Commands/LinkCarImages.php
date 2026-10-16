@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Support\CatalogCache;
 use App\Models\CarModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class LinkCarImages extends Command
@@ -143,7 +143,7 @@ class LinkCarImages extends Command
             $this->warn("  ??  {$file}  tidak memengaruhi model mana pun (nama tidak cocok, atau semua modelnya sudah punya foto)".$this->suggest($file, $names));
         }
 
-        Cache::forget('home.feature.v2');
+        CatalogCache::forgetFeature();
         $used = count(array_filter($count));
         $this->info("Selesai: {$total} model mendapat foto dari {$used} file.");
 

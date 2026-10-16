@@ -2,6 +2,7 @@
 .ins {
     --ins-track: #222225;
     --ins-bar: #3a3a3f;
+    --ins-col: #4d4d54;
 }
 
 .ins-head {
@@ -180,12 +181,13 @@
 /* Tiga panel */
 .ins-panels {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 56px;
     padding-top: 48px;
 }
 
-.ins-panels h2 {
+.ins-panels h2,
+.ins-dec h2 {
     margin: 0 0 6px;
     font: 500 1.5rem/1.1 var(--display);
     letter-spacing: .14em;
@@ -236,16 +238,149 @@
     background: var(--purple);
 }
 
-.ins-cols {
-    width: 100%;
-    height: auto;
+/* Grafik "Peak by decade": selebar penuh, HTML + CSS supaya teks tetap terbaca di semua ukuran layar. */
+.ins-dec {
+    --c: 0ms;
+    margin-top: 56px;
+    padding-top: 48px;
+    border-top: 1px solid var(--line);
 }
 
-.ins-cols rect { fill: var(--ins-bar); }
-.ins-cols rect.last { fill: var(--purple); }
-.ins-cols .gl { stroke: var(--line); }
-.ins-cols .tx { fill: var(--ash); font-size: 11px; }
-.ins-cols .tx.last { fill: var(--chalk); }
+.ins-dh {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px 40px;
+    margin-bottom: 40px;
+}
+
+.ins-dh .ins-cp { margin: 0; }
+
+.ins-gr {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+}
+
+.ins-gr b {
+    color: var(--purple);
+    font: 500 clamp(3rem, 6vw, 4.5rem)/1 var(--display);
+    font-variant-numeric: tabular-nums;
+}
+
+.ins-gr span {
+    color: var(--chalk);
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.ins-gr em {
+    display: block;
+    color: var(--ash);
+    font-size: .85rem;
+    font-style: normal;
+}
+
+.ins-chart {
+    --h: 320px;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    column-gap: 12px;
+}
+
+.ins-yax,
+.ins-plot {
+    position: relative;
+    height: var(--h);
+}
+
+.ins-yax span {
+    position: absolute;
+    right: 0;
+    bottom: var(--y);
+    transform: translateY(50%);
+    color: var(--ash);
+    font-size: .78rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.ins-gl {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--y);
+    height: 1px;
+    background: var(--line);
+}
+
+.ins-gl.z { background: #4a4a50; }
+
+.ins-cs {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+}
+
+.ins-c {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+}
+
+.ins-cb {
+    display: block;
+    width: min(64%, 76px);
+    height: var(--bh);
+    border-radius: 3px 3px 0 0;
+    background: var(--ins-col);
+    transform-origin: 50% 100%;
+}
+
+.ins-c.last .ins-cb { background: var(--purple); }
+
+.ins-cv {
+    color: #b4b4b9;
+    font-size: 1rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.ins-c.last .ins-cv {
+    color: var(--chalk);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.ins-xs {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    margin-top: 14px;
+    text-align: center;
+}
+
+.ins-x b {
+    display: block;
+    color: var(--chalk);
+    font-size: .95rem;
+    font-weight: 600;
+}
+
+.ins-x em {
+    display: block;
+    margin-top: 4px;
+    color: var(--ash);
+    font-size: .8rem;
+    font-style: normal;
+    font-variant-numeric: tabular-nums;
+}
+
+.ins-x.last em { color: var(--purple); font-weight: 600; }
 
 @media (max-width: 1000px) {
     .ins-panels { grid-template-columns: 1fr; gap: 48px; }
@@ -254,6 +389,13 @@
 @media (max-width: 760px) {
     .ins-cluster { grid-template-columns: 1fr; gap: 32px; }
     .ins-totals div { padding-left: 16px; }
+    .ins-chart { --h: 240px; grid-template-columns: 38px minmax(0, 1fr); column-gap: 8px; }
+    .ins-yax span, .ins-x em { font-size: .68rem; }
+    .ins-cv { font-size: .74rem; }
+    .ins-c.last .ins-cv { font-size: .82rem; }
+    .ins-x b { font-size: .74rem; }
+    .ins-cb { width: 70%; }
+    .ins-c { gap: 6px; }
 }
 
 /* ================= Animasi masuk =================
@@ -285,7 +427,6 @@ html:not(.live-quiet) .page.ins > :nth-child(-n+7):not(.page-head):not(.rows):no
 .ins-panels > div:nth-child(3) { --c: 320ms; }
 .ins-dial { --dd: 300; }
 .ins-dial.is-big { --dd: 0; }
-.ins-cols rect { transform-box: fill-box; transform-origin: 50% 100%; }
 .ins-strip i { transform-origin: left center; }
 .ins-t i { transform-origin: left center; }
 
@@ -299,7 +440,7 @@ html:not(.live-quiet) .page.ins > :nth-child(-n+7):not(.page-head):not(.rows):no
     8% { opacity: 1; }
     to { stroke-dasharray: var(--len) 414.7; opacity: 1; }
 }
-@keyframes ins-last { from { fill: var(--ins-bar); } to { fill: var(--purple); } }
+@keyframes ins-last { from { background-color: var(--ins-col); } to { background-color: var(--purple); } }
 
 @media (prefers-reduced-motion: no-preference) {
     /* ---- keadaan awal ---- */
@@ -310,6 +451,12 @@ html:not(.live-quiet) .page.ins > :nth-child(-n+7):not(.page-head):not(.rows):no
     html.ins-armed:not(.live-quiet) .ins-mh,
     html.ins-armed:not(.live-quiet) .ins-ml li,
     html.ins-armed:not(.live-quiet) .ins-panels h2,
+    html.ins-armed:not(.live-quiet) .ins-dec h2,
+    html.ins-armed:not(.live-quiet) .ins-gr,
+    html.ins-armed:not(.live-quiet) .ins-cv,
+    html.ins-armed:not(.live-quiet) .ins-x,
+    html.ins-armed:not(.live-quiet) .ins-yax span,
+    html.ins-armed:not(.live-quiet) .ins-gl,
     html.ins-armed:not(.live-quiet) .ins-cp,
     html.ins-armed:not(.live-quiet) .ins-nt,
     html.ins-armed:not(.live-quiet) .ins-br > span:not(.ins-t),
@@ -319,11 +466,10 @@ html:not(.live-quiet) .page.ins > :nth-child(-n+7):not(.page-head):not(.rows):no
 
     html.ins-armed:not(.live-quiet) .ins-w > span { transform: translateY(110%); }
     html.ins-armed:not(.live-quiet) .ins-dial line,
-    html.ins-armed:not(.live-quiet) .ins-dial .val,
-    html.ins-armed:not(.live-quiet) .ins-cols .tx { opacity: 0; }
+    html.ins-armed:not(.live-quiet) .ins-dial .val { opacity: 0; }
     html.ins-armed:not(.live-quiet) .ins-strip i,
     html.ins-armed:not(.live-quiet) .ins-t i { transform: scaleX(0); }
-    html.ins-armed:not(.live-quiet) .ins-cols rect { transform: scaleY(0); }
+    html.ins-armed:not(.live-quiet) .ins-cb { transform: scaleY(0); }
 
     /* ---- judul ---- */
     .ins-go .ins-eb { animation: ins-rise .9s var(--ins-ease) both; }
@@ -344,19 +490,24 @@ html:not(.live-quiet) .page.ins > :nth-child(-n+7):not(.page-head):not(.rows):no
     .ins-go .ins-ml li { animation: ins-rise .8s var(--ins-ease) calc(500ms + var(--i) * 80ms) both; }
 
     /* ---- tiga panel ---- */
-    .ins-go .ins-panels h2 { animation: ins-rise .9s var(--ins-ease) var(--c) both; }
+    .ins-go .ins-panels h2,
+    .ins-go .ins-dec h2 { animation: ins-rise .9s var(--ins-ease) var(--c) both; }
     .ins-go .ins-cp { animation: ins-rise .9s var(--ins-ease) calc(var(--c) + 80ms) both; }
     .ins-go .ins-nt { animation: ins-fade 1s ease-out calc(var(--c) + 900ms) both; }
     .ins-go .ins-br > span:not(.ins-t),
     .ins-go .ins-br > b { animation: ins-rise .7s var(--ins-ease) calc(var(--c) + 250ms + var(--i) * 70ms) both; }
     .ins-go .ins-t i { animation: ins-grow-x 1.2s var(--ins-ease) calc(var(--c) + 300ms + var(--i) * 70ms) both; }
 
-    /* ---- grafik kolom: tumbuh dari garis dasar, batang terakhir berubah jadi ungu ---- */
-    .ins-go .ins-cols rect { animation: ins-grow-y 1s var(--ins-ease) calc(var(--c) + 300ms + var(--i) * 90ms) both; }
-    .ins-go .ins-cols rect.last {
+    /* ---- grafik dekade: garis bantu muncul, batang tumbuh dari garis dasar, batang terakhir berubah jadi ungu ---- */
+    .ins-go .ins-gr { animation: ins-rise .9s var(--ins-ease) calc(var(--c) + 160ms) both; }
+    .ins-go .ins-gl,
+    .ins-go .ins-yax span { animation: ins-fade .8s ease-out calc(var(--c) + 200ms) both; }
+    .ins-go .ins-cb { animation: ins-grow-y 1s var(--ins-ease) calc(var(--c) + 300ms + var(--i) * 90ms) both; }
+    .ins-go .ins-c.last .ins-cb {
         animation:
             ins-grow-y 1s var(--ins-ease) calc(var(--c) + 300ms + var(--i) * 90ms) both,
             ins-last .9s ease calc(var(--c) + 1100ms + var(--i) * 90ms) both;
     }
-    .ins-go .ins-cols .tx { animation: ins-fade .8s ease-out calc(var(--c) + 600ms + var(--i) * 90ms) both; }
+    .ins-go .ins-cv,
+    .ins-go .ins-x { animation: ins-fade .8s ease-out calc(var(--c) + 600ms + var(--i) * 90ms) both; }
 }

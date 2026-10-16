@@ -1,0 +1,6 @@
+@extends('errors.minimal')
+@section('title', 'Session expired')
+@section('tone', 'blue')
+@section('code', '419')
+@section('heading', 'Session expired')
+@section('message', 'Your session timed out. Go back, refresh the page and try again.')

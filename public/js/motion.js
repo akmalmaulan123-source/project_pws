@@ -12,7 +12,7 @@
     /* ---------- 1. Muncul bertahap saat masuk layar ---------- */
     var SELECTOR = [
         '.page-head', '.crumbs', '.filters', '.results-bar', '.rows-head',
-        '.rows > .row', '.make-grid > li', '.brand-head', '.cmp-actions',
+        '.rows > .row', '.make-grid > li', '.brand-head',
         '.table-wrap', 'details.gen', '.block', '.empty', '.prose-page > *',
         '.pager', 'nav[aria-label="Pagination"]'
     ].join(',');

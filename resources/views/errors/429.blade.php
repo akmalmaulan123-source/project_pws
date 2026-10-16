@@ -1,0 +1,6 @@
+@extends('errors.minimal')
+@section('title', 'Too many requests')
+@section('tone', 'yellow')
+@section('code', '429')
+@section('heading', 'Too many requests')
+@section('message', 'You are going faster than we can keep up with. Wait a few seconds and try again.')

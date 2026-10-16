@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Support\CatalogCache;
 use App\Http\Controllers\HomeController;
 use App\Models\CarModel;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use Symfony\Component\Process\Process;
 
 class CutoutHeroCar extends Command
@@ -43,7 +43,7 @@ class CutoutHeroCar extends Command
             return self::FAILURE;
         }
 
-        Cache::forget('home.feature.v2');
+        CatalogCache::forgetFeature();
         $this->info("Selesai: public/images/cars/{$model->id}.png");
 
         return self::SUCCESS;
@@ -94,7 +94,7 @@ class CutoutHeroCar extends Command
             }
         }
 
-        Cache::forget('home.feature.v2');
+        CatalogCache::forgetFeature();
         $this->info("Selesai: {$done} dipotong, {$reused} disalin dari foto yang sama, {$skipped} dilewati (sudah ada), ".count($failed).' gagal.');
         foreach ($failed as $name) {
             $this->line("  - {$name}");

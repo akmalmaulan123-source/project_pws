@@ -32,9 +32,12 @@
     $dec = collect($decades);
     $decMax = max(1, (int) $dec->max('peak'));
     $decN = max(1, $dec->count());
-    $step = 520 / $decN;
-    $barW = min(36, $step * 0.5);
     $growth = $dec->count() > 1 && $dec->first()['peak'] > 0 ? $dec->last()['peak'] / $dec->first()['peak'] : null;
+
+    // Skala sumbu hp: kelipatan 500 (atau 1.000 bila tenaga sangat besar) di atas nilai tertinggi.
+    $yStep = $decMax > 2500 ? 1000 : 500;
+    $yMax = max($yStep, (int) ceil($decMax / $yStep) * $yStep);
+    $yTicks = range(0, $yMax, $yStep);
 @endphp
 <div class="wrap page ins">
     <header class="ins-head" data-ins>
@@ -100,28 +103,56 @@
                 <p class="ins-nt">{{ $lead['country'] }} is a single brand ({{ $lead['brand'] }}), so its average is one maker's range.</p>
             @endif
         </div>
+    </section>
 
-        <div>
-            <h2>Peak by decade</h2>
-            @if ($growth)<p class="ins-cp">Up {{ number_format($growth, 1) }}&times; since the {{ $dec->first()['decade'] }}s.</p>@endif
-            @if ($dec->isNotEmpty())
-                <svg class="ins-cols" viewBox="0 0 620 240" role="img" aria-label="Peak engine power per decade">
-                    <line class="gl" x1="20" y1="200" x2="600" y2="200"/>
-                    @foreach ($dec as $i => $d)
-                        @php
-                            $h = round($d['peak'] / $decMax * 160, 1);
-                            $cx = round(50 + $step * ($i + 0.5) - 30 * 0, 1);
-                            $last = $loop->last;
-                        @endphp
-                        <rect class="{{ $last ? 'last' : '' }}" style="--i: {{ $i }}" x="{{ round($cx - $barW / 2, 1) }}" y="{{ 200 - $h }}" width="{{ round($barW, 1) }}" height="{{ $h }}" rx="2"/>
-                        <text class="tx {{ $last ? 'last' : '' }}" style="--i: {{ $i }}" x="{{ $cx }}" y="{{ 192 - $h }}" text-anchor="middle">{{ number_format($d['peak']) }}</text>
-                        <text class="tx" style="--i: {{ $i }}" x="{{ $cx }}" y="222" text-anchor="middle">{{ $d['decade'] }}s</text>
-                    @endforeach
-                </svg>
-            @else
-                <p class="ins-nt">No generation years on record yet.</p>
+    <section class="ins-dec" data-ins aria-label="Peak power by decade">
+        <div class="ins-dh">
+            <div>
+                <h2>Peak by decade</h2>
+                <p class="ins-cp">Highest engine output (hp) among generations launched in each decade.</p>
+            </div>
+            @if ($growth)
+                <div class="ins-gr">
+                    <b data-count="{{ round($growth, 2) }}" data-dec="1" data-suffix="&times;" data-delay="500">{{ number_format($growth, 1) }}&times;</b>
+                    <span>since the {{ $dec->first()['decade'] }}s<em>{{ number_format($dec->first()['peak']) }} &rarr; {{ number_format($dec->last()['peak']) }} hp</em></span>
+                </div>
             @endif
         </div>
+
+        @if ($dec->isNotEmpty())
+            <div class="ins-chart" style="--n: {{ $decN }}" role="img" aria-label="Peak engine power per decade, from {{ number_format($dec->first()['peak']) }} hp in the {{ $dec->first()['decade'] }}s to {{ number_format($dec->last()['peak']) }} hp in the {{ $dec->last()['decade'] }}s">
+                <div class="ins-yax" aria-hidden="true">
+                    @foreach ($yTicks as $t)<span style="--y: {{ round($t / $yMax * 100, 2) }}%">{{ number_format($t) }}</span>@endforeach
+                </div>
+                <div class="ins-plot" aria-hidden="true">
+                    @foreach ($yTicks as $t)<i class="ins-gl {{ $t === 0 ? 'z' : '' }}" style="--y: {{ round($t / $yMax * 100, 2) }}%"></i>@endforeach
+                    <div class="ins-cs">
+                        @foreach ($dec as $i => $d)
+                            <div class="ins-c {{ $loop->last ? 'last' : '' }}" style="--i: {{ $i }}">
+                                <span class="ins-cv" data-count="{{ $d['peak'] }}" data-delay="{{ 700 + $i * 90 }}">{{ number_format($d['peak']) }}</span>
+                                <i class="ins-cb" style="--bh: {{ round($d['peak'] / $yMax * 100, 2) }}%"></i>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div></div>
+                <div class="ins-xs" aria-hidden="true">
+                    @foreach ($dec as $i => $d)
+                        @php
+                            $prev = $i > 0 ? $dec[$i - 1]['peak'] : 0;
+                            $delta = $prev > 0 ? (int) round(($d['peak'] / $prev - 1) * 100) : null;
+                        @endphp
+                        <div class="ins-x {{ $loop->last ? 'last' : '' }}" style="--i: {{ $i }}">
+                            <b>{{ $d['decade'] }}s</b>
+                            <em>{{ $delta === null ? '&nbsp;' : ($delta >= 0 ? '+' : '') . $delta . '%' }}</em>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <p class="ins-nt">The percentage under each decade is the change from the decade before it.</p>
+        @else
+            <p class="ins-nt">No generation years on record yet.</p>
+        @endif
     </section>
 </div>
 {{-- Tanpa defer: harus jalan sebelum konten terlihat, supaya keadaan awal animasi terpasang tanpa kedip --}}
