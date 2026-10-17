@@ -29,6 +29,7 @@
                 <span class="car-count">{{ number_format($nEng) }} {{ \Illuminate\Support\Str::plural('engine', $nEng) }} in {{ number_format($summary['generations']) }} {{ \Illuminate\Support\Str::plural('generation', $summary['generations']) }}</span>
             @endif
         </p>
+        @include('partials.save-button', ['carModel' => $carModel, 'saved' => $saved ?? false])
     </header>
 
     {{-- Panggung: foto di tengah, spesifikasi di kiri dan kanan. Gambar = PNG tanpa background dari `php artisan cars:cutout` (sumber foto: public/images/source/). --}}

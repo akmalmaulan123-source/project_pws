@@ -25,8 +25,8 @@
 
     function current() { return location.pathname + location.search; }
 
-    // Halaman statis (About) tidak perlu disegarkan otomatis.
-    function isStatic() { return !!document.querySelector('.prose-page'); }
+    // Halaman statis (About, masuk/daftar) tidak perlu disegarkan otomatis: tandai dengan atribut data-static.
+    function isStatic() { return !!document.querySelector('.prose-page, [data-static]'); }
 
     function buildUrl(form) {
         var params = new URLSearchParams();

@@ -1,0 +1,23 @@
+AKUN DAN MOBIL TERSIMPAN (SAVED)
+
+PENTING: pasang berurutan. Tahap 1, 2, 3, dan About harus sudah terpasang (zip ini memakai token
+desain, polish.css, dan layout dari tahap-tahap itu).
+
+1. BACKUP project dulu.
+2. Ekstrak zip ini ke root project, pilih "replace" untuk file yang sama.
+3. HAPUS file lama yang masih tertinggal:
+   tests/Feature/ExampleTest.php      (membuka "/" tanpa database, pasti gagal)
+   tests/Unit/ExampleTest.php
+   CARA-PASANG.txt, CARA-PASANG-2.txt, CARA-PASANG-3.txt, CARA-PASANG-ABOUT.txt di root project
+4. TIDAK perlu migrate: tabel users dan favorites sudah ada.
+5. Jalankan:
+   php artisan optimize:clear
+   php artisan test
+6. Coba di browser (Ctrl+F5):
+   - Menu kanan atas menampilkan "Sign in". Klik, lalu "Create an account".
+   - Setelah daftar kamu otomatis masuk dan menuju halaman Saved (menu berubah jadi "Saved").
+   - Buka satu mobil, tekan "Save", lalu buka Saved: mobilnya muncul. Tombol "Remove" menghapusnya.
+   - Tekan "Save" saat belum masuk: kamu diarahkan ke login, lalu kembali ke halaman mobil itu.
+   - "Sign out" ada di halaman Saved.
+
+Yang BELUM ada: lupa password, verifikasi email, dan ulasan (tabel reviews sudah ada tapi belum dipakai).

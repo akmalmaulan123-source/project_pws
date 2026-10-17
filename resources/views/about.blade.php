@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-<div class="wrap page about">
+<div class="wrap page about" data-static>
 
     <header class="ab-head">
         <p class="ab-eyebrow">About</p>

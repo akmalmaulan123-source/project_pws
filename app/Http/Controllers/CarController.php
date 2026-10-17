@@ -136,6 +136,8 @@ class CarController extends Controller
             ->orderByDesc('year_start')
             ->limit(6)->get();
 
-        return view('cars.show', compact('carModel', 'summary', 'related', 'spec'));
+        $saved = auth()->check() && auth()->user()->favorites()->whereKey($carModel->id)->exists();
+
+        return view('cars.show', compact('carModel', 'summary', 'related', 'spec', 'saved'));
     }
 }

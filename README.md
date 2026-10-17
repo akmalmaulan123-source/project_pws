@@ -11,6 +11,7 @@ Katalog spesifikasi mobil bertema layar timing balap. Cari dan saring ribuan mod
 - **Detail mobil**: generasi, mesin, dan spesifikasi terkuat, plus model lain dari merek yang sama
 - **Brands** dan halaman *garage* per merek
 - **Insights**: ringkasan statistik katalog
+- **Akun**: daftar, masuk, keluar, dan simpan mobil favorit. Daftar simpanan ada di halaman Saved
 - Saran pencarian saat mengetik (autocomplete) dan pembaruan data otomatis (*live*)
 - Halaman error bertema (404, 419, 429, 500, 503)
 
@@ -72,7 +73,7 @@ php artisan test
 ## Struktur singkat
 
 ```
-app/Http/Controllers   Home, Car, Brand, Insights, Search, Live
+app/Http/Controllers   Home, Car, Brand, Insights, About, Search, Live, Register, Login, Saved
 app/Models             Brand, CarModel, Generation, Engine
 app/Support            CarDataImporter, Fuel
 app/Console/Commands   Perintah impor dan pengambilan gambar

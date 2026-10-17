@@ -21,7 +21,7 @@
     "prefetch": [{
         "where": { "and": [
             { "href_matches": "/*" },
-            { "not": { "href_matches": ["{{ parse_url(route('live'), PHP_URL_PATH) }}*", "{{ parse_url(route('search.suggest'), PHP_URL_PATH) }}*", "/__dev*"] } },
+            { "not": { "href_matches": ["{{ parse_url(route('live'), PHP_URL_PATH) }}*", "{{ parse_url(route('search.suggest'), PHP_URL_PATH) }}*", "/__dev*", "/login*", "/register*", "/saved*"] } },
             { "not": { "selector_matches": "[download], [target=_blank]" } }
         ] },
         "eagerness": "moderate"
@@ -47,6 +47,11 @@
             <a href="{{ route('brands.index') }}" @class(['is-on' => request()->routeIs('brands.*')])>Brands</a>
             <a href="{{ route('insights') }}" @class(['is-on' => request()->routeIs('insights')])>Insights</a>
             <a href="{{ route('about') }}" @class(['is-on' => request()->routeIs('about')])>About</a>
+            @auth
+                <a href="{{ route('saved.index') }}" @class(['is-on' => request()->routeIs('saved.*')])>Saved</a>
+            @else
+                <a href="{{ route('login') }}" @class(['is-on' => request()->routeIs('login', 'register')])>Sign in</a>
+            @endauth
         </nav>
         <form class="top-search search--line" action="{{ route('cars.index') }}" method="get" role="search">
             <label class="sr-only" for="top-q">Search cars</label>
@@ -59,6 +64,9 @@
 </header>
 
 <main id="main">
+    @if (session('status'))
+        <div class="wrap"><p class="flash" role="status">{{ session('status') }}</p></div>
+    @endif
     @yield('content')
 </main>
 
