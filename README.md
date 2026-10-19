@@ -55,6 +55,17 @@ Buka `http://127.0.0.1:8000`.
 
 Perintah yang mengambil data dari Wikipedia/Wikimedia mengirim kontak di User-Agent. Isi `SCRAPER_CONTACT` di `.env` dengan email kamu.
 
+## Mengisi harga
+
+Dataset tidak memuat harga. Harga diisi lewat CSV dengan kolom `make`, `model`, `price_usd` (opsional: `engine_label`). Satu baris per model berlaku untuk **semua mesin** model itu, jadi cukup mencatat harga dasar per model:
+
+```bash
+php artisan cars:import-prices database/data/prices.csv --dry-run   # cek dulu tanpa menyimpan
+php artisan cars:import-prices database/data/prices.csv             # simpan
+```
+
+Baris dengan `price_usd` kosong dilewati. Harga yang sudah terisi tidak ditimpa kecuali dengan `--overwrite`. CSV dari Excel berbahasa Indonesia (pemisah titik koma) dikenali otomatis. Kurs Rupiah di halaman diatur lewat `USD_TO_IDR`.
+
 ## Pengaturan penting di `.env`
 
 | Variabel | Arti |

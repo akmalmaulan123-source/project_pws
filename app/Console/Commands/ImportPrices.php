@@ -29,7 +29,12 @@ class ImportPrices extends Command
             return self::FAILURE;
         }
 
-        $header = fgetcsv($fh);
+        // Excel dengan pengaturan regional Indonesia menyimpan CSV memakai titik koma (;), bukan koma. Deteksi dari baris judul.
+        $firstLine = (string) fgets($fh);
+        $delimiter = substr_count($firstLine, ';') > substr_count($firstLine, ',') ? ';' : ',';
+        rewind($fh);
+
+        $header = fgetcsv($fh, 0, $delimiter);
         if (! $header) {
             $this->error('File CSV kosong.');
 
@@ -51,7 +56,7 @@ class ImportPrices extends Command
         $missing = [];
         $line = 1;
 
-        while (($raw = fgetcsv($fh)) !== false) {
+        while (($raw = fgetcsv($fh, 0, $delimiter)) !== false) {
             $line++;
             if (count($raw) === 1 && trim((string) $raw[0]) === '') {
                 continue;
@@ -59,6 +64,11 @@ class ImportPrices extends Command
             $row = [];
             foreach ($header as $i => $col) {
                 $row[$col] = trim((string) ($raw[$i] ?? ''));
+            }
+
+            // Harga yang memang belum diisi dilewati diam-diam, supaya templat boleh dikirim setengah terisi.
+            if ($row['price_usd'] === '') {
+                continue;
             }
 
             // "$32,500", "32.500", "32500" -> 32500
