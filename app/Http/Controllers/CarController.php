@@ -89,6 +89,10 @@ class CarController extends Controller
                 'top' => $m->engines_max_top_speed_kmh ? (int) $m->engines_max_top_speed_kmh : null,
                 'fuels' => $fuels[$m->id] ?? [],
                 'rank' => $hp ? 1 + count(array_filter($powers, fn ($p) => $p > $hp)) : null,
+                'price' => $m->engines_min_price_usd ? (int) $m->engines_min_price_usd : null,
+                'idr' => $m->engines_min_price_usd ? Engine::idrLabel((int) $m->engines_min_price_usd) : null,
+                'cls' => self::tier($hp)[0],
+                'clr' => self::tier($hp)[1],
                 'url' => route('brands.show', ['brand' => $m->brand, 'car' => $m->id]),
             ]);
         });
@@ -106,6 +110,18 @@ class CarController extends Controller
             'countryOptions' => Cache::remember('opt.countries', 3600, fn () => Brand::whereNotNull('country')->distinct()->orderBy('country')->pluck('country')->all()),
             'activeCount' => collect($filters)->filter()->count(),
         ]);
+    }
+
+    /** Kelas performa ala game balap dari tenaga maksimum: [huruf, warna]. */
+    private static function tier(?float $hp): array
+    {
+        return match (true) {
+            $hp === null => ['–', '#9c9ca0'],
+            $hp >= 700 => ['S', '#c98bff'],
+            $hp >= 500 => ['A', '#ff5446'],
+            $hp >= 300 => ['B', '#ffd21f'],
+            default => ['C', '#3fcf7b'],
+        };
     }
 
     public function show(CarModel $carModel)

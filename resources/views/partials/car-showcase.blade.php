@@ -1,8 +1,8 @@
 {{--
     Kartu koleksi untuk beranda (Newest models): panel gambar dengan lencana tahun, logo merek + nama model,
-    lalu tiga angka ringkas (tenaga, 0-100, kecepatan maks).
+    lalu harga mulai dari (USD + estimasi Rupiah), lalu tiga angka ringkas (tenaga, 0-100, kecepatan maks).
     Tanpa foto mobil, logo merek mengisi panel gambar. Foto akan otomatis menggantikannya begitu ada ($m->card_image).
-    Butuh: $cars (CarModel dengan brand + agregat engines: max power, max top speed, min 0-100)
+    Butuh: $cars (CarModel dengan brand + agregat engines: max power, max top speed, min 0-100, min harga)
     Class "car-cards showcase" dipertahankan: home.js memakainya untuk animasi muncul saat di-scroll.
 --}}
 <ul class="car-cards showcase nc-grid">
@@ -12,6 +12,7 @@
             $hp = $m->engines_max_power_hp;
             $acc = $m->engines_min_zero_to_100_s;
             $top = $m->engines_max_top_speed_kmh;
+            $price = $m->engines_min_price_usd;
         @endphp
         <li style="--i: {{ $loop->index }}">
             <a class="nc" href="{{ route('brands.show', ['brand' => $m->brand, 'car' => $m->id]) }}">
@@ -44,6 +45,17 @@
                         <strong>{{ $m->name }}</strong>
                         <small>{{ $m->brand->name }} · {{ $m->engines_count }} {{ \Illuminate\Support\Str::plural('engine', $m->engines_count) }}</small>
                     </span>
+                </span>
+
+                <span class="nc-price">
+                    @if ($price)
+                        <i>From</i>
+                        <b>${{ number_format($price) }}</b>
+                        <small>{{ \App\Models\Engine::idrLabel($price) }}</small>
+                    @else
+                        <i>Price</i>
+                        <span class="na">Not listed</span>
+                    @endif
                 </span>
 
                 <span class="nc-stats">

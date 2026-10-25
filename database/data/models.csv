@@ -55,7 +55,6 @@ bentley,Bentley,Continental GTC,2006,
 bentley,Bentley,Flying Spur,2014,
 bentley,Bentley,Mulliner,2020,2023
 bentley,Bentley,Mulsanne,2009,2020
-bentley,Bentley,State Limousine,,
 bentley,Bentley,T1,1965,1976
 bentley,Bentley,T2,1977,1980
 bmw,BMW,1 Series,2004,
@@ -127,14 +126,11 @@ bugatti,Bugatti,Bolide,2022,
 bugatti,Bugatti,Brouillard,2025,
 bugatti,Bugatti,Centodieci,2019,2022
 bugatti,Bugatti,Chiron,2016,
-bugatti,Bugatti,Destrier,2026,
 bugatti,Bugatti,Divo,2018,2021
 bugatti,Bugatti,EB 110,1991,1995
 bugatti,Bugatti,La Voiture Noire,2019,2019
 bugatti,Bugatti,Mistral,2022,
 bugatti,Bugatti,Tourbillon,2024,
-bugatti,Bugatti,Type 5,,
-bugatti,Bugatti,Type 64,,
 bugatti,Bugatti,Veyron,2005,2015
 ferrari,Ferrari,12Cilindri,2024,
 ferrari,Ferrari,288 GTO/F40/F50/Enzo/LaFerrari,1984,2015
@@ -194,7 +190,6 @@ ferrari,Ferrari,Testarossa,2025,
 ferrari,Ferrari,Testarossa/512 TR/512M,1984,
 koenigsegg,Koenigsegg,Agera,2010,2016
 koenigsegg,Koenigsegg,CC8S,2002,2005
-koenigsegg,Koenigsegg,CCGT,2026,
 koenigsegg,Koenigsegg,CCR,2004,2006
 koenigsegg,Koenigsegg,CCX,2006,2010
 koenigsegg,Koenigsegg,CCXR,2007,2010
@@ -203,7 +198,6 @@ koenigsegg,Koenigsegg,Jesko,2019,
 koenigsegg,Koenigsegg,One:1,2014,2015
 koenigsegg,Koenigsegg,Regera,2015,2022
 koenigsegg,Koenigsegg,Sadairs Spear,2025,
-lamborghini,Lamborghini,350 GTS,,
 lamborghini,Lamborghini,Aventador,2011,
 lamborghini,Lamborghini,Centenario,2016,2017
 lamborghini,Lamborghini,Countach,1973,1990
@@ -272,8 +266,6 @@ mclaren,McLaren,765LT,2020,
 mclaren,McLaren,Artura,2021,
 mclaren,McLaren,Elva,2020,
 mclaren,McLaren,F1,1993,1998
-mclaren,McLaren,F1 GT,,
-mclaren,McLaren,F1 LM,,
 mclaren,McLaren,GT,2019,2023
 mclaren,McLaren,GTS,2023,
 mclaren,McLaren,MP4-12C,2011,2015
@@ -314,7 +306,6 @@ morgan,Morgan,Aero,2012,2016
 morgan,Morgan,Aero 8,2001,2018
 morgan,Morgan,Aero SuperSports,2009,2016
 morgan,Morgan,AeroMax,2005,2011
-morgan,Morgan,Midsummer,2026,
 morgan,Morgan,Plus 4,2005,
 morgan,Morgan,Plus 8,2012,2018
 morgan,Morgan,Plus Six,2019,
@@ -404,7 +395,6 @@ porsche,Porsche,911 GT2,1995,2009
 porsche,Porsche,911 GT2 RS,2010,2019
 porsche,Porsche,911 GT3,1999,
 porsche,Porsche,911 GT3 RS,2004,2019
-porsche,Porsche,911 GT3 S-C,2026,
 porsche,Porsche,911 R,2016,2019
 porsche,Porsche,911 Sport Classic,2010,2012
 porsche,Porsche,911 Targa,1967,1997
@@ -484,7 +474,6 @@ porsche,Porsche,Taycan GTS Sport Turismo,2021,
 porsche,Porsche,Taycan Sport Turismo,2024,
 porsche,Porsche,Taycan Turbo,2019,
 rimac,Rimac,Nevera,2021,
-rolls-royce,Rolls-Royce,Arcadia,2024,
 rolls-royce,Rolls-Royce,Camargue,1975,1986
 rolls-royce,Rolls-Royce,Corniche,1971,2003
 rolls-royce,Rolls-Royce,Cullinan,2018,

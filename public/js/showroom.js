@@ -1,5 +1,5 @@
 /* Halaman Cars (showroom).
-   - Arahkan kursor (atau ketuk di layar sentuh) ke kartu mobil: panel sorotan menampilkan spesifikasinya, dengan speedometer tenaga.
+   - Arahkan kursor (atau ketuk di layar sentuh) ke kartu mobil: panel sorotan menampilkan spesifikasinya, dengan bar bersegmen, kelas performa, dan harga.
    - Strip brand, pilihan bahan bakar, dan slider tenaga mengisi kolom tersembunyi di form lalu memicu live-search (live.js).
    Memakai delegasi event di document, jadi tetap bekerja setelah live.js mengganti isi halaman. */
 (function () {
@@ -69,15 +69,25 @@
         $(spot, 'years').textContent = d.years + ' · ' + eng + (eng === 1 ? ' engine' : ' engines') + ' on record';
 
         var hp = parseInt(d.hp, 10) || 0;
-        var arc = spot.querySelector('.sr-gv');
-        arc.style.strokeDasharray = (parseFloat(arc.dataset.arc) * Math.min(hp / 1000, 1)) + ' ' + arc.dataset.circ;
         countTo($(spot, 'hp'), hp);
+        spot.style.setProperty('--cls', d.clr || '#9c9ca0');
+        $(spot, 'cls').textContent = d.cls || '–';
+
+        var price = parseInt(d.price, 10) || 0;
+        var pe = $(spot, 'price');
+        pe.textContent = price ? '$' + fmt(price) : 'Not listed';
+        pe.classList.toggle('na', !price);
+        $(spot, 'idr').textContent = price ? (d.idr || '') : '';
+
+        // Bar bersegmen: lebar dibulatkan ke kelipatan 10% (10 segmen)
+        function seg(p) { return Math.max(10, Math.min(100, Math.round(p / 10) * 10)) + '%'; }
+        $(spot, 'hpBar').style.width = hp ? seg(hp / 10) : '0';
 
         var z = parseFloat(d.zero), top = parseInt(d.top, 10);
         $(spot, 'zero').innerHTML = z ? z.toFixed(1) + '<small>s</small>' : '–';
-        $(spot, 'zeroBar').style.width = z ? Math.max(4, Math.min(100, (1 - (z - 2) / 6) * 100)) + '%' : '0';
+        $(spot, 'zeroBar').style.width = z ? seg((1 - (z - 2) / 6) * 100) : '0';
         $(spot, 'top').innerHTML = top ? fmt(top) + '<small>km/h</small>' : '–';
-        $(spot, 'topBar').style.width = top ? Math.min(100, top / 4) + '%' : '0';
+        $(spot, 'topBar').style.width = top ? seg(top / 4) : '0';
         $(spot, 'eng').textContent = eng || '–';
 
         var box = $(spot, 'fuels');

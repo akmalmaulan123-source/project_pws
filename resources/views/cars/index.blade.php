@@ -76,38 +76,27 @@
         <p class="results-count sr-line">Showing {{ number_format($cars->firstItem()) }}–{{ number_format($cars->lastItem()) }} of {{ number_format($cars->total()) }} {{ \Illuminate\Support\Str::plural('model', $cars->total()) }}</p>
 
         <div class="sr-lay" data-showroom>
-            <aside class="sr-spot" aria-label="Selected car">
+            <aside class="sr-spot" aria-label="Selected car" style="--cls: {{ $first->sr['clr'] }}">
                 <div class="sr-sp1">
                     @include('partials.brand-logo', ['brand' => $first->brand, 'size' => 'md'])
                     <span data-sr="brand">{{ $first->brand->name }}@if ($first->brand->country), {{ $first->brand->country }}@endif</span>
                     <span class="sr-rank" data-sr="rank">@if ($first->sr['rank']) Power rank #{{ $first->sr['rank'] }} @endif</span>
+                    <span class="sr-cls" data-sr="cls">{{ $first->sr['cls'] }}</span>
                 </div>
                 <h2 class="sr-sn" data-sr="name">{{ $first->name }}</h2>
                 <p class="sr-sy" data-sr="years">{{ $first->years }} · {{ $first->engines_count }} {{ \Illuminate\Support\Str::plural('engine', $first->engines_count) }} on record</p>
 
-                <div class="sr-gw">
-                    <svg class="sr-gauge" viewBox="-12 -12 224 224" aria-hidden="true">
-                        <defs><linearGradient id="sr-gg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#dddddd"/><stop offset="1" stop-color="#c98bff"/></linearGradient></defs>
-                        @for ($k = 0; $k <= 20; $k++)
-                            @php $a = deg2rad(135 + 13.5 * $k); $major = $k % 5 === 0; $r1 = $major ? 86 : 88; @endphp
-                            <line class="sr-tk {{ $major ? 'm' : '' }}" x1="{{ round(100 + $r1 * cos($a), 2) }}" y1="{{ round(100 + $r1 * sin($a), 2) }}" x2="{{ round(100 + 95 * cos($a), 2) }}" y2="{{ round(100 + 95 * sin($a), 2) }}"/>
-                        @endfor
-                        @foreach ([0, 500, 1000] as $k => $v)
-                            @php $a = deg2rad(135 + 135 * $k); @endphp
-                            <text class="sr-gl" x="{{ round(100 + 108 * cos($a), 2) }}" y="{{ round(103 + 108 * sin($a), 2) }}">{{ $v }}</text>
-                        @endforeach
-                        <g transform="rotate(135 100 100)">
-                            <circle class="sr-gt" cx="100" cy="100" r="74" style="stroke-dasharray: {{ round($gauge['c'] * .75, 2) }} {{ round($gauge['c'], 2) }}"/>
-                            <circle class="sr-gv" cx="100" cy="100" r="74" data-arc="{{ round($gauge['c'] * .75, 2) }}" data-circ="{{ round($gauge['c'], 2) }}" style="stroke-dasharray: 0 {{ round($gauge['c'], 2) }}"/>
-                        </g>
-                        <text class="sr-gn" x="100" y="112" data-sr="hp">{{ $first->sr['hp'] ? number_format($first->sr['hp']) : '–' }}</text>
-                        <text class="sr-gu" x="100" y="136">HP</text>
-                    </svg>
-                    <div class="sr-stats">
-                        <div class="sr-st"><div class="sr-stt"><span>0 to 100 km/h</span><b data-sr="zero">{!! $first->sr['zero'] ? number_format($first->sr['zero'], 1).'<small>s</small>' : '–' !!}</b></div><div class="sr-br"><i data-sr="zeroBar"></i></div></div>
-                        <div class="sr-st"><div class="sr-stt"><span>Top speed</span><b data-sr="top">{!! $first->sr['top'] ? number_format($first->sr['top']).'<small>km/h</small>' : '–' !!}</b></div><div class="sr-br"><i data-sr="topBar"></i></div></div>
-                        <div class="sr-st"><div class="sr-stt"><span>Engines</span><b data-sr="eng">{{ $first->engines_count ?: '–' }}</b></div></div>
-                    </div>
+                <div class="sr-price">
+                    <span class="sr-pl">From</span>
+                    <b data-sr="price" class="{{ $first->sr['price'] ? '' : 'na' }}">{{ $first->sr['price'] ? '$'.number_format($first->sr['price']) : 'Not listed' }}</b>
+                    <small data-sr="idr">{{ $first->sr['idr'] }}</small>
+                </div>
+
+                <div class="sr-stats">
+                    <div class="sr-st"><div class="sr-stt"><span>Power</span><b><span data-sr="hp">{{ $first->sr['hp'] ? number_format($first->sr['hp']) : '–' }}</span><small>hp</small></b></div><div class="sr-br"><i data-sr="hpBar"></i></div></div>
+                    <div class="sr-st"><div class="sr-stt"><span>0 to 100 km/h</span><b data-sr="zero">{!! $first->sr['zero'] ? number_format($first->sr['zero'], 1).'<small>s</small>' : '–' !!}</b></div><div class="sr-br"><i data-sr="zeroBar"></i></div></div>
+                    <div class="sr-st"><div class="sr-stt"><span>Top speed</span><b data-sr="top">{!! $first->sr['top'] ? number_format($first->sr['top']).'<small>km/h</small>' : '–' !!}</b></div><div class="sr-br"><i data-sr="topBar"></i></div></div>
+                    <div class="sr-st"><div class="sr-stt"><span>Engines</span><b data-sr="eng">{{ $first->engines_count ?: '–' }}</b></div></div>
                 </div>
                 <div class="sr-fu" data-sr="fuels">
                     @foreach ($first->sr['fuels'] as $g)<span class="sr-fl" data-g="{{ $g }}">{{ $g }}</span>@endforeach
@@ -119,19 +108,23 @@
                 <div class="sr-rack">
                     @foreach ($cars as $m)
                         @php $s = $m->sr; @endphp
-                        <a class="sr-tile {{ $loop->first ? 'is-on' : '' }}" href="{{ $s['url'] }}" style="--i: {{ min($loop->index, 16) }}"
+                        <a class="sr-tile {{ $loop->first ? 'is-on' : '' }}" href="{{ $s['url'] }}" style="--i: {{ min($loop->index, 16) }}; --cls: {{ $s['clr'] }}"
                            data-name="{{ $m->name }}" data-brand="{{ $m->brand->name }}" data-country="{{ $m->brand->country }}" data-years="{{ $m->years }}"
                            data-hp="{{ $s['hp'] }}" data-zero="{{ $s['zero'] }}" data-top="{{ $s['top'] }}" data-eng="{{ $m->engines_count }}"
                            data-fuels="{{ implode(',', $s['fuels']) }}" data-rank="{{ $s['rank'] }}"
+                           data-price="{{ $s['price'] }}" data-idr="{{ $s['idr'] }}" data-cls="{{ $s['cls'] }}" data-clr="{{ $s['clr'] }}"
                            data-logo="{{ $m->brand->logo_src }}" data-code="{{ $m->brand->code }}" data-hue="{{ $m->brand->hue }}">
                             <span class="sr-tin">
+                                <span class="sr-stripe"></span>
                                 <span class="sr-t1">@include('partials.brand-logo', ['brand' => $m->brand, 'size' => 'xs'])<span>{{ $m->year_start ?: '–' }}</span></span>
                                 <span class="sr-tn">{{ $m->name }}</span>
                                 <span class="sr-th">
+                                    <span class="sr-cls">{{ $s['cls'] }}</span>
                                     @if ($s['hp'])<b>{{ number_format($s['hp']) }}<small>hp</small></b>@else<span class="na">No power data</span>@endif
-                                    @if ($s['zero'])<span>{{ number_format($s['zero'], 1) }}s</span>@endif
+                                    @if ($s['zero'])<span class="sr-tz">{{ number_format($s['zero'], 1) }}s</span>@endif
                                 </span>
-                                <span class="sr-pb"><i class="{{ ($s['hp'] ?? 0) >= 800 ? 'hi' : '' }}" style="width: {{ min(100, ($s['hp'] ?? 0) / 10) }}%"></i></span>
+                                <span class="sr-pb"><i style="width: {{ round(min(100, ($s['hp'] ?? 0) / 10) / 10) * 10 }}%"></i></span>
+                                <span class="sr-tp"><em>From</em>@if ($s['price'])<b>${{ number_format($s['price']) }}</b>@else<span class="na">Not listed</span>@endif</span>
                             </span>
                         </a>
                     @endforeach

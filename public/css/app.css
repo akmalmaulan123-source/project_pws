@@ -1138,7 +1138,8 @@ a.pg:hover {
 .spec .is-top-row .fuel,
 .spec .is-top-row .idr,
 .spec .is-top-row .na {
-    color: #b690e6; /* ungu "rare item": lembut, tidak menyilaukan */
+    color: #b690e6;
+    /* ungu "rare item": lembut, tidak menyilaukan */
     font-weight: 500;
 }
 
@@ -1798,7 +1799,7 @@ a.is-best .tw-bar {
     transition: background 0.25s, color 0.25s, border-color 0.25s;
 }
 
-.foot-top > * {
+.foot-top>* {
     display: inline-block;
     transform: skewX(14deg);
 }
@@ -1857,7 +1858,9 @@ a.is-best .tw-bar {
 }
 
 @keyframes foot-fill {
-    from { clip-path: inset(0 100% 0 0); }
+    from {
+        clip-path: inset(0 100% 0 0);
+    }
 }
 
 @media (max-width: 800px) {
@@ -2488,7 +2491,8 @@ a.is-best .tw-bar {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    scroll-padding-block: 8px 60px; /* supaya baris aktif tidak tertutup footer yang menempel */
+    scroll-padding-block: 8px 60px;
+    /* supaya baris aktif tidak tertutup footer yang menempel */
     scrollbar-width: thin;
     scrollbar-color: #3a3a3d transparent;
 }
@@ -2669,7 +2673,8 @@ a.is-best .tw-bar {
     background: #232326;
 }
 
-@media (max-width: 560px), (hover: none) {
+@media (max-width: 560px),
+(hover: none) {
     .sg-keys {
         display: none;
     }
@@ -2712,7 +2717,9 @@ a.is-best .tw-bar {
 }
 
 @keyframes sg-fade {
-    from { opacity: 0; }
+    from {
+        opacity: 0;
+    }
 }
 
 /* ---------- Hero panggung: satu mobil besar, nama outline di belakangnya ---------- */
@@ -2850,6 +2857,7 @@ a.is-best .tw-bar {
     -webkit-mask-image: none;
     mask-image: none;
 }
+
 /* ---------- Hero: mobil cutout (PNG transparan) menyatu dengan panggung ---------- */
 .show-stage.is-cutout .show-car {
     /* Tanpa mask: tepi mobil sudah bersih, tidak perlu dipudarkan seperti foto persegi */
@@ -2860,9 +2868,7 @@ a.is-best .tw-bar {
        sejajar dengan --asphalt, garis tipis terang memisahkan bodi dari latar gelap,
        bayangan jatuh ke lantai panggung. */
     filter:
-        saturate(1.06) contrast(1.05) brightness(0.98)
-        drop-shadow(0 0 1px rgba(221, 221, 221, 0.35))
-        drop-shadow(0 26px 24px rgba(0, 0, 0, 0.6));
+        saturate(1.06) contrast(1.05) brightness(0.98) drop-shadow(0 0 1px rgba(221, 221, 221, 0.35)) drop-shadow(0 26px 24px rgba(0, 0, 0, 0.6));
 }
 
 /* Glow di belakang mobil memakai warna mobil itu sendiri (dari salinan blur) */
@@ -3121,12 +3127,24 @@ a.is-best .tw-bar {
     transform: translateX(28px);
 }
 
-.stage.is-ready .spec-item:nth-child(1) { transition-delay: 0.55s; }
-.stage.is-ready .spec-item:nth-child(2) { transition-delay: 0.65s; }
-.stage.is-ready .spec-item:nth-child(3) { transition-delay: 0.75s; }
-.stage.is-ready .spec-item:nth-child(4) { transition-delay: 0.85s; }
+.stage.is-ready .spec-item:nth-child(1) {
+    transition-delay: 0.55s;
+}
+
+.stage.is-ready .spec-item:nth-child(2) {
+    transition-delay: 0.65s;
+}
+
+.stage.is-ready .spec-item:nth-child(3) {
+    transition-delay: 0.75s;
+}
+
+.stage.is-ready .spec-item:nth-child(4) {
+    transition-delay: 0.85s;
+}
 
 @media (max-width: 900px) {
+
     /* Di HP kolom ditumpuk di bawah mobil, jadi semuanya masuk dari bawah */
     .js .stage:not(.is-ready) .spec-col--l .spec-item,
     .js .stage:not(.is-ready) .spec-col--r .spec-item {
@@ -3193,6 +3211,7 @@ a.is-best .tw-bar {
 
 /* Cadangan untuk browser tanpa View Transitions (Firefox, dll.) */
 @supports not (view-transition-name: none) {
+
     main,
     .foot {
         animation: page-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -3231,7 +3250,7 @@ a.is-best .tw-bar {
 }
 
 /* Tabel generasi: isi terbuka dengan halus saat dibuka */
-details.gen[open] > .table-wrap {
+details.gen[open]>.table-wrap {
     animation: gen-open 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
@@ -3242,11 +3261,12 @@ details.gen[open] > .table-wrap {
     }
 }
 
-details.gen > summary {
+details.gen>summary {
     transition: background 0.2s;
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     ::view-transition-old(root),
     ::view-transition-new(root) {
         animation: none;
@@ -3542,7 +3562,7 @@ details.gen > summary {
     text-align: center;
 }
 
-.nc-stats > span {
+.nc-stats>span {
     display: grid;
     gap: 5px;
     min-width: 0;
@@ -3563,6 +3583,7 @@ details.gen > summary {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .nc,
     .nc-img,
     .nc-mark {
@@ -3616,7 +3637,9 @@ details.gen > summary {
 }
 
 @keyframes hero-ambient {
-    from { opacity: 0; }
+    from {
+        opacity: 0;
+    }
 }
 
 @keyframes hero-outline {
@@ -3860,7 +3883,9 @@ details.gen > summary {
 }
 
 @keyframes hs-strip {
-    from { clip-path: inset(0 100% 0 0); }
+    from {
+        clip-path: inset(0 100% 0 0);
+    }
 }
 
 @keyframes hs-link {
@@ -3919,11 +3944,17 @@ details.gen > summary {
 }
 
 @keyframes tw-char {
-    from { opacity: 0; }
+    from {
+        opacity: 0;
+    }
 }
 
 @keyframes tw-cursor {
-    from, to { opacity: 1; }
+
+    from,
+    to {
+        opacity: 1;
+    }
 }
 
 /* ================= Beranda: strip statistik (chassis plate) =================
@@ -3936,10 +3967,11 @@ details.gen > summary {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
-    margin-top: 32px;   /* di bawah garis bawah hero */
+    margin-top: 32px;
+    /* di bawah garis bawah hero */
 }
 
-.stats-strip > div {
+.stats-strip>div {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -3957,10 +3989,15 @@ details.gen > summary {
     transition: opacity 0.9s ease var(--dl, 0s), translate 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--dl, 0s), transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.stats-strip > div:nth-child(2) { --dl: 0.12s; }
-.stats-strip > div:nth-child(3) { --dl: 0.24s; }
+.stats-strip>div:nth-child(2) {
+    --dl: 0.12s;
+}
 
-.stats-strip > div:hover {
+.stats-strip>div:nth-child(3) {
+    --dl: 0.24s;
+}
+
+.stats-strip>div:hover {
     transform: translateY(-3px);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.8),
@@ -3969,8 +4006,8 @@ details.gen > summary {
 }
 
 /* Keling di dua sudut atas */
-.stats-strip > div::before,
-.stats-strip > div::after {
+.stats-strip>div::before,
+.stats-strip>div::after {
     content: "";
     position: absolute;
     top: 10px;
@@ -3981,8 +4018,13 @@ details.gen > summary {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.stats-strip > div::before { left: 11px; }
-.stats-strip > div::after { right: 11px; }
+.stats-strip>div::before {
+    left: 11px;
+}
+
+.stats-strip>div::after {
+    right: 11px;
+}
 
 .stats-strip span {
     order: -1;
@@ -4006,17 +4048,17 @@ details.gen > summary {
 }
 
 /* Sebelum terlihat: pelat turun sedikit dan transparan (hanya bila JS jalan) */
-.js .stats-strip:not(.is-in) > div {
+.js .stats-strip:not(.is-in)>div {
     opacity: 0;
     translate: 0 18px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .stats-strip > div {
+    .stats-strip>div {
         transition: none;
     }
 
-    .stats-strip > div:hover {
+    .stats-strip>div:hover {
         transform: none;
     }
 }
@@ -4026,19 +4068,24 @@ details.gen > summary {
         gap: 10px;
     }
 
-    .stats-strip > div {
+    .stats-strip>div {
         padding: 22px 8px 16px;
     }
 
-    .stats-strip > div::before,
-    .stats-strip > div::after {
+    .stats-strip>div::before,
+    .stats-strip>div::after {
         top: 7px;
         width: 5px;
         height: 5px;
     }
 
-    .stats-strip > div::before { left: 7px; }
-    .stats-strip > div::after { right: 7px; }
+    .stats-strip>div::before {
+        left: 7px;
+    }
+
+    .stats-strip>div::after {
+        right: 7px;
+    }
 
     .stats-strip span {
         font-size: 0.56rem;
@@ -4197,7 +4244,7 @@ details.gen > summary {
     transform: skewX(-14deg);
 }
 
-.hud-gear > div {
+.hud-gear>div {
     transform: skewX(14deg);
     text-align: center;
 }
@@ -4215,7 +4262,7 @@ details.gen > summary {
     transform: skewX(-14deg);
 }
 
-.hud-speed > div {
+.hud-speed>div {
     transform: skewX(14deg);
 }
 
@@ -4306,7 +4353,8 @@ details.gen > summary {
     .hud {
         justify-self: stretch;
         width: 100%;
-        padding-right: 12px; /* ruang untuk sudut miring panel */
+        padding-right: 12px;
+        /* ruang untuk sudut miring panel */
     }
 
     .hud-speed {
@@ -4362,12 +4410,19 @@ details.gen > summary {
 }
 
 @keyframes hud-sweep {
-    0% { transform: skewX(-18deg) translateX(-130%); }
-    100% { transform: skewX(-18deg) translateX(130%); }
+    0% {
+        transform: skewX(-18deg) translateX(-130%);
+    }
+
+    100% {
+        transform: skewX(-18deg) translateX(130%);
+    }
 }
 
 @keyframes hud-text {
-    from { color: transparent; }
+    from {
+        color: transparent;
+    }
 }
 
 @keyframes hud-rise {
@@ -4383,16 +4438,25 @@ details.gen > summary {
 }
 
 @keyframes hud-fade {
-    from { opacity: 0; }
+    from {
+        opacity: 0;
+    }
 }
 
 @keyframes hud-fill {
-    from { width: 0; }
+    from {
+        width: 0;
+    }
 }
 
 @keyframes hud-shift {
-    0% { filter: brightness(2.4); }
-    100% { filter: none; }
+    0% {
+        filter: brightness(2.4);
+    }
+
+    100% {
+        filter: none;
+    }
 }
 
 /* ================= Navbar transparan premium =================
@@ -4521,6 +4585,7 @@ body.has-hero .show {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .top,
     .top::before,
     .top::after,
@@ -4902,6 +4967,7 @@ body.has-hero .show {
 }
 
 @media (max-width: 760px) {
+
     .search--pill input,
     .search--line input {
         width: 140px;
@@ -4952,55 +5018,110 @@ select {
     transform-origin: left;
 }
 
-html:not(.live-quiet) .page > :nth-child(1) { --pg-d: 0ms; }
-html:not(.live-quiet) .page > :nth-child(2) { --pg-d: 80ms; }
-html:not(.live-quiet) .page > :nth-child(3) { --pg-d: 160ms; }
-html:not(.live-quiet) .page > :nth-child(4) { --pg-d: 240ms; }
-html:not(.live-quiet) .page > :nth-child(5) { --pg-d: 320ms; }
-html:not(.live-quiet) .page > :nth-child(6) { --pg-d: 400ms; }
-html:not(.live-quiet) .page > :nth-child(7) { --pg-d: 480ms; }
+html:not(.live-quiet) .page> :nth-child(1) {
+    --pg-d: 0ms;
+}
 
-html:not(.live-quiet) .rows > .row:nth-child(1),
-html:not(.live-quiet) .make-grid > li:nth-child(1),
-html:not(.live-quiet) .car-cards > li:nth-child(1) { --pg-d: 300ms; }
-html:not(.live-quiet) .rows > .row:nth-child(2),
-html:not(.live-quiet) .make-grid > li:nth-child(2),
-html:not(.live-quiet) .car-cards > li:nth-child(2) { --pg-d: 345ms; }
-html:not(.live-quiet) .rows > .row:nth-child(3),
-html:not(.live-quiet) .make-grid > li:nth-child(3),
-html:not(.live-quiet) .car-cards > li:nth-child(3) { --pg-d: 390ms; }
-html:not(.live-quiet) .rows > .row:nth-child(4),
-html:not(.live-quiet) .make-grid > li:nth-child(4),
-html:not(.live-quiet) .car-cards > li:nth-child(4) { --pg-d: 435ms; }
-html:not(.live-quiet) .rows > .row:nth-child(5),
-html:not(.live-quiet) .make-grid > li:nth-child(5),
-html:not(.live-quiet) .car-cards > li:nth-child(5) { --pg-d: 480ms; }
-html:not(.live-quiet) .rows > .row:nth-child(6),
-html:not(.live-quiet) .make-grid > li:nth-child(6),
-html:not(.live-quiet) .car-cards > li:nth-child(6) { --pg-d: 525ms; }
-html:not(.live-quiet) .rows > .row:nth-child(7),
-html:not(.live-quiet) .make-grid > li:nth-child(7),
-html:not(.live-quiet) .car-cards > li:nth-child(7) { --pg-d: 570ms; }
-html:not(.live-quiet) .rows > .row:nth-child(8),
-html:not(.live-quiet) .make-grid > li:nth-child(8),
-html:not(.live-quiet) .car-cards > li:nth-child(8) { --pg-d: 615ms; }
-html:not(.live-quiet) .rows > .row:nth-child(9),
-html:not(.live-quiet) .make-grid > li:nth-child(9),
-html:not(.live-quiet) .car-cards > li:nth-child(9) { --pg-d: 660ms; }
-html:not(.live-quiet) .rows > .row:nth-child(10),
-html:not(.live-quiet) .make-grid > li:nth-child(10),
-html:not(.live-quiet) .car-cards > li:nth-child(10) { --pg-d: 705ms; }
-html:not(.live-quiet) .rows > .row:nth-child(11),
-html:not(.live-quiet) .make-grid > li:nth-child(11),
-html:not(.live-quiet) .car-cards > li:nth-child(11) { --pg-d: 750ms; }
-html:not(.live-quiet) .rows > .row:nth-child(12),
-html:not(.live-quiet) .make-grid > li:nth-child(12),
-html:not(.live-quiet) .car-cards > li:nth-child(12) { --pg-d: 795ms; }
+html:not(.live-quiet) .page> :nth-child(2) {
+    --pg-d: 80ms;
+}
 
-html:not(.live-quiet) .page > :nth-child(-n+7):not(.page-head):not(.rows):not(.make-grid):not(.car-cards),
-html:not(.live-quiet) .rows > .row:nth-child(-n+12),
-html:not(.live-quiet) .make-grid > li:nth-child(-n+12),
-html:not(.live-quiet) .car-cards > li:nth-child(-n+12) {
+html:not(.live-quiet) .page> :nth-child(3) {
+    --pg-d: 160ms;
+}
+
+html:not(.live-quiet) .page> :nth-child(4) {
+    --pg-d: 240ms;
+}
+
+html:not(.live-quiet) .page> :nth-child(5) {
+    --pg-d: 320ms;
+}
+
+html:not(.live-quiet) .page> :nth-child(6) {
+    --pg-d: 400ms;
+}
+
+html:not(.live-quiet) .page> :nth-child(7) {
+    --pg-d: 480ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(1),
+html:not(.live-quiet) .make-grid>li:nth-child(1),
+html:not(.live-quiet) .car-cards>li:nth-child(1) {
+    --pg-d: 300ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(2),
+html:not(.live-quiet) .make-grid>li:nth-child(2),
+html:not(.live-quiet) .car-cards>li:nth-child(2) {
+    --pg-d: 345ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(3),
+html:not(.live-quiet) .make-grid>li:nth-child(3),
+html:not(.live-quiet) .car-cards>li:nth-child(3) {
+    --pg-d: 390ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(4),
+html:not(.live-quiet) .make-grid>li:nth-child(4),
+html:not(.live-quiet) .car-cards>li:nth-child(4) {
+    --pg-d: 435ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(5),
+html:not(.live-quiet) .make-grid>li:nth-child(5),
+html:not(.live-quiet) .car-cards>li:nth-child(5) {
+    --pg-d: 480ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(6),
+html:not(.live-quiet) .make-grid>li:nth-child(6),
+html:not(.live-quiet) .car-cards>li:nth-child(6) {
+    --pg-d: 525ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(7),
+html:not(.live-quiet) .make-grid>li:nth-child(7),
+html:not(.live-quiet) .car-cards>li:nth-child(7) {
+    --pg-d: 570ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(8),
+html:not(.live-quiet) .make-grid>li:nth-child(8),
+html:not(.live-quiet) .car-cards>li:nth-child(8) {
+    --pg-d: 615ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(9),
+html:not(.live-quiet) .make-grid>li:nth-child(9),
+html:not(.live-quiet) .car-cards>li:nth-child(9) {
+    --pg-d: 660ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(10),
+html:not(.live-quiet) .make-grid>li:nth-child(10),
+html:not(.live-quiet) .car-cards>li:nth-child(10) {
+    --pg-d: 705ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(11),
+html:not(.live-quiet) .make-grid>li:nth-child(11),
+html:not(.live-quiet) .car-cards>li:nth-child(11) {
+    --pg-d: 750ms;
+}
+
+html:not(.live-quiet) .rows>.row:nth-child(12),
+html:not(.live-quiet) .make-grid>li:nth-child(12),
+html:not(.live-quiet) .car-cards>li:nth-child(12) {
+    --pg-d: 795ms;
+}
+
+html:not(.live-quiet) .page> :nth-child(-n+7):not(.page-head):not(.rows):not(.make-grid):not(.car-cards),
+html:not(.live-quiet) .rows>.row:nth-child(-n+12),
+html:not(.live-quiet) .make-grid>li:nth-child(-n+12),
+html:not(.live-quiet) .car-cards>li:nth-child(-n+12) {
     animation: pg-rise 0.8s var(--ease-out) var(--pg-d, 0ms) backwards;
 }
 
@@ -5071,10 +5192,10 @@ html:not(.live-quiet) .page-head::after {
         scroll-behavior: auto;
     }
 
-    .page > *,
-    .rows > .row,
-    .make-grid > li,
-    .car-cards > li,
+    .page>*,
+    .rows>.row,
+    .make-grid>li,
+    .car-cards>li,
     .page-head h1,
     .page-head p,
     .page-head::after {
@@ -5203,7 +5324,9 @@ html:not(.live-quiet) .page-head::after {
 }
 
 @keyframes gr-grow {
-    from { width: 0; }
+    from {
+        width: 0;
+    }
 }
 
 .gr-specs {
@@ -5215,7 +5338,7 @@ html:not(.live-quiet) .page-head::after {
     border-top: 1px solid var(--line);
 }
 
-.gr-specs > div {
+.gr-specs>div {
     min-width: 0;
 }
 
@@ -5291,7 +5414,10 @@ html:not(.live-quiet) .gr-logo {
 }
 
 @keyframes gr-drive {
-    from { transform: translateX(70px); opacity: 0; }
+    from {
+        transform: translateX(70px);
+        opacity: 0;
+    }
 }
 
 /* Pintu garasi */
@@ -5314,7 +5440,10 @@ html:not(.live-quiet) .gr-logo {
 }
 
 @keyframes gr-door-up {
-    to { transform: translateY(-101%); visibility: hidden; }
+    to {
+        transform: translateY(-101%);
+        visibility: hidden;
+    }
 }
 
 /* Pindah mobil (tanpa memuat ulang halaman): pintu tidak diulang */
@@ -5431,7 +5560,8 @@ html.gr-html,
 
 .gr-full {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);   /* kunci lebar kolom: deretan model yang panjang tidak boleh melebarkan halaman */
+    grid-template-columns: minmax(0, 1fr);
+    /* kunci lebar kolom: deretan model yang panjang tidak boleh melebarkan halaman */
     grid-template-rows: minmax(0, 1fr) auto;
     height: 100vh;
     height: 100dvh;
@@ -5457,7 +5587,9 @@ html.gr-html,
 }
 
 @keyframes gr-busy {
-    to { transform: translateX(100%); }
+    to {
+        transform: translateX(100%);
+    }
 }
 
 /* Setelah pemuatan pertama, batang statistik bergeser dari nilai lama ke nilai baru */
@@ -5947,10 +6079,21 @@ html.live-quiet .gr-bar i {
     display: none;
 }
 
-[data-g="Gasoline"] { --c: var(--ash); }
-[data-g="Diesel"] { --c: var(--tyre-medium); }
-[data-g="Electric"] { --c: var(--tyre-wet); }
-[data-g="Hybrid"] { --c: var(--tyre-inter); }
+[data-g="Gasoline"] {
+    --c: var(--ash);
+}
+
+[data-g="Diesel"] {
+    --c: var(--tyre-medium);
+}
+
+[data-g="Electric"] {
+    --c: var(--tyre-wet);
+}
+
+[data-g="Hybrid"] {
+    --c: var(--tyre-inter);
+}
 
 .sr-pw .sr-range {
     width: 190px;
@@ -5969,7 +6112,7 @@ html.live-quiet .gr-bar i {
     gap: 8px;
 }
 
-.sr-ctl .field > .field-label {
+.sr-ctl .field>.field-label {
     color: var(--ash);
     font-size: 0.68rem;
     letter-spacing: 0.14em;
@@ -6085,7 +6228,10 @@ html.live-quiet .gr-bar i {
 }
 
 @keyframes sr-pop {
-    from { opacity: 0; transform: translateX(-18px); }
+    from {
+        opacity: 0;
+        transform: translateX(-18px);
+    }
 }
 
 .sr-sy {
@@ -6262,7 +6408,10 @@ html.live-quiet .sr-tile {
 }
 
 @keyframes sr-in {
-    from { opacity: 0; transform: translateY(8px); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
 }
 
 .sr-tin {
@@ -6372,4 +6521,173 @@ html.live-quiet .sr-tile {
     .sr-gw {
         grid-template-columns: 150px 1fr;
     }
+}
+
+/* Harga "From" di kartu Newest models (beranda) */
+.nc-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: -4px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    min-width: 0;
+}
+
+.nc-price i {
+    color: var(--ash);
+    font: 600 0.62rem/1 var(--body);
+    font-style: normal;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.nc-price b {
+    font: 700 1.05rem/1.1 var(--body);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.nc-price small {
+    margin-left: auto;
+    overflow: hidden;
+    color: var(--ash);
+    font: 600 0.68rem/1.2 var(--body);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nc-price .na {
+    font: 600 0.8rem/1.1 var(--body);
+}
+
+/* ---------- Showroom v2: kartu gaya game balap (tempel di baris paling bawah app.css) ---------- */
+/* Warna kelas (--cls) diset per tile dan per panel sorotan dari server / showroom.js. */
+.sr-cls {
+    display: inline-grid;
+    place-items: center;
+    min-width: 28px;
+    height: 22px;
+    padding: 0 10px;
+    background: var(--cls, var(--ash));
+    color: #0d0d0e;
+    font: italic 700 0.95rem/1 var(--display);
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+.sr-sp1 .sr-cls {
+    height: 26px;
+    font-size: 1.1rem;
+}
+
+/* Bar bersegmen (10 segmen): lebar diisi server / JS dalam kelipatan 10% */
+.sr-br,
+.sr-pb {
+    -webkit-mask: repeating-linear-gradient(90deg, #000 0 calc(10% - 2px), transparent calc(10% - 2px) 10%);
+    mask: repeating-linear-gradient(90deg, #000 0 calc(10% - 2px), transparent calc(10% - 2px) 10%);
+}
+
+.sr-br {
+    height: 7px;
+    margin-top: 5px;
+}
+
+.sr-br i,
+.sr-pb i,
+.sr-pb i.hi {
+    background: var(--cls, var(--silver));
+}
+
+.sr-pb {
+    height: 5px;
+    margin-top: 8px;
+    transform: skewX(-20deg);
+}
+
+/* Blok harga di panel sorotan */
+.sr-price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    margin: 6px 0 14px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.sr-pl,
+.sr-tp em {
+    color: var(--ash);
+    font: normal 600 0.66rem/1 var(--body);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.sr-price b {
+    font: italic 700 clamp(1.8rem, 3vw, 2.3rem) / 1 var(--display);
+    font-variant-numeric: tabular-nums;
+}
+
+.sr-price b.na {
+    color: var(--ash);
+    font-size: 1.3rem;
+}
+
+.sr-price small {
+    margin-left: auto;
+    color: var(--ash);
+    font-size: 0.8rem;
+}
+
+/* Tile */
+.sr-tin {
+    position: relative;
+    padding-top: 0;
+}
+
+.sr-stripe {
+    display: block;
+    height: 3px;
+    margin: 0 -12px 10px;
+    background: var(--cls, var(--line));
+}
+
+.sr-th {
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+}
+
+.sr-th .sr-cls {
+    height: 20px;
+    padding: 0 8px;
+    font-size: 0.85rem;
+}
+
+.sr-tz {
+    margin-left: auto;
+}
+
+.sr-tp {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+}
+
+.sr-tp b {
+    font: italic 700 1.15rem/1 var(--display);
+    font-variant-numeric: tabular-nums;
+}
+
+.sr-tp .na {
+    color: var(--ash);
+    font-size: 0.78rem;
+}
+
+.sr-tile.is-on .sr-stripe {
+    height: 4px;
 }
