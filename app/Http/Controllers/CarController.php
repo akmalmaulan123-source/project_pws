@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\CarModel;
 use App\Models\Engine;
 use App\Support\Fuel;
+use App\Support\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -25,6 +26,9 @@ class CarController extends Controller
 
     private const PER_PAGE = 48;
 
+    /** Skala slider budget (USD); 0 di ujung kanan = tanpa batas. Sebaran: 66 model di bawah $25 ribu, 429 di bawah $250 ribu. */
+    private const PRICE_STOPS = [25000, 50000, 75000, 100000, 150000, 250000, 500000, 1000000, 2500000, 5000000, 0];
+
     public function index(Request $request)
     {
         // Parameter yang tidak valid diabaikan, bukan menimbulkan error.
@@ -36,6 +40,7 @@ class CarController extends Controller
             'country' => $text('country', 80) ?: null,
             'fuel_type' => $text('fuel_type', 60) ?: null,
             'min_power' => ($p = $request->integer('min_power')) > 0 && $p <= 3000 ? $p : null,
+            'max_price' => ($m = $request->integer('max_price')) > 0 && $m <= 100_000_000 ? $m : null,
         ];
 
         $query = CarModel::query()
@@ -83,6 +88,7 @@ class CarController extends Controller
 
         $cars->getCollection()->each(function (CarModel $m) use ($fuels, $powers) {
             $hp = $m->engines_max_power_hp ? (float) $m->engines_max_power_hp : null;
+            [$cls, $clr] = Rating::tier($hp);
             $m->setAttribute('sr', [
                 'hp' => $hp ? (int) round($hp) : null,
                 'zero' => $m->engines_min_zero_to_100_s ? (float) $m->engines_min_zero_to_100_s : null,
@@ -91,37 +97,29 @@ class CarController extends Controller
                 'rank' => $hp ? 1 + count(array_filter($powers, fn ($p) => $p > $hp)) : null,
                 'price' => $m->engines_min_price_usd ? (int) $m->engines_min_price_usd : null,
                 'idr' => $m->engines_min_price_usd ? Engine::idrLabel((int) $m->engines_min_price_usd) : null,
-                'cls' => self::tier($hp)[0],
-                'clr' => self::tier($hp)[1],
+                'cls' => $cls,
+                'clr' => $clr,
                 'url' => route('brands.show', ['brand' => $m->brand, 'car' => $m->id]),
             ]);
         });
+
+        $hasPrices = Cache::remember('opt.has_prices', 600, fn () => Engine::whereNotNull('price_usd')->exists());
 
         return view('cars.index', [
             'cars' => $cars,
             'filters' => $filters,
             'sort' => $sort,
             'sorts' => collect(self::SORTS)
-                ->reject(fn ($label, $key) => str_starts_with($key, 'price') && ! Cache::remember('opt.has_prices', 600, fn () => Engine::whereNotNull('price_usd')->exists()))
+                ->reject(fn ($label, $key) => str_starts_with($key, 'price') && ! $hasPrices)
                 ->all(),
+            'hasPrices' => $hasPrices,
+            'priceStops' => self::PRICE_STOPS,
             'brandStrip' => Brand::withCount('carModels')->orderBy('name')->get(),
             'powerMax' => Cache::remember('opt.power_max', 600, fn () => (int) Engine::max('power_hp')),
             'totalModels' => Cache::remember('opt.total_models', 600, fn () => CarModel::count()),
             'countryOptions' => Cache::remember('opt.countries', 3600, fn () => Brand::whereNotNull('country')->distinct()->orderBy('country')->pluck('country')->all()),
             'activeCount' => collect($filters)->filter()->count(),
         ]);
-    }
-
-    /** Kelas performa ala game balap dari tenaga maksimum: [huruf, warna]. */
-    private static function tier(?float $hp): array
-    {
-        return match (true) {
-            $hp === null => ['–', '#9c9ca0'],
-            $hp >= 700 => ['S', '#c98bff'],
-            $hp >= 500 => ['A', '#ff5446'],
-            $hp >= 300 => ['B', '#ffd21f'],
-            default => ['C', '#3fcf7b'],
-        };
     }
 
     public function show(CarModel $carModel)

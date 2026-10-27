@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Cars')
-@section('description', 'Pick a car from '.number_format($totalModels).' models: filter by brand, fuel and power, and see its specs at a glance.')
+@section('description', 'Pick a car from '.number_format($totalModels).' models: filter by brand, fuel, power and budget, and see its specs at a glance.')
 
 @section('content')
 @php
@@ -14,8 +14,14 @@
     for ($s = 100; $s <= min(1000, max($powerMax, 100)); $s += 100) { $powerStops[] = $s; }
     for ($s = 1250; $s <= $powerMax; $s += 250) { $powerStops[] = $s; }
     $powerIdx = max(0, count(array_filter($powerStops, fn ($s) => $s <= $powerNow)) - 1);
+    // Slider budget (USD). Ujung kanan (0) = tanpa batas; urutan tahap dikirim dari controller.
+    $priceNow = (int) ($filters['max_price'] ?? 0);
+    $priceIdx = count($priceStops) - 1;
+    if ($priceNow > 0) {
+        $priceIdx = 0;
+        foreach ($priceStops as $i => $stop) { if ($stop > 0 && $stop <= $priceNow) { $priceIdx = $i; } }
+    }
     $first = $cars->first();
-    $gauge = ['r' => 74, 'c' => 2 * M_PI * 74];
 @endphp
 <div class="wrap page sr-page">
     <header class="page-head sr-head">
@@ -32,6 +38,7 @@
         <input type="hidden" name="brand_id" value="{{ $filters['brand_id'] }}">
         <input type="hidden" name="fuel_type" value="{{ $fuelNow }}">
         <input type="hidden" name="min_power" value="{{ $filters['min_power'] }}">
+        <input type="hidden" name="max_price" value="{{ $filters['max_price'] }}">
 
         <div class="sr-brands" role="group" aria-label="Brand" data-sr-group="brand_id">
             <button type="button" class="sr-bb {{ $filters['brand_id'] ? '' : 'is-on' }}" data-sr-pick data-value="">All brands</button>
@@ -58,9 +65,16 @@
             </div>
             <div class="sr-grp sr-pw">
                 <label class="sr-cl" for="f-power">Min power</label>
-                <input id="f-power" class="sr-range" type="range" min="0" max="{{ count($powerStops) - 1 }}" step="1" value="{{ $powerIdx }}" data-sr-range data-stops="{{ json_encode($powerStops) }}">
+                <input id="f-power" class="sr-range" type="range" min="0" max="{{ count($powerStops) - 1 }}" step="1" value="{{ $powerIdx }}" data-sr-range data-stops="{{ json_encode($powerStops) }}" data-field="min_power" data-prefix="≥ " data-suffix=" hp">
                 <b data-sr-pv>{{ $powerNow ? '≥ '.number_format($powerNow).' hp' : 'Any' }}</b>
             </div>
+            @if ($hasPrices)
+                <div class="sr-grp sr-pw">
+                    <label class="sr-cl" for="f-price">Budget</label>
+                    <input id="f-price" class="sr-range" type="range" min="0" max="{{ count($priceStops) - 1 }}" step="1" value="{{ $priceIdx }}" data-sr-range data-stops="{{ json_encode($priceStops) }}" data-field="max_price" data-prefix="≤ $" data-any="last">
+                    <b data-sr-pv>{{ $priceNow ? '≤ $'.number_format($priceNow) : 'Any' }}</b>
+                </div>
+            @endif
             @include('partials.filter-select', ['name' => 'country', 'label' => 'Country', 'options' => array_combine($countryOptions, $countryOptions), 'value' => $filters['country'], 'all' => 'All countries'])
             @include('partials.filter-select', ['name' => 'sort', 'label' => 'Sort', 'options' => collect($sorts)->except('brand')->all(), 'value' => $sort === 'brand' ? '' : $sort, 'all' => $sorts['brand']])
             <div class="filter-actions sr-act">

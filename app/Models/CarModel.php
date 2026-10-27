@@ -148,7 +148,7 @@ class CarModel extends Model
         ];
     }
 
-    /** Filter katalog: q, brand_id, country, fuel_type, min_power */
+    /** Filter katalog: q, brand_id, country, fuel_type, min_power, max_price */
     public function scopeFilter($query, array $f)
     {
         return $query
@@ -166,7 +166,9 @@ class CarModel extends Model
             ->when($f['fuel_type'] ?? null, fn ($q, $v) => $q->whereHas('engines', fn ($e) => $v === 'Hybrid'
                 ? $e->where('engines.fuel_type', 'like', '%Hybrid%')
                 : $e->where('engines.fuel_type', $v)))
-            ->when($f['min_power'] ?? null, fn ($q, $v) => $q->whereHas('engines', fn ($e) => $e->where('engines.power_hp', '>=', $v)));
+            ->when($f['min_power'] ?? null, fn ($q, $v) => $q->whereHas('engines', fn ($e) => $e->where('engines.power_hp', '>=', $v)))
+            // Budget: model lolos bila varian termurahnya (angka "From" di kartu) tidak melebihi batas. Model tanpa harga tidak lolos.
+            ->when($f['max_price'] ?? null, fn ($q, $v) => $q->whereHas('engines', fn ($e) => $e->where('engines.price_usd', '<=', $v)));
     }
 
     /** URL: /cars/123-honda-civic (angka di depan yang dipakai untuk mencari data). */

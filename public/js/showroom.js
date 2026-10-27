@@ -1,6 +1,6 @@
 /* Halaman Cars (showroom).
    - Arahkan kursor (atau ketuk di layar sentuh) ke kartu mobil: panel sorotan menampilkan spesifikasinya, dengan bar bersegmen, kelas performa, dan harga.
-   - Strip brand, pilihan bahan bakar, dan slider tenaga mengisi kolom tersembunyi di form lalu memicu live-search (live.js).
+   - Strip brand, pilihan bahan bakar, dan slider (tenaga, budget) mengisi kolom tersembunyi di form lalu memicu live-search (live.js).
    Memakai delegasi event di document, jadi tetap bekerja setelah live.js mengganti isi halaman. */
 (function () {
     'use strict';
@@ -110,7 +110,7 @@
         syncFilters();
     }
 
-    /* ---------- Filter: strip brand, bahan bakar, slider tenaga ---------- */
+    /* ---------- Filter: strip brand, bahan bakar, slider tenaga dan budget ---------- */
     function hidden(name) { return document.querySelector('form.sr-form input[type="hidden"][name="' + name + '"]'); }
 
     // Samakan tampilan (chip, slider) dengan nilai kolom tersembunyi, mis. setelah Back/Forward atau tombol Reset.
@@ -140,20 +140,26 @@
             });
         });
 
-        var range = document.querySelector('form.sr-form [data-sr-range]');
-        var power = hidden('min_power');
-        if (range && power) {
-            var now = parseInt(power.value, 10) || 0;
-            // Posisi slider = tahap tertinggi yang tidak melebihi nilai (nilai bebas dari URL tetap ditampilkan apa adanya).
-            var idx = 0;
-            stops(range).forEach(function (s, i) { if (s <= now) { idx = i; } });
+        // Slider (tenaga, budget): posisi = tahap tertinggi yang tidak melebihi nilai (nilai bebas dari URL tetap ditampilkan apa adanya).
+        [].forEach.call(document.querySelectorAll('form.sr-form [data-sr-range]'), function (range) {
+            var input = hidden(range.getAttribute('data-field'));
+            if (!input) { return; }
+            var now = parseInt(input.value, 10) || 0;
+            var st = stops(range);
+            var idx = (now <= 0 && range.getAttribute('data-any') === 'last') ? st.length - 1 : 0;
+            if (now > 0) { st.forEach(function (s, i) { if (s > 0 && s <= now) { idx = i; } }); }
             range.value = idx;
-            var label = document.querySelector('form.sr-form [data-sr-pv]');
-            if (label) { label.textContent = now > 0 ? '≥ ' + fmt(now) + ' hp' : 'Any'; }
-        }
+            var label = range.parentNode.querySelector('[data-sr-pv]');
+            if (label) { label.textContent = now > 0 ? rangeText(range, now) : 'Any'; }
+        });
     }
 
-    // Tahap nilai slider tenaga (tidak linear), dikirim server lewat data-stops.
+    // Teks nilai slider, mis. "≥ 500 hp" atau "≤ $250,000".
+    function rangeText(range, value) {
+        return (range.getAttribute('data-prefix') || '') + fmt(value) + (range.getAttribute('data-suffix') || '');
+    }
+
+    // Tahap nilai slider (tidak linear), dikirim server lewat data-stops.
     function stops(range) {
         try { return JSON.parse(range.getAttribute('data-stops')) || []; } catch (e) { return []; }
     }
@@ -180,11 +186,12 @@
     document.addEventListener('input', function (e) {
         var range = e.target;
         if (!range.matches || !range.matches('[data-sr-range]')) { return; }
-        var power = hidden('min_power');
+        var field = hidden(range.getAttribute('data-field'));
+        if (!field) { return; }
         var value = stops(range)[parseInt(range.value, 10)] || 0;
-        power.value = value > 0 ? String(value) : '';   // 0 = tanpa filter
+        field.value = value > 0 ? String(value) : '';   // 0 = tanpa filter
         syncFilters();
-        fire(power);
+        fire(field);
     });
 
     /* ---------- Sorotan: kursor atau ketukan ---------- */
