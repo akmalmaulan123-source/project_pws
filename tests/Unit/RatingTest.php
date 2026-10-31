@@ -7,29 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class RatingTest extends TestCase
 {
-    public function test_kelas_mengikuti_batas_tenaga(): void
-    {
-        $this->assertSame('S', Rating::tier(700)[0]);
-        $this->assertSame('A', Rating::tier(699.9)[0]);
-        $this->assertSame('A', Rating::tier(500)[0]);
-        $this->assertSame('B', Rating::tier(499.9)[0]);
-        $this->assertSame('B', Rating::tier(300)[0]);
-        $this->assertSame('C', Rating::tier(299.9)[0]);
-        $this->assertSame('C', Rating::tier(80)[0]);
-    }
-
-    public function test_tanpa_data_tenaga_tidak_diberi_kelas(): void
-    {
-        $this->assertSame(Rating::NO_TIER, Rating::tier(null));
-        $this->assertSame(Rating::NO_TIER, Rating::tier(0));
-    }
-
-    public function test_warna_kelas_dikembalikan_bersama_hurufnya(): void
-    {
-        $this->assertSame(['S', '#c98bff'], Rating::tier(1015));
-        $this->assertSame(['A', '#ff5446'], Rating::tier(518));
-    }
-
     public function test_pi_menggabungkan_tenaga_akselerasi_dan_top_speed(): void
     {
         // 911 GT3 RS: 518 hp, 3,2 s, 296 km/h

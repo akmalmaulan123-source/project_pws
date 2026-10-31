@@ -70,8 +70,6 @@
 
         var hp = parseInt(d.hp, 10) || 0;
         countTo($(spot, 'hp'), hp);
-        spot.style.setProperty('--cls', d.clr || '#9c9ca0');
-        $(spot, 'cls').textContent = d.cls || '–';
 
         var price = parseInt(d.price, 10) || 0;
         var pe = $(spot, 'price');

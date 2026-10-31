@@ -12,9 +12,9 @@ class PageTest extends TestCase
         $this->get('/about')->assertOk();
     }
 
-    public function test_alamat_lama_compare_diarahkan_ke_insights(): void
+    public function test_alamat_compare_sementara_diarahkan_ke_daftar_mobil(): void
     {
-        $this->get('/compare')->assertRedirect(route('insights'));
+        $this->get('/compare')->assertRedirect(route('cars.index'));
     }
 
     public function test_alamat_tidak_dikenal_menampilkan_halaman_404_bertema(): void

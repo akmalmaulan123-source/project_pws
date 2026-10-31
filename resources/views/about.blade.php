@@ -8,6 +8,8 @@
 @endpush
 
 @section('content')
+{{-- Tandai JS aktif sebelum konten digambar, supaya animasi masuk tidak berkedip. Tanpa JS semua tetap terlihat. --}}
+<script>document.documentElement.classList.add('js');</script>
 <div class="wrap page about" data-static>
 
     <header class="ab-head">
@@ -41,10 +43,10 @@
                 <p>Open a brand to see every model it makes, then step into its garage to look at each car up close.</p>
                 <span aria-hidden="true">See brands &rarr;</span>
             </a>
-            <a class="ab-card" href="{{ route('insights') }}">
-                <h3>Read the big picture</h3>
-                <p>Insights shows models per brand, the fuel mix, and how power changes by country and by decade.</p>
-                <span aria-hidden="true">Open Insights &rarr;</span>
+            <a class="ab-card" href="{{ route('picks') }}">
+                <h3>Start from a shortlist</h3>
+                <p>Top picks lists the best value by class, the quickest cars under $100,000, and the best hybrids and EVs.</p>
+                <span aria-hidden="true">See Top picks &rarr;</span>
             </a>
         </div>
         <p class="ab-note">Open any car to see its generations and every engine variant.</p>
@@ -160,4 +162,5 @@
     </section>
 
 </div>
+<script src="{{ asset('js/about.js') }}?v={{ filemtime(public_path('js/about.js')) }}"></script>
 @endsection

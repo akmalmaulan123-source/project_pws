@@ -8,6 +8,7 @@ use App\Models\Engine;
 use App\Models\Generation;
 use Illuminate\Console\Attributes\AsCommand;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 #[AsCommand(name: 'cars:import-prices', description: 'Isi harga (USD) mesin dari file CSV: kolom make, model, price_usd (opsional: engine_label)')]
 class ImportPrices extends Command
@@ -79,7 +80,11 @@ class ImportPrices extends Command
                 continue;
             }
 
-            $brand = Brand::whereRaw('lower(name) = ?', [mb_strtolower($row['make'])])->first();
+            // Nama merek bisa diedit setelah impor (mis. "Mercedes-AMG" jadi "Mercedes-Benz"), tetapi slug-nya tetap,
+            // jadi cocokkan juga lewat slug supaya satu CSV bekerja di database lama maupun hasil impor baru.
+            $brand = Brand::whereRaw('lower(name) = ?', [mb_strtolower($row['make'])])
+                ->orWhere('slug', Str::slug($row['make']))
+                ->first();
             $model = $brand
                 ? CarModel::where('brand_id', $brand->id)->whereRaw('lower(name) = ?', [mb_strtolower($row['model'])])->first()
                 : null;

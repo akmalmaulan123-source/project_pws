@@ -6,7 +6,6 @@ use App\Models\Brand;
 use App\Models\CarModel;
 use App\Models\Engine;
 use App\Support\Fuel;
-use App\Support\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -88,7 +87,6 @@ class CarController extends Controller
 
         $cars->getCollection()->each(function (CarModel $m) use ($fuels, $powers) {
             $hp = $m->engines_max_power_hp ? (float) $m->engines_max_power_hp : null;
-            [$cls, $clr] = Rating::tier($hp);
             $m->setAttribute('sr', [
                 'hp' => $hp ? (int) round($hp) : null,
                 'zero' => $m->engines_min_zero_to_100_s ? (float) $m->engines_min_zero_to_100_s : null,
@@ -97,8 +95,6 @@ class CarController extends Controller
                 'rank' => $hp ? 1 + count(array_filter($powers, fn ($p) => $p > $hp)) : null,
                 'price' => $m->engines_min_price_usd ? (int) $m->engines_min_price_usd : null,
                 'idr' => $m->engines_min_price_usd ? Engine::idrLabel((int) $m->engines_min_price_usd) : null,
-                'cls' => $cls,
-                'clr' => $clr,
                 'url' => route('brands.show', ['brand' => $m->brand, 'car' => $m->id]),
             ]);
         });

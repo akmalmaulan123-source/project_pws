@@ -5118,7 +5118,7 @@ html:not(.live-quiet) .car-cards>li:nth-child(12) {
     --pg-d: 795ms;
 }
 
-html:not(.live-quiet) .page> :nth-child(-n+7):not(.page-head):not(.rows):not(.make-grid):not(.car-cards),
+html:not(.live-quiet) .page> :nth-child(-n+7):not(.page-head):not(.rows):not(.make-grid):not(.car-cards):not(.pk-sec):not(.ab-head):not(.ab-stats):not(.ab-sec),
 html:not(.live-quiet) .rows>.row:nth-child(-n+12),
 html:not(.live-quiet) .make-grid>li:nth-child(-n+12),
 html:not(.live-quiet) .car-cards>li:nth-child(-n+12) {
@@ -6391,15 +6391,10 @@ html.live-quiet .gr-bar i {
     margin-bottom: 18px;
 }
 
+/* Animasi masuk memakai "translate" dan fill "backwards": tidak menempel setelah selesai dan tidak bentrok
+   dengan "transform" milik efek hover (.nc:hover), jadi kartu bergerak mulus saat disentuh kursor. */
 .sr-tile {
-    display: block;
-    padding: 1px;
-    background: var(--line);
-    color: inherit;
-    text-decoration: none;
-    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
-    transition: background-color 0.15s, transform 0.2s;
-    animation: sr-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation: sr-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
     animation-delay: calc(var(--i, 0) * 18ms);
 }
 
@@ -6410,87 +6405,8 @@ html.live-quiet .sr-tile {
 @keyframes sr-in {
     from {
         opacity: 0;
-        transform: translateY(8px);
+        translate: 0 8px;
     }
-}
-
-.sr-tin {
-    display: block;
-    height: 100%;
-    padding: 10px 12px 11px;
-    background: var(--tarmac);
-    clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 0 100%);
-}
-
-.sr-tile:hover {
-    transform: translateY(-2px);
-}
-
-.sr-tile.is-on {
-    background: var(--chalk);
-}
-
-.sr-tile.is-on .sr-tin {
-    background: #1d1d1f;
-}
-
-.sr-t1 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--ash);
-    font-size: 0.74rem;
-}
-
-.sr-t1 .brand-logo {
-    width: 24px;
-    height: 24px;
-    padding: 3px;
-}
-
-.sr-tn {
-    display: block;
-    min-height: 2.2em;
-    margin: 8px 0 7px;
-    font: 700 1.1rem / 1.1 var(--display);
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-}
-
-.sr-th {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    color: var(--ash);
-    font-size: 0.72rem;
-}
-
-.sr-th b {
-    color: var(--chalk);
-    font: italic 700 1.35rem var(--display);
-}
-
-.sr-th b small {
-    margin-left: 2px;
-    color: var(--ash);
-    font: 400 0.7rem var(--body);
-}
-
-.sr-pb {
-    display: block;
-    height: 3px;
-    margin-top: 5px;
-    background: #26262a;
-}
-
-.sr-pb i {
-    display: block;
-    height: 100%;
-    background: #8a8a8f;
-}
-
-.sr-pb i.hi {
-    background: var(--purple-bar);
 }
 
 .sr-main .pager {
@@ -6512,10 +6428,6 @@ html.live-quiet .sr-tile {
 
     .sr-pw .sr-range {
         width: 140px;
-    }
-
-    .sr-rack {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 
     .sr-gw {
@@ -6562,46 +6474,17 @@ html.live-quiet .sr-tile {
 }
 
 /* ---------- Showroom v2: kartu gaya game balap (tempel di baris paling bawah app.css) ---------- */
-/* Warna kelas (--cls) diset per tile dan per panel sorotan dari server / showroom.js. */
-.sr-cls {
-    display: inline-grid;
-    place-items: center;
-    min-width: 28px;
-    height: 22px;
-    padding: 0 10px;
-    background: var(--cls, var(--ash));
-    color: #0d0d0e;
-    font: italic 700 0.95rem/1 var(--display);
-    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
-}
-
-.sr-sp1 .sr-cls {
-    height: 26px;
-    font-size: 1.1rem;
-}
 
 /* Bar bersegmen (10 segmen): lebar diisi server / JS dalam kelipatan 10% */
-.sr-br,
-.sr-pb {
+.sr-br {
     -webkit-mask: repeating-linear-gradient(90deg, #000 0 calc(10% - 2px), transparent calc(10% - 2px) 10%);
     mask: repeating-linear-gradient(90deg, #000 0 calc(10% - 2px), transparent calc(10% - 2px) 10%);
-}
-
-.sr-br {
     height: 7px;
     margin-top: 5px;
 }
 
-.sr-br i,
-.sr-pb i,
-.sr-pb i.hi {
-    background: var(--cls, var(--silver));
-}
-
-.sr-pb {
-    height: 5px;
-    margin-top: 8px;
-    transform: skewX(-20deg);
+.sr-br i {
+    background: var(--silver);
 }
 
 /* Blok harga di panel sorotan */
@@ -6616,8 +6499,7 @@ html.live-quiet .sr-tile {
     border-bottom: 1px solid var(--line);
 }
 
-.sr-pl,
-.sr-tp em {
+.sr-pl {
     color: var(--ash);
     font: normal 600 0.66rem/1 var(--body);
     letter-spacing: 0.16em;
@@ -6640,54 +6522,276 @@ html.live-quiet .sr-tile {
     font-size: 0.8rem;
 }
 
-/* Tile */
-.sr-tin {
-    position: relative;
-    padding-top: 0;
+/* ---------- Kartu .nc di halaman Cars dan Top picks ----------
+   Desain dasarnya sama dengan Newest models (beranda). Tambahan:
+   - .nc-rank   : nomor urut di daftar Top picks
+   - .nc-metric : angka utama daftar Top picks (mis. hp per $1K), berwarna putih
+   - .nc--sm    : versi ringkas untuk halaman Cars, yang kolomnya lebih sempit karena ada panel sorotan di kiri */
+.nc-rank {
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    z-index: 2;
 }
 
-.sr-stripe {
-    display: block;
-    height: 3px;
-    margin: 0 -12px 10px;
-    background: var(--cls, var(--line));
+.nc-rank {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 22px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: rgba(13, 13, 14, 0.7);
+    color: var(--silver);
+    font: italic 700 0.9rem/1 var(--display);
 }
 
-.sr-th {
-    justify-content: flex-start;
-    align-items: center;
-    gap: 8px;
-}
-
-.sr-th .sr-cls {
-    height: 20px;
-    padding: 0 8px;
-    font-size: 0.85rem;
-}
-
-.sr-tz {
-    margin-left: auto;
-}
-
-.sr-tp {
+.nc-metric {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    justify-content: space-between;
-    margin-top: 10px;
-    padding-top: 8px;
-    border-top: 1px solid var(--line);
+    gap: 4px 8px;
+    margin-top: -4px;
 }
 
-.sr-tp b {
-    font: italic 700 1.15rem/1 var(--display);
+.nc-metric b {
+    color: var(--chalk);
+    font: italic 700 1.9rem/1 var(--display);
     font-variant-numeric: tabular-nums;
 }
 
-.sr-tp .na {
+.nc-metric i {
     color: var(--ash);
-    font-size: 0.78rem;
+    font: 600 0.66rem/1.3 var(--body);
+    font-style: normal;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
-.sr-tile.is-on .sr-stripe {
-    height: 4px;
+/* Cars: rak kartu dan versi ringkas */
+.sr-rack {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+}
+
+.nc--sm {
+    gap: 12px;
+    padding: 12px 12px 0;
+    transition: transform 0.25s var(--nc-ease), border-color 0.2s, box-shadow 0.3s;
+    will-change: transform;
+}
+
+.nc--sm .nc-img,
+.nc--sm .nc-mark {
+    transition-duration: 0.35s;
+}
+
+.nc--sm .nc-media {
+    aspect-ratio: 16 / 10;
+}
+
+.nc--sm .nc-img {
+    padding: 8px 10px 12px;
+}
+
+.nc--sm .nc-img--photo {
+    padding: 0;
+}
+
+.nc--sm .nc-mark {
+    width: 34%;
+}
+
+.nc--sm .nc-head {
+    gap: 10px;
+}
+
+.nc--sm .nc-badge {
+    width: 34px;
+    height: 34px;
+}
+
+.nc--sm .nc-title strong {
+    font-size: 1.08rem;
+}
+
+.nc--sm .nc-title small {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+}
+
+.nc--sm .nc-price {
+    margin-top: -2px;
+    padding-top: 10px;
+}
+
+.nc--sm .nc-price b {
+    font-size: 0.95rem;
+}
+
+.nc--sm .nc-price small {
+    font-size: 0.64rem;
+}
+
+.nc--sm .nc-stats {
+    margin: auto -12px 0;
+    padding: 11px 6px 12px;
+}
+
+.nc--sm .nc-stats b {
+    font-size: 0.82rem;
+}
+
+.nc--sm .nc-stats i {
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+}
+
+/* Kartu yang sedang tampil di panel sorotan: bingkai perak menyala, tanpa terangkat */
+.sr-tile.is-on {
+    border-color: var(--silver);
+    box-shadow: 0 0 0 1px rgba(221, 221, 221, 0.28), 0 0 22px rgba(221, 221, 221, 0.08);
+}
+
+@media (max-width: 1000px) {
+    .sr-rack {
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .sr-rack {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Tombol Save di garasi (polish.css tidak dimuat di halaman ini) */
+.gr-info .save-form {
+    margin: -6px 0 20px;
+}
+
+.gr-info .save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 7px 14px;
+    font-size: 0.85rem;
+}
+
+.gr-info .save-btn.is-saved {
+    background: var(--chalk);
+    border-color: var(--chalk);
+    color: var(--asphalt);
+}
+
+.gr-info .save-btn:disabled {
+    opacity: 0.6;
+    cursor: progress;
+}
+
+/* ---------- Panel sorotan Cars: memanjang sampai dasar layar, tombol "Enter garage" selalu terlihat ----------
+   Panel ini menempel (sticky) di bawah header. Dulu isinya lebih tinggi dari layar, jadi tombol di dasarnya baru
+   terlihat setelah daftar di-scroll sampai habis. Sekarang tingginya dipatok sama dengan sisa layar di bawah
+   header: nama, harga, dan statistik disebar merata di tengah, dan tombol selalu di dasar panel. Ukuran teks
+   mengikuti tinggi layar, jadi tetap muat di layar yang pendek (di layar yang sangat pendek isinya bisa digulir). */
+@media (min-width: 1001px) {
+    .sr-spot {
+        display: flex;
+        flex-direction: column;
+        height: calc(100dvh - var(--top-h, 72px) - 28px);
+        padding-block: clamp(16px, 2.6vh, 26px) clamp(16px, 2.4vh, 22px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: none;
+    }
+
+    .sr-spot::-webkit-scrollbar {
+        display: none;
+    }
+
+    .sr-spot>* {
+        flex-shrink: 0;
+    }
+
+    .sr-sn {
+        min-height: 0;
+        margin: clamp(10px, 2vh, 22px) 0 4px;
+        font-size: clamp(2rem, min(4.4vw, 6.4vh), 3.6rem);
+    }
+
+    .sr-price {
+        margin: clamp(8px, 1.6vh, 16px) 0 0;
+        padding-block: clamp(10px, 1.8vh, 16px);
+    }
+
+    /* Empat statistik mengisi sisa tinggi panel dan tersebar merata */
+    .sr-stats {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding-block: clamp(4px, 1vh, 10px);
+    }
+
+    .sr-st {
+        margin-bottom: 0;
+    }
+
+    .sr-stt {
+        line-height: 1.1;
+    }
+
+    .sr-stt b {
+        font-size: clamp(1.3rem, 3vh, 1.7rem);
+        line-height: 1.1;
+    }
+
+    .sr-fu {
+        min-height: 0;
+        margin: 0 0 clamp(10px, 1.8vh, 16px);
+    }
+
+    .sr-go {
+        margin-top: auto;
+        padding-block: clamp(11px, 1.8vh, 15px);
+    }
+}
+
+/* Layar sangat pendek: bahan bakar disembunyikan supaya tombol tetap muat */
+@media (min-width: 1001px) and (max-height: 700px) {
+    .sr-fu {
+        display: none;
+    }
+}
+
+/* Toast konfirmasi Save/Remove di garasi */
+.gr-toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    z-index: 50;
+    max-width: min(90vw, 440px);
+    padding: 11px 18px;
+    border: 1px solid var(--silver);
+    border-radius: 2px;
+    background: var(--chalk);
+    color: var(--asphalt);
+    font: 600 0.9rem/1.35 var(--body);
+    box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    translate: -50% 12px;
+    transition: opacity 0.25s ease, translate 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+}
+
+.gr-toast.is-in {
+    opacity: 1;
+    translate: -50% 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gr-toast {
+        transition: none;
+    }
 }

@@ -1,16 +1,16 @@
 # Parc Fermé
 
-Katalog spesifikasi mobil bertema layar timing balap. Cari dan saring ribuan model mobil, lihat mesin dan generasinya, jelajahi per merek, dan baca ringkasan statistik di halaman Insights. Dibuat dengan Laravel.
+Katalog spesifikasi mobil bertema layar timing balap. Cari dan saring ribuan model mobil, lihat mesin dan generasinya, jelajahi per merek, dan mulai dari daftar pilihan siap pakai di halaman Top picks. Dibuat dengan Laravel.
 
 > *Parc fermé* adalah area tertutup tempat mobil balap ditahan dan diperiksa setelah sesi. Situs ini meminjam namanya: satu tempat untuk memeriksa setiap mobil beserta angka-angkanya.
 
 ## Fitur
 
 - **Beranda** dengan mobil unggulan, statistik katalog, dan model terbaru
-- **Cars**: pencarian, filter (merek, negara, bahan bakar, tenaga minimum), 9 pilihan urutan, dan pagination
+- **Cars**: pencarian, filter (merek, negara, bahan bakar, tenaga minimum, budget maksimal), 9 pilihan urutan, dan pagination
 - **Detail mobil**: generasi, mesin, dan spesifikasi terkuat, plus model lain dari merek yang sama
 - **Brands** dan halaman *garage* per merek
-- **Insights**: ringkasan statistik katalog
+- **Top picks**: daftar siap pakai (paling worth it per kelas, tercepat di bawah $100 ribu, hybrid dan listrik terbaik, termurah per kelas) dengan kelas performa S/A/B/C dan Performance Index
 - **Akun**: daftar, masuk, keluar, dan simpan mobil favorit. Daftar simpanan ada di halaman Saved
 - Saran pencarian saat mengetik (autocomplete) dan pembaruan data otomatis (*live*)
 - Halaman error bertema (404, 419, 429, 500, 503)
@@ -84,9 +84,9 @@ php artisan test
 ## Struktur singkat
 
 ```
-app/Http/Controllers   Home, Car, Brand, Insights, About, Search, Live, Register, Login, Saved
+app/Http/Controllers   Home, Car, Brand, Picks, About, Search, Live, Register, Login, Saved
 app/Models             Brand, CarModel, Generation, Engine
-app/Support            CarDataImporter, Fuel
+app/Support            CarDataImporter, Fuel, Rating, TopPicks, CatalogCache
 app/Console/Commands   Perintah impor dan pengambilan gambar
 resources/views        Blade: layouts, partials, errors, halaman
 public/css, public/js  Gaya dan skrip (app.css, polish.css, live.css, ...)

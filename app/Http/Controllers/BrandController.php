@@ -55,6 +55,7 @@ class BrandController extends Controller
         $models->each(fn (CarModel $m) => $m->setRelation('brand', $brand));
 
         $selected = $spec = $summary = $stats = null;
+        $saved = false;
 
         if ($models->isNotEmpty()) {
             // Tanpa ?car yang valid: model terbaru yang sudah punya data mesin.
@@ -78,9 +79,10 @@ class BrandController extends Controller
                 ->first() ?? $engines->first();
 
             $stats = $this->stats($brand, $spec);
+            $saved = $request->user()?->favorites()->whereKey($selected->id)->exists() ?? false;
         }
 
-        return view('brands.show', compact('brand', 'models', 'selected', 'spec', 'summary', 'stats'));
+        return view('brands.show', compact('brand', 'models', 'selected', 'spec', 'summary', 'stats', 'saved'));
     }
 
     /**

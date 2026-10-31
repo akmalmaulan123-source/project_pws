@@ -16,7 +16,7 @@
 {{-- Halaman garage berdiri sendiri: tanpa navbar dan footer, hanya garage. --}}
 <body class="gr-body">
 <main id="main" class="gr gr-full">
-    <a class="gr-back" href="{{ route('brands.index') }}">&larr; All brands</a>
+    <a class="gr-back" href="{{ route('brands.index') }}">&larr; Back</a>
 
     @if ($selected)
         @php
@@ -41,6 +41,8 @@
                         <span>{{ number_format($summary['engines']) }} {{ \Illuminate\Support\Str::plural('engine', $summary['engines']) }} in {{ number_format($summary['generations']) }} {{ \Illuminate\Support\Str::plural('generation', $summary['generations']) }}</span>
                     @endif
                 </p>
+
+                @include('partials.save-button', ['carModel' => $selected, 'saved' => $saved])
 
                 <div class="gr-stats">
                     @foreach ($stats as $s)

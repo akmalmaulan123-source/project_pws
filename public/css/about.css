@@ -203,3 +203,77 @@
     .ab-card:hover,
     .ab-card:focus-visible { transform: none; }
 }
+
+/* ---------- Animasi masuk ----------
+   about.js memasang .is-in saat elemen terlihat; --ab-d adalah jeda bertingkat antar elemen yang muncul bersamaan.
+   Memakai "translate" dan "scale" (bukan "transform"), jadi hover kartu tidak terganggu.
+   Tanpa JS (.js tidak terpasang) atau dengan reduce motion, semuanya tampil biasa.
+   Daftar elemen harus sama dengan PARTS di about.js. */
+@media (prefers-reduced-motion: no-preference) {
+    .js .about :is(.ab-head > *, .ab-stats > div, .ab-sec h2, .ab-sec > p, .ab-card, .ab-gloss > dt, .ab-gloss > dd, .ab-faq details, .ab-chips li):not(.is-in) {
+        opacity: 0;
+    }
+
+    .js .about .is-in:is(.ab-head > *, .ab-sec h2, .ab-sec > p) {
+        animation: ab-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--ab-d, 0ms) backwards;
+    }
+
+    .js .about .ab-head > h1.is-in {
+        animation: ab-title 1s cubic-bezier(0.16, 1, 0.3, 1) var(--ab-d, 0ms) backwards;
+    }
+
+    .js .about .is-in:is(.ab-stats > div, .ab-card) {
+        animation: ab-card 0.85s cubic-bezier(0.16, 1, 0.3, 1) var(--ab-d, 0ms) backwards;
+    }
+
+    .js .about .is-in:is(.ab-gloss > dt, .ab-gloss > dd, .ab-faq details) {
+        animation: ab-row 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--ab-d, 0ms) backwards;
+    }
+
+    .js .about .ab-chips li.is-in {
+        animation: ab-chip 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--ab-d, 0ms) backwards;
+    }
+
+    /* FAQ: jawaban muncul halus saat pertanyaan dibuka */
+    .ab-faq details[open] p {
+        animation: ab-row 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    }
+}
+
+@keyframes ab-up {
+    from {
+        opacity: 0;
+        translate: 0 24px;
+    }
+}
+
+@keyframes ab-title {
+    from {
+        opacity: 0;
+        translate: 0 0.35em;
+        filter: blur(8px);
+    }
+}
+
+@keyframes ab-card {
+    from {
+        opacity: 0;
+        translate: 0 40px;
+        scale: 0.96;
+    }
+}
+
+@keyframes ab-row {
+    from {
+        opacity: 0;
+        translate: 0 14px;
+    }
+}
+
+@keyframes ab-chip {
+    from {
+        opacity: 0;
+        translate: 0 10px;
+        scale: 0.85;
+    }
+}

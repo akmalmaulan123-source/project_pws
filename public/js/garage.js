@@ -18,6 +18,8 @@
     var token = 0;            // hanya permintaan terakhir yang boleh mengganti isi
     var outAnims = [];
 
+    var depth = (history.state && history.state.gr) || 0;   // perpindahan mobil di garasi sejak masuk
+
     function current() { return location.pathname + location.search; }
     function reduced() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
     function canAnimate() { return !reduced() && !!main.animate; }
@@ -168,7 +170,7 @@
                 var fresh = doc.getElementById('main');
                 if (!fresh || !apply(fresh, dir)) { throw new Error('bad page'); }
                 if (doc.title) { document.title = doc.title; }
-                if (push) { history.pushState({ gr: 1 }, '', url); }
+                if (push) { depth += 1; history.pushState({ gr: depth }, '', url); }
                 setTimeout(prefetchNeighbors, 350);
             })
             .catch(function () {
@@ -269,9 +271,86 @@
         }
     });
 
-    window.addEventListener('popstate', function () { load(current(), false); });
+    /* Toast kecil di dasar layar (2,6 detik): konfirmasi setelah Save/Remove. */
+    var toastEl = null, toastTimer = null;
+    function toast(text) {
+        if (toastEl) { toastEl.remove(); toastEl = null; }
+        clearTimeout(toastTimer);
 
-    history.replaceState({ gr: 1 }, '', current());
+        var el = document.createElement('div');
+        el.className = 'gr-toast';
+        el.setAttribute('role', 'status');
+        el.textContent = text;
+        document.body.appendChild(el);
+        toastEl = el;
+
+        requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-in'); }); });
+        toastTimer = setTimeout(function () {
+            el.classList.remove('is-in');
+            setTimeout(function () { if (el.parentNode) { el.remove(); } if (toastEl === el) { toastEl = null; } }, 400);
+        }, 2600);
+    }
+
+    /* Save/Saved: tombol berubah di tempat tanpa memuat ulang halaman (supaya pintu garasi tidak muncul lagi).
+       Tamu atau gagal (mis. belum login): form dikirim biasa, jadi alurnya sama seperti tanpa JS. */
+    main.addEventListener('submit', function (e) {
+        var form = e.target.closest ? e.target.closest('.save-form') : null;
+        if (!form || !window.FormData) { return; }
+        e.preventDefault();
+
+        var btn = form.querySelector('.save-btn');
+        if (btn) { btn.disabled = true; }
+
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin'
+        })
+            .then(function (res) {
+                if (!res.ok) { throw new Error('http ' + res.status); }
+                return res.json();
+            })
+            .then(function (data) {
+                if (!btn) { return; }
+                var on = !!data.saved;
+                btn.classList.toggle('is-saved', on);
+                btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+                btn.querySelector('span').textContent = on ? 'Saved' : 'Save';
+                var svg = btn.querySelector('svg');
+                if (svg) { svg.setAttribute('fill', on ? 'currentColor' : 'none'); }
+                delete cache[current()];   // halaman tersimpan di cache punya status lama
+                toast(data.message || (on ? 'Saved.' : 'Removed from your saved cars.'));
+                btn.disabled = false;
+            })
+            .catch(function () { form.submit(); });
+    });
+
+    window.addEventListener('popstate', function (e) {
+        depth = (e.state && e.state.gr) || 0;
+        load(current(), false);
+    });
+
+    /* Tombol Back: kembali ke halaman tempat user datang (home, Cars, Top picks, dll.), bukan selalu daftar merek.
+       "depth" = berapa kali user berpindah mobil di dalam garasi sejak masuk (tiap perpindahan menambah satu entri
+       riwayat), jadi satu klik Back melompati semuanya sekaligus. Dibuka langsung, dari luar situs, atau dari halaman
+       login: ikut link biasa (daftar merek). */
+    function cameFromSite() {
+        try {
+            var r = new URL(document.referrer);
+            return r.origin === location.origin && r.pathname !== location.pathname && !/^\/(login|register)/.test(r.pathname);
+        } catch (_) { return false; }
+    }
+
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('.gr-back') : null;
+        if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) { return; }
+        if (!cameFromSite()) { return; }
+        e.preventDefault();
+        history.go(-(depth + 1));
+    });
+
+    history.replaceState({ gr: depth }, '', current());
     centerActive(false);
     setTimeout(prefetchNeighbors, 1500);
 })();

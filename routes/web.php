@@ -5,9 +5,9 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\DevReloadController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\LiveController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PicksController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SavedController;
 use App\Http\Controllers\SearchController;
@@ -23,7 +23,9 @@ Route::get('/cars/{carModel}', [CarController::class, 'show'])->name('cars.show'
 Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
 Route::get('/brands/{brand:slug}', [BrandController::class, 'show'])->name('brands.show');
 
-Route::get('/insights', InsightsController::class)->name('insights');
+Route::get('/top-picks', PicksController::class)->name('picks');
+// Halaman Insights lama digantikan Top picks.
+Route::redirect('/insights', '/top-picks', 301);
 
 // Akun: daftar, masuk, keluar. Percobaan masuk dibatasi supaya password tidak bisa ditebak berulang-ulang.
 Route::middleware('guest')->group(function () {
@@ -38,8 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/saved', [SavedController::class, 'index'])->name('saved.index');
     Route::post('/cars/{carModel}/save', [SavedController::class, 'toggle'])->name('saved.toggle');
 });
-// Alamat lama halaman Compare diarahkan ke Insights.
-Route::redirect('/compare', '/insights');
+// Halaman Compare belum ada; sementara diarahkan ke daftar mobil.
+Route::redirect('/compare', '/cars');
 
 Route::get('/search/suggest', SearchController::class)->middleware('throttle:120,1')->name('search.suggest');
 

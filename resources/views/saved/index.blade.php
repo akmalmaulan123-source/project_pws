@@ -30,7 +30,7 @@
         <ul class="saved-list">
             @foreach ($cars as $m)
                 <li class="saved-item">
-                    <a class="saved-link" href="{{ route('cars.show', $m) }}">
+                    <a class="saved-link" href="{{ route('brands.show', ['brand' => $m->brand, 'car' => $m->id]) }}">
                         @include('partials.brand-logo', ['brand' => $m->brand, 'size' => 'sm'])
                         <span class="saved-main">
                             <span class="saved-model">{{ $m->name }}</span>

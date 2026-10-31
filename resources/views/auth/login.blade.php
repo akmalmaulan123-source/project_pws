@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Sign in')
+@section('no_footer', '1')
 @section('description', 'Sign in to save cars and find them again in one place.')
 
 @push('styles')

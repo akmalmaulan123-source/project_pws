@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Create account')
+@section('no_footer', '1')
 @section('description', 'Create an account to save cars and find them again in one place.')
 
 @push('styles')

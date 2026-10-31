@@ -62,4 +62,19 @@ class ImportPricesTest extends TestCase
 
         $this->assertDatabaseHas('engines', ['id' => $engineId, 'price_usd' => null]);
     }
+
+    public function test_merek_yang_namanya_diedit_tetap_cocok_lewat_slug(): void
+    {
+        $now = ['created_at' => now(), 'updated_at' => now()];
+        $brandId = DB::table('brands')->insertGetId(['name' => 'Mercedes-Benz', 'slug' => 'mercedes-amg'] + $now);
+        $modelId = DB::table('car_models')->insertGetId(['brand_id' => $brandId, 'name' => 'G 63'] + $now);
+        $genId = DB::table('generations')->insertGetId(['car_model_id' => $modelId, 'name' => 'Gen 1'] + $now);
+        $engineId = DB::table('engines')->insertGetId(['generation_id' => $genId, 'label' => 'Base'] + $now);
+        $file = $this->csvFile("make,model,price_usd\nMercedes-AMG,G 63,180000\n");
+
+        $this->artisan('cars:import-prices', ['file' => $file])->assertExitCode(0);
+        @unlink($file);
+
+        $this->assertSame(180000, (int) DB::table('engines')->where('id', $engineId)->value('price_usd'));
+    }
 }

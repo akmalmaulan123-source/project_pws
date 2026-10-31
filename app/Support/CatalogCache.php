@@ -18,7 +18,7 @@ class CatalogCache
         'about.stats',
         self::HOME_FEATURE,
         'home.fuels',
-        'insights.data.v1',
+        'picks.data.v1',
         'cars.powers',
         'opt.countries',
         'opt.power_max',

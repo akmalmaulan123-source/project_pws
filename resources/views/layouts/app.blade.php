@@ -45,7 +45,7 @@
         <nav class="nav nav--segment" aria-label="Main">
             <a href="{{ route('cars.index') }}" @class(['is-on' => request()->routeIs('cars.*')])>Cars</a>
             <a href="{{ route('brands.index') }}" @class(['is-on' => request()->routeIs('brands.*')])>Brands</a>
-            <a href="{{ route('insights') }}" @class(['is-on' => request()->routeIs('insights')])>Insights</a>
+            <a href="{{ route('picks') }}" @class(['is-on' => request()->routeIs('picks')])>Top picks</a>
             <a href="{{ route('about') }}" @class(['is-on' => request()->routeIs('about')])>About</a>
             @auth
                 <a href="{{ route('saved.index') }}" @class(['is-on' => request()->routeIs('saved.*')])>Saved</a>
@@ -70,6 +70,8 @@
     @yield('content')
 </main>
 
+{{-- Halaman yang mengisi section no_footer (mis. Sign in dan Register) tampil tanpa footer --}}
+@if (! trim($__env->yieldContent('no_footer')))
 <footer class="foot">
     <div class="foot-flag" aria-hidden="true"></div>
     <div class="wrap foot-in">
@@ -79,7 +81,7 @@
         <nav class="foot-links rv" style="--i: 1" aria-label="Footer">
             <a href="{{ route('cars.index') }}" @class(['is-on' => request()->routeIs('cars.*')])><span>Cars</span></a>
             <a href="{{ route('brands.index') }}" @class(['is-on' => request()->routeIs('brands.*')])><span>Brands</span></a>
-            <a href="{{ route('insights') }}" @class(['is-on' => request()->routeIs('insights')])><span>Insights</span></a>
+            <a href="{{ route('picks') }}" @class(['is-on' => request()->routeIs('picks')])><span>Top picks</span></a>
             <a href="{{ route('about') }}" @class(['is-on' => request()->routeIs('about')])><span>About</span></a>
         </nav>
 
@@ -94,6 +96,7 @@
         </div>
     </div>
 </footer>
+@endif
 
 <script src="{{ asset('js/app.js') }}?v={{ filemtime(public_path('js/app.js')) }}" defer></script>
 <script src="{{ asset('js/search.js') }}?v={{ filemtime(public_path('js/search.js')) }}" defer></script>
